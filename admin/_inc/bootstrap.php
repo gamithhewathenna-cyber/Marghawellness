@@ -99,8 +99,11 @@ function db(): PDO
 {
     $pdo = Database::get();
     if (!$pdo) {
-        admin_fatal('Can’t connect to the database',
-            'Check DB_NAME, DB_USER and DB_PASS in config/config.php, and that the user has been added to the database in cPanel › MySQL® Databases.');
+        error_log('[margha-admin] Database unavailable. Check the secrets file (margha-secrets.php above public_html) and that the DB user is added to the database in cPanel › MySQL® Databases.');
+        admin_fatal('Admin temporarily unavailable',
+            APP_ENV === 'development'
+                ? 'Can’t connect to the database. Check DB_NAME, DB_USER and DB_PASS in your secrets file (see config/secrets.example.php).'
+                : 'The admin can’t reach the database right now. The details have been written to the server error log (cPanel › Errors).');
     }
     return $pdo;
 }
@@ -119,8 +122,12 @@ function require_tables(array $tables): void
 {
     $missing = array_values(array_filter($tables, fn($t) => !table_exists($t)));
     if ($missing) {
-        admin_fatal('Database tables missing',
-            'These tables don’t exist yet: ' . implode(', ', $missing) . '. Import database/schema.sql (new database) or database/admin.sql (admin tables only) in phpMyAdmin.');
+        error_log('[margha-admin] Missing tables: ' . implode(', ', $missing) . ' — import database/schema.sql or database/admin.sql in phpMyAdmin.');
+        // Table names are only shown to signed-in admins or in development, never to anonymous visitors.
+        $detail = APP_ENV === 'development' || is_admin_session()
+            ? 'These tables don’t exist yet: ' . implode(', ', $missing) . '. Import database/schema.sql (new database) or database/admin.sql (admin tables only) in phpMyAdmin.'
+            : 'The database isn’t fully set up yet. The details have been written to the server error log (cPanel › Errors).';
+        admin_fatal('Database setup incomplete', $detail);
     }
 }
 

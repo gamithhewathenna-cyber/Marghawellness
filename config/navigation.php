@@ -26,6 +26,12 @@ const PAGES = [
 /** Main header navigation (order as in the design). */
 const MAIN_NAV = ['journeys', 'retreats', 'journal', 'news', 'our-story'];
 
+/**
+ * Header menu items shown as plain text (not clickable) until their page is built.
+ * Remove a slug from this list to make that menu item a link again.
+ */
+const NAV_NOT_CLICKABLE = ['journeys', 'retreats', 'journal', 'news', 'our-story'];
+
 /** Footer link columns: heading => [slug => label]. */
 const FOOTER_NAV = [
     'COMPANY'  => ['journeys' => 'Journeys', 'retreats' => 'Retreats', 'journal' => 'Journal', 'news' => 'News', 'our-story' => 'Our Story'],

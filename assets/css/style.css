@@ -133,10 +133,12 @@ strong { font-weight: 600; }
 }
 .main-nav { display: flex; align-items: center; flex: 1; }
 .main-nav ul { display: flex; gap: 34.5px; }
-.main-nav a:not(.btn) {
+.main-nav a:not(.btn),
+.main-nav__text {
     font-family: var(--ff-ui); font-size: 15px; font-weight: 400; color: var(--white);
     position: relative; padding: 6px 0;
 }
+.main-nav__text { cursor: default; } /* menu item whose page isn't built yet (config/navigation.php) */
 .main-nav a:not(.btn)::after {
     content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px;
     background: currentColor; transition: right .3s var(--ease);
@@ -576,7 +578,7 @@ strong { font-weight: 600; }
     }
     .nav-open .main-nav { opacity: 1; visibility: visible; transition: opacity .35s var(--ease); }
     .main-nav ul { flex-direction: column; align-items: center; gap: 22px; }
-    .main-nav a:not(.btn) { font-family: var(--ff-serif); font-size: 32px; }
+    .main-nav a:not(.btn), .main-nav__text { font-family: var(--ff-serif); font-size: 32px; }
     .main-nav__cta { display: inline-flex; width: 180px; }
     .logo { position: relative; z-index: 2; font-size: 28px; }
     .site-header__cta { position: relative; z-index: 2; width: 136px; height: 38px; font-size: 12.5px; }

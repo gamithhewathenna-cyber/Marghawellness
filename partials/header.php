@@ -38,7 +38,11 @@ $body_class       = $body_class ?? '';
         <nav class="main-nav" id="mainNav" aria-label="Main">
             <ul>
                 <?php foreach (MAIN_NAV as $slug): ?>
+                <?php if (in_array($slug, NAV_NOT_CLICKABLE, true)): ?>
+                <li><span class="main-nav__text"><?= e(PAGES[$slug][0]) ?></span></li>
+                <?php else: ?>
                 <li><a href="<?= e(url($slug)) ?>"<?= current_slug() === $slug ? ' aria-current="page"' : '' ?>><?= e(PAGES[$slug][0]) ?></a></li>
+                <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
             <a class="btn btn--rust main-nav__cta" href="<?= e(url('enquire')) ?>">Enquire Now</a>
