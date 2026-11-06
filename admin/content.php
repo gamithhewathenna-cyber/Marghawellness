@@ -6,8 +6,13 @@ require __DIR__ . '/_inc/bootstrap.php';
 require_admin();
 require_tables(['settings']);
 
-$schema = settings_schema();
-$group  = (string) ($_POST['group'] ?? $_GET['group'] ?? array_key_first($schema));
+$requested = (string) ($_POST['group'] ?? $_GET['group'] ?? '');
+if ($requested === 'maintenance') {
+    redirect(admin_url('maintenance.php'));
+}
+// Groups with their own admin page are left out of these tabs.
+$schema = array_filter(settings_schema(), fn($g) => empty($g['own_page']));
+$group  = $requested !== '' ? $requested : array_key_first($schema);
 if (!isset($schema[$group])) {
     $group = array_key_first($schema);
 }

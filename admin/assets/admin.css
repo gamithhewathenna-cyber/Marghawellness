@@ -52,6 +52,22 @@ code { background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; font-s
 .topbar__link:hover { color: var(--rust); }
 .topbar__user { color: var(--muted); }
 .topbar__maint { text-decoration: none; text-transform: none; font-weight: 500; padding: 4px 12px; }
+
+/* ---------- Maintenance page ---------- */
+.maint { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; border-left: 5px solid var(--ok); }
+.maint--on { border-left-color: #c77a12; background: #fffaf2; }
+.maint__status { display: flex; gap: 16px; align-items: flex-start; }
+.maint__dot { width: 14px; height: 14px; border-radius: 50%; background: var(--ok); margin-top: 8px; box-shadow: 0 0 0 5px rgba(31,107,58,.15); flex: none; }
+.maint--on .maint__dot { background: #c77a12; box-shadow: 0 0 0 5px rgba(199,122,18,.18); }
+.maint__label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.maint__state { font: 500 30px/1.15 var(--ff-serif); margin: 2px 0 4px; }
+.maint__note { margin: 0; }
+.maint__action { margin: 0; }
+.btn--large { padding: 13px 22px; font-size: 15px; }
+.btn--success { background: var(--ok); border-color: var(--ok); color: #fff; }
+.btn--success:hover { background: #17552e; border-color: #17552e; }
+.tips { margin: 0; padding-left: 20px; color: #4a453f; }
+.tips li { margin-bottom: 6px; }
 .content { padding: 28px 32px 60px; max-width: 1180px; width: 100%; }
 
 /* ---------- Page head ---------- */

@@ -27,7 +27,7 @@ $body_class       = $body_class ?? '';
 <a class="skip-link" href="#main">Skip to content</a>
 <?php if (maintenance_on() && is_admin_session()): ?>
 <div role="status" style="position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:1000;background:#8a300b;color:#fff;font:400 14px/1.4 'Jost',Arial,sans-serif;padding:10px 18px;border-radius:99px;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:calc(100% - 32px);text-align:center;">
-    Maintenance mode is on — visitors see the maintenance page. <a href="<?= e(url('admin/content.php?group=maintenance')) ?>" style="color:#fff;text-decoration:underline;">Turn off</a>
+    Maintenance mode is on — visitors see the maintenance page. <a href="<?= e(url('admin/maintenance.php')) ?>" style="color:#fff;text-decoration:underline;">Turn off</a>
 </div>
 <?php endif; ?>
 

@@ -17,6 +17,7 @@ function admin_icon(string $name): string
         'key'    => '<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/>',
         'out'    => '<path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/>',
         'ext'    => '<path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>',
+        'tool'   => '<path d="M14.5 5.5a4 4 0 0 0-5.3 5.3L4 16v4h4l5.2-5.2a4 4 0 0 0 5.3-5.3l-2.6 2.6-2.6-.7-.7-2.6z"/>',
     ];
     return '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">' . ($paths[$name] ?? '') . '</svg>';
 }
@@ -51,7 +52,10 @@ function admin_header(string $title, string $active = ''): void
     admin_head($title);
     $nav = [
         'Overview' => ['dashboard' => ['Dashboard', admin_url(), 'home']],
-        'Website'  => ['content' => ['Page text & settings', admin_url('content.php'), 'text']],
+        'Website'  => [
+            'content'     => ['Page text', admin_url('content.php'), 'text'],
+            'maintenance' => ['Maintenance mode', admin_url('maintenance.php'), 'tool'],
+        ],
         'Content'  => [],
         'Inbox'    => [],
         'Account'  => ['users' => ['Admin users', admin_url('users.php'), 'key']],
@@ -81,7 +85,7 @@ function admin_header(string $title, string $active = ''): void
         <header class="topbar">
             <button class="topbar__menu" type="button" aria-controls="sidebar" aria-expanded="false" data-menu>Menu</button>
             <?php if (maintenance_on()): ?>
-            <a class="badge badge--new topbar__maint" href="<?= e(admin_url('content.php', ['group' => 'maintenance'])) ?>">Maintenance mode ON</a>
+            <a class="badge badge--new topbar__maint" href="<?= e(admin_url('maintenance.php')) ?>">Maintenance mode ON</a>
             <?php endif; ?>
             <a class="topbar__link" href="<?= e(url()) ?>" target="_blank" rel="noopener"><?= admin_icon('ext') ?>View website</a>
             <span class="topbar__user"><?= e($user['name'] ?? '') ?></span>

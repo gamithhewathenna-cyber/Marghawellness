@@ -23,7 +23,8 @@ function settings_schema(): array
         return $schema;
     }
     $schema = [
-        'maintenance' => ['label' => 'Maintenance mode', 'fields' => [
+        // Edited on its own admin page (admin/maintenance.php), not in the Page text tabs.
+        'maintenance' => ['label' => 'Maintenance mode', 'own_page' => true, 'fields' => [
             'maintenance_enabled' => ['label' => 'Turn on maintenance mode', 'type' => 'bool', 'default' => '0',
                 'help' => 'Visitors see the message below instead of the website. You stay signed in to the admin and can still view the real site.'],
             'maintenance_title'   => ['label' => 'Heading', 'type' => 'text', 'default' => 'We’ll be back soon'],
