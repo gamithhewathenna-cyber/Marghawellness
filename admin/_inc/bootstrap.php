@@ -371,7 +371,8 @@ function render_field(string $name, array $def, mixed $value, ?string $error = n
                 $html .= '<div class="image-field__inputs">';
                 $html .= '<input type="file" name="file_' . e($name) . '" accept="image/jpeg,image/png,image/webp,image/gif" data-preview>';
                 $html .= '<input type="text" ' . $attr . ' value="' . e((string) $value) . '" placeholder="or filename in assets/images, e.g. hero.jpg">';
-                $html .= '<small class="help">JPG, PNG, WebP or GIF, up to ' . ADMIN_UPLOAD_MAX_MB . ' MB. Use landscape photos about 2400px wide for full-width images.</small>';
+                $html .= '<small class="help">JPG, PNG, WebP or GIF, up to ' . ADMIN_UPLOAD_MAX_MB . ' MB. '
+                    . e($def['help'] ?? 'Use landscape photos about 2400px wide for full-width images.') . '</small>';
                 $html .= '</div></div>';
                 break;
             default:

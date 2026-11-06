@@ -209,6 +209,8 @@ strong { font-weight: 600; }
     width: 22px; height: 22px; margin: 0 auto 7px;
     fill: none; stroke: #e8e4dc; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round;
 }
+/* Uploaded PNG icon (Admin › Home › The Mārghā Way) */
+.pillar__icon--img { display: block; width: 30px; height: 30px; object-fit: contain; }
 .pillar__title {
     font-family: var(--ff-label); font-weight: 600; font-size: 14px;
     letter-spacing: .07em; text-transform: uppercase;
