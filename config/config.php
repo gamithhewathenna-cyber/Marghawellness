@@ -16,9 +16,9 @@ define('APP_TAGLINE', 'Purposeful journeys through Sri Lanka and the Maldives.')
 
 // ---- Database ----------------------------------------------------
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'cpuser_margha');
-define('DB_USER', 'cpuser_margha');
-define('DB_PASS', 'change-me');
+define('DB_NAME', 'margkihr_Marghawellnessmain');
+define('DB_USER', 'margkihr_margamainadmin');
+define('DB_PASS', '7ZHb,[pd;+m$hh[P');
 define('DB_CHARSET', 'utf8mb4');
 
 // ---- Contact / social --------------------------------------------
