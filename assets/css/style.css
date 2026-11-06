@@ -327,7 +327,7 @@ strong { font-weight: 600; }
     color: var(--ink-soft); margin-top: 18px;
 }
 .journeys__copy {
-    max-width: 750px; margin: 23px auto 0; font-size: 14px; line-height: 22px; font-weight: 400;
+    max-width: 750px; margin: 23px auto 0; font-size: 14px; line-height: 22px; font-weight: 300;
     letter-spacing: .008em; color: var(--ink);
 }
 .journeys__copy p + p { margin-top: 22px; }
