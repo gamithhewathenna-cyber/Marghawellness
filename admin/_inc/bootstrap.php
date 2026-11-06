@@ -8,6 +8,7 @@ declare(strict_types=1);
 define('ADMIN', true);
 require dirname(__DIR__, 2) . '/includes/bootstrap.php';
 require __DIR__ . '/entities.php';
+require __DIR__ . '/pages.php';
 require __DIR__ . '/layout.php';
 
 const ADMIN_IDLE_TIMEOUT  = 7200;            // seconds of inactivity before logout
@@ -37,6 +38,43 @@ function redirect(string $to): void
 {
     header('Location: ' . $to, true, 303);
     exit;
+}
+
+/** Accept a "return to" URL only if it points inside this site's /admin. */
+function safe_return(string $url): string
+{
+    $prefix = BASE_URL . '/admin/';
+    return str_starts_with($url, $prefix) && !str_contains($url, '//') && !preg_match('/[\r\n]/', $url) ? $url : '';
+}
+
+/** Format one value for a list table (thumbnail, badge, date, …). */
+function admin_cell(string $col, mixed $val, array $ent): string
+{
+    $def = $ent['fields'][$col] ?? ['type' => 'text'];
+    if ($val === null || $val === '') {
+        return '<span class="muted">—</span>';
+    }
+    if ($def['type'] === 'image') {
+        return '<img class="thumb" src="' . e(img((string) $val)) . '" alt="" loading="lazy">';
+    }
+    if ($def['type'] === 'bool') {
+        return $val ? '<span class="badge badge--yes">Yes</span>' : '<span class="badge badge--no">No</span>';
+    }
+    if ($def['type'] === 'select') {
+        $label = $def['options'][$val] ?? $val;
+        return '<span class="badge badge--' . e((string) $val) . '">' . e(explode(' — ', (string) $label)[0]) . '</span>';
+    }
+    if ($col === 'created_at' || $col === 'published_at' || $def['type'] === 'datetime') {
+        return e(date('j M Y', strtotime((string) $val)));
+    }
+    if ($def['type'] === 'decimal') {
+        return e(rtrim(rtrim(number_format((float) $val, 2, '.', ','), '0'), '.'));
+    }
+    if ($def['type'] === 'rich') {
+        $val = strip_tags(str_ireplace(['<br>', '<br/>', '<br />'], ' ', (string) $val));
+    }
+    $text = (string) $val;
+    return e(mb_strlen($text) > 70 ? mb_substr($text, 0, 70) . '…' : $text);
 }
 
 function flash(string $message, string $type = 'success'): void

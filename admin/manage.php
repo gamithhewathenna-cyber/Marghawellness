@@ -22,6 +22,15 @@ $id        = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
 $singular  = $ent['singular'];
 $self      = fn(array $q = []): string => admin_url('manage.php', ['type' => $ent['key']] + $q);
 
+// Where to go after saving/deleting: back to the page section it was opened from (e.g. Home › Hero banner).
+$return  = safe_return((string) ($_POST['return'] ?? $_GET['return'] ?? ''));
+$back    = $return ?: $self();
+$owner   = admin_page_for('list', $ent['key']);
+$navKey  = !empty($ent['hidden']) && $owner ? 'page_' . $owner['page'] : $ent['key'];
+$crumbs  = $return && $owner
+    ? '<a href="' . e($return) . '">' . e($owner['label']) . '</a> ›'
+    : '<a href="' . e($self()) . '">' . e($ent['label']) . '</a> ›';
+
 function find_row(string $table, int $id): ?array
 {
     $stmt = db()->prepare("SELECT * FROM $table WHERE id = ?");
@@ -34,7 +43,7 @@ if ($action === 'delete') {
     require_post_csrf();
     db()->prepare("DELETE FROM $table WHERE id = ?")->execute([$id]);
     flash(ucfirst($singular) . ' deleted.');
-    redirect($self());
+    redirect($back);
 }
 
 /* ---------------- Save ---------------- */
@@ -82,7 +91,7 @@ if ($action === 'save') {
                 $id = (int) db()->lastInsertId();
             }
             flash(ucfirst($singular) . ' saved.');
-            redirect(isset($_POST['stay']) ? $self(['action' => 'edit', 'id' => $id]) : $self());
+            redirect(isset($_POST['stay']) ? $self(['action' => 'edit', 'id' => $id] + ($return ? ['return' => $return] : [])) : $back);
         } catch (PDOException $e) {
             if ($e->getCode() === '23000' && isset($ent['fields']['slug'])) {
                 $errors['slug'] = 'This URL name is already used by another ' . $singular . '. Choose a different one.';
@@ -114,11 +123,11 @@ if ($action === 'edit' || $action === 'new') {
     }
     $isNew = !$id;
     $heading = $isNew ? 'New ' . $singular : 'Edit ' . $singular;
-    admin_header($heading, $ent['key']);
+    admin_header($heading, $navKey);
     ?>
     <div class="page-head">
         <div>
-            <p class="crumbs"><a href="<?= e($self()) ?>"><?= e($ent['label']) ?></a> ›</p>
+            <p class="crumbs"><?= $crumbs ?></p>
             <h1><?= e($isNew ? $heading : (string) ($values[$ent['title']] ?? $heading)) ?></h1>
         </div>
         <?php if ($ent['key'] === 'enquiries' && !empty($values['email'])): ?>
@@ -137,13 +146,14 @@ if ($action === 'edit' || $action === 'new') {
         <input type="hidden" name="type" value="<?= e($ent['key']) ?>">
         <input type="hidden" name="action" value="save">
         <input type="hidden" name="id" value="<?= (int) $id ?>">
+        <input type="hidden" name="return" value="<?= e($return) ?>">
         <?php foreach ($ent['fields'] as $name => $def): ?>
             <?= render_field($name, $def, $values[$name] ?? null, $errors[$name] ?? null) ?>
         <?php endforeach; ?>
         <div class="form__actions">
             <button class="btn btn--primary" type="submit">Save</button>
             <button class="btn" type="submit" name="stay" value="1">Save and keep editing</button>
-            <a class="btn btn--ghost" href="<?= e($self()) ?>">Cancel</a>
+            <a class="btn btn--ghost" href="<?= e($back) ?>">Cancel</a>
         </div>
     </form>
 
@@ -153,6 +163,7 @@ if ($action === 'edit' || $action === 'new') {
         <input type="hidden" name="type" value="<?= e($ent['key']) ?>">
         <input type="hidden" name="action" value="delete">
         <input type="hidden" name="id" value="<?= (int) $id ?>">
+        <input type="hidden" name="return" value="<?= e($return) ?>">
         <button class="btn btn--danger" type="submit">Delete <?= e($singular) ?></button>
     </form>
     <?php endif;
@@ -185,34 +196,7 @@ $stmt = db()->prepare("SELECT * FROM $table $where ORDER BY {$ent['order']} LIMI
 $stmt->execute($params);
 $rows = $stmt->fetchAll();
 
-/** Format one list cell. */
-function cell(string $col, mixed $val, array $ent): string
-{
-    $def = $ent['fields'][$col] ?? ['type' => 'text'];
-    if ($val === null || $val === '') {
-        return '<span class="muted">—</span>';
-    }
-    if ($def['type'] === 'image') {
-        return '<img class="thumb" src="' . e(img((string) $val)) . '" alt="" loading="lazy">';
-    }
-    if ($def['type'] === 'bool') {
-        return $val ? '<span class="badge badge--yes">Yes</span>' : '<span class="badge badge--no">No</span>';
-    }
-    if ($def['type'] === 'select') {
-        $label = $def['options'][$val] ?? $val;
-        return '<span class="badge badge--' . e((string) $val) . '">' . e(explode(' — ', (string) $label)[0]) . '</span>';
-    }
-    if ($col === 'created_at' || $col === 'published_at' || $def['type'] === 'datetime') {
-        return e(date('j M Y', strtotime((string) $val)));
-    }
-    if ($def['type'] === 'decimal') {
-        return e(rtrim(rtrim(number_format((float) $val, 2, '.', ','), '0'), '.'));
-    }
-    $text = (string) $val;
-    return e(mb_strlen($text) > 70 ? mb_substr($text, 0, 70) . '…' : $text);
-}
-
-admin_header($ent['label'], $ent['key']);
+admin_header($ent['label'], $navKey);
 ?>
 <div class="page-head">
     <div>
@@ -258,7 +242,7 @@ admin_header($ent['label'], $ent['key']);
             <?php foreach ($rows as $r): $edit = $self(['action' => 'edit', 'id' => $r['id']]); ?>
             <tr>
                 <?php foreach (array_keys($ent['list']) as $i => $col): ?>
-                <td data-label="<?= e($ent['list'][$col]) ?>"><?= $col === $ent['title'] ? '<a class="row-link" href="' . e($edit) . '">' . cell($col, $r[$col] ?? null, $ent) . '</a>' : cell($col, $r[$col] ?? null, $ent) ?></td>
+                <td data-label="<?= e($ent['list'][$col]) ?>"><?= $col === $ent['title'] ? '<a class="row-link" href="' . e($edit) . '">' . admin_cell($col, $r[$col] ?? null, $ent) . '</a>' : admin_cell($col, $r[$col] ?? null, $ent) ?></td>
                 <?php endforeach; ?>
                 <td class="actions">
                     <a class="btn btn--small" href="<?= e($edit) ?>"><?= $canCreate ? 'Edit' : 'Open' ?></a>

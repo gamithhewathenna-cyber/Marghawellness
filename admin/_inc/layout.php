@@ -7,6 +7,7 @@ function admin_icon(string $name): string
 {
     $paths = [
         'home'   => '<path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/>',
+        'grid'   => '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
         'text'   => '<path d="M5 6h14M5 12h14M5 18h9"/>',
         'slides' => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 16 5-5 4 4 3-3 6 6"/>',
         'leaf'   => '<path d="M5 19C5 10 11 5 20 4c0 9-5 15-14 15zM5 19l7-7"/>',
@@ -51,17 +52,21 @@ function admin_header(string $title, string $active = ''): void
     $user = current_admin();
     admin_head($title);
     $nav = [
-        'Overview' => ['dashboard' => ['Dashboard', admin_url(), 'home']],
-        'Website'  => [
-            'content'     => ['Page text', admin_url('content.php'), 'text'],
-            'maintenance' => ['Maintenance mode', admin_url('maintenance.php'), 'tool'],
-        ],
-        'Content'  => [],
+        'Overview' => ['dashboard' => ['Dashboard', admin_url(), 'grid']],
+        'Pages'    => [],
+        'Listings' => [],
         'Inbox'    => [],
-        'Account'  => ['users' => ['Admin users', admin_url('users.php'), 'key']],
+        'Settings' => [
+            'maintenance' => ['Maintenance mode', admin_url('maintenance.php'), 'tool'],
+            'users'       => ['Admin users', admin_url('users.php'), 'key'],
+        ],
     ];
+    foreach (admin_pages() as $key => $page) {
+        $nav['Pages']['page_' . $key] = [$page['label'], admin_url('pages.php', ['page' => $key]), $key === 'home' ? 'home' : 'text'];
+    }
     foreach (admin_entities() as $key => $ent) {
-        $group = ($ent['can_create'] ?? true) ? 'Content' : 'Inbox';
+        if (!empty($ent['hidden'])) continue;
+        $group = ($ent['can_create'] ?? true) ? 'Listings' : 'Inbox';
         $nav[$group][$key] = [$ent['label'], admin_url('manage.php', ['type' => $key]), $ent['icon']];
     }
     ?>

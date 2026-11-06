@@ -71,18 +71,24 @@ hero slide activates the slider arrows automatically.
    account. Setup locks itself as soon as one account exists, so do this right after upload.
 3. Sign in at `https://your-domain/admin/login.php`.
 
-| Screen            | What it edits                                                            |
-|-------------------|--------------------------------------------------------------------------|
-| Page text         | Every homepage heading, paragraph and section image, footer, social links, SEO |
-| Hero slides … Journal & news | Homepage listings (add, edit, reorder, hide, delete, upload images) |
-| Enquiries / Subscribers | Read, change status, search, download CSV                          |
-| Admin users       | Add/remove admins, change your password                                  |
+| Screen                     | What it edits                                                     |
+|----------------------------|-------------------------------------------------------------------|
+| Pages › Home               | Every homepage section in page order: text, headings, images, and the cards shown in that section (hero slides, retreats, journeys, posts) |
+| Pages › Header & footer    | Footer newsletter text, contact email, social links, default SEO  |
+| Listings                   | Full lists of retreats, journeys and journal posts                |
+| Enquiries / Subscribers    | Read, change status, search, download CSV                         |
+| Maintenance mode           | Switch the public site to a "back soon" page                      |
+| Admin users                | Add/remove admins, change your password                           |
 
-Page text defaults live in `includes/settings.php` (`settings_schema()`); a value saved in the
-admin overrides its default, and "Reset to original" removes the override. To make new text
-editable, add a field there and output it with `setting('key')` — use `e()` for plain text,
-`rich()` for text allowing `<em>/<strong>/<br>`, `paras()` for multi-paragraph text.
-New listing types are added in `admin/_inc/entities.php`.
+How it fits together:
+- `admin/_inc/pages.php` — the Pages menu: each website page and its sections, in order. A
+  section points to a settings group (text/images) and/or a listing (cards). **To add a new
+  page to the admin** (e.g. Journeys), add an entry here.
+- `includes/settings.php` — the editable text fields and their defaults. A value saved in the
+  admin overrides the default; "Reset to original" removes the override. Output a field with
+  `setting('key')` — `e()` for plain text, `rich()` for `<em>/<strong>/<br>`, `paras()` for
+  multi-paragraph text.
+- `admin/_inc/entities.php` — listing types (tables) and their form fields.
 
 Security: bcrypt passwords, CSRF on every form, 5 failed logins per IP → 15‑minute lock, 2‑hour
 idle sign-out, uploads checked by content type and renamed, scripts blocked in the uploads folder.

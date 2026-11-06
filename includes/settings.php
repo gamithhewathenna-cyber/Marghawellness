@@ -38,10 +38,12 @@ function settings_schema(): array
             'social_whatsapp'    => ['label' => 'WhatsApp community link', 'type' => 'url', 'default' => SOCIAL_WHATSAPP],
             'footer_tagline'     => ['label' => 'Footer tagline', 'type' => 'rich', 'default' => 'Purposeful journeys through Sri Lanka<br>and the Maldives.'],
         ]],
-        'seo' => ['label' => 'SEO', 'fields' => [
-            'seo_home_title'       => ['label' => 'Homepage title (browser tab / Google)', 'type' => 'text', 'default' => 'Mārghā Wellness — Wellness Holidays in Sri Lanka & the Maldives'],
-            'seo_home_description' => ['label' => 'Homepage description (Google)', 'type' => 'text', 'default' => 'Thoughtfully curated wellness holidays in Sri Lanka, for deep rest and meaningful transformation, designed so you come back different.'],
-            'seo_default_description' => ['label' => 'Default description for other pages', 'type' => 'text', 'default' => 'Thoughtfully curated wellness holidays in Sri Lanka and the Maldives, for deep rest and meaningful transformation.'],
+        'seo_home' => ['label' => 'SEO', 'fields' => [
+            'seo_home_title'       => ['label' => 'Page title (browser tab and Google)', 'type' => 'text', 'max' => 120, 'default' => 'Mārghā Wellness — Wellness Holidays in Sri Lanka & the Maldives', 'help' => 'Aim for under 60 characters.'],
+            'seo_home_description' => ['label' => 'Description (shown under the title on Google)', 'type' => 'textarea', 'rows' => 3, 'max' => 300, 'default' => 'Thoughtfully curated wellness holidays in Sri Lanka, for deep rest and meaningful transformation, designed so you come back different.', 'help' => 'Aim for 120–160 characters.'],
+        ]],
+        'seo_site' => ['label' => 'SEO', 'fields' => [
+            'seo_default_description' => ['label' => 'Default Google description for pages without their own', 'type' => 'textarea', 'rows' => 3, 'max' => 300, 'default' => 'Thoughtfully curated wellness holidays in Sri Lanka and the Maldives, for deep rest and meaningful transformation.'],
         ]],
         'margha_way' => ['label' => 'The Mārghā Way', 'fields' => [
             'mw_eyebrow'    => ['label' => 'Small heading', 'type' => 'text', 'default' => 'The Mārghā Way'],

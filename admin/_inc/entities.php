@@ -33,7 +33,7 @@ function admin_entities(): array
 
     $entities = [
         'hero_slides' => [
-            'label' => 'Hero slides', 'singular' => 'hero slide', 'icon' => 'slides',
+            'label' => 'Hero slides', 'singular' => 'hero slide', 'icon' => 'slides', 'hidden' => true, // edited in Pages › Home › Hero banner
             'intro' => 'The large banner at the top of the homepage. Add a second active slide and the slider arrows appear automatically.',
             'order' => 'sort_order, id', 'title' => 'eyebrow',
             'list'  => ['image' => 'Image', 'eyebrow' => 'Small heading', 'sort_order' => 'Order', 'is_active' => 'Shown'],

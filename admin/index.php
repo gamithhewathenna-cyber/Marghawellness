@@ -49,7 +49,7 @@ admin_header('Dashboard', 'dashboard');
 
 <div class="stats">
     <?php foreach ($cards as [$label, $type, $count, $note]): ?>
-    <a class="stat" href="<?= e(admin_url('manage.php', ['type' => $type])) ?>">
+    <a class="stat" href="<?= e($type === 'hero_slides' ? admin_url('pages.php', ['page' => 'home', 'section' => 'hero']) : admin_url('manage.php', ['type' => $type])) ?>">
         <span class="stat__value"><?= $count === null ? '—' : $count ?></span>
         <span class="stat__label"><?= e($label) ?></span>
         <span class="stat__note"><?= e($note) ?></span>
@@ -77,8 +77,9 @@ admin_header('Dashboard', 'dashboard');
     <section class="panel">
         <div class="panel__head"><h2>Quick links</h2></div>
         <ul class="list list--links">
-            <li><a href="<?= e(admin_url('content.php')) ?>">Edit homepage text</a></li>
-            <li><a href="<?= e(admin_url('manage.php', ['type' => 'hero_slides'])) ?>">Change the hero banner</a></li>
+            <li><a href="<?= e(admin_url('pages.php', ['page' => 'home'])) ?>">Edit the homepage</a></li>
+            <li><a href="<?= e(admin_url('pages.php', ['page' => 'home', 'section' => 'hero'])) ?>">Change the hero banner</a></li>
+            <li><a href="<?= e(admin_url('pages.php', ['page' => 'site', 'section' => 'footer'])) ?>">Edit the footer</a></li>
             <li><a href="<?= e(admin_url('manage.php', ['type' => 'posts', 'action' => 'new'])) ?>">Write a journal post</a></li>
             <li><a href="<?= e(admin_url('manage.php', ['type' => 'journeys', 'action' => 'new'])) ?>">Add a journey</a></li>
             <li><a href="<?= e(admin_url('export.php', ['type' => 'subscribers'])) ?>">Download subscribers (CSV)</a></li>
