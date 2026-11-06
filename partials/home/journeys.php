@@ -1,0 +1,40 @@
+<?php /** @var array $journeys  @var array $paths */ ?>
+<section class="journeys" aria-labelledby="journeys-heading">
+    <div class="container">
+        <p class="eyebrow eyebrow--rust text-center">Mārgha Journeys</p>
+        <h2 class="journeys__title text-center" id="journeys-heading">Immersive experiences built to reconnect you with the world, <br>and with yourself.</h2>
+        <div class="journeys__copy text-center">
+            <p>Most travel skips the reason we actually go. MĀRGHA Journeys starts there, at the root of it: the need to connect, to see a world beyond ourselves, and in doing so, find our way back to who we really are.</p>
+            <p>These are immersive journeys through Sri Lanka's wildest and quietest corners , a night under a sky with no light for miles, days inside village</p>
+            <p>life, forest therapy and guided walks that put you back in your body and back in the present. At the centre of it is real disconnection - rom competition, from timelines, from the noise of ordinary life - and a chance to slow down, and heal</p>
+        </div>
+
+        <div class="filters" role="tablist" aria-label="Filter journeys">
+            <button class="filter is-active" type="button" role="tab" aria-selected="true" data-filter="all">All regions</button>
+            <?php foreach ($paths as $key => $label): ?>
+            <button class="filter" type="button" role="tab" aria-selected="false" data-filter="<?= e($key) ?>"><?= e($label) ?></button>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="journey-grid" data-journey-grid>
+            <?php foreach ($journeys as $j): ?>
+            <article class="journey-card" data-path="<?= e($j['path']) ?>">
+                <a class="journey-card__media" href="<?= e(url('journeys')) ?>#<?= e($j['slug']) ?>">
+                    <img src="<?= e(img($j['image'])) ?>" alt="<?= e($j['title']) ?>" width="387" height="387" loading="lazy">
+                </a>
+                <p class="journey-card__price">From $<?= e((string) (int) $j['price_from']) ?>/night</p>
+                <div class="journey-card__head">
+                    <h3 class="journey-card__title"><?= e($j['title']) ?></h3>
+                    <a class="journey-card__view" href="<?= e(url('journeys')) ?>#<?= e($j['slug']) ?>" aria-label="View <?= e($j['title']) ?>">View <svg width="12" height="10" viewBox="0 0 16 12" aria-hidden="true"><path d="M0 6h14.5M9.5 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+                </div>
+                <p class="journey-card__text"><?= e($j['summary']) ?></p>
+            </article>
+            <?php endforeach; ?>
+        </div>
+        <p class="journeys__empty" hidden>New journeys on this path are coming soon.</p>
+
+        <div class="text-center">
+            <a class="btn btn--green btn--arrow journeys__btn" href="<?= e(url('journeys')) ?>">View all Journeys <?= arrow_icon() ?></a>
+        </div>
+    </div>
+</section>
