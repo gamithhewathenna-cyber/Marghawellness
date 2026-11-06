@@ -7,6 +7,31 @@ function e(?string $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+/**
+ * Escape text but keep the simple formatting tags editors may use:
+ * <em>, <strong> and <br> (attributes are never allowed). Existing
+ * entities such as &amp; are left as they are.
+ */
+function rich(?string $value): string
+{
+    $s = htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+    return (string) preg_replace('#&lt;(/?)(em|strong|br)\s*/?&gt;#i', '<$1$2>', $s);
+}
+
+/** Turn editor text into paragraphs: a blank line starts a new <p>. */
+function paras(?string $text, string $class = ''): string
+{
+    $attr = $class !== '' ? ' class="' . e($class) . '"' : '';
+    $out  = '';
+    foreach (preg_split('/\R\s*\R/u', trim((string) $text)) ?: [] as $p) {
+        $p = trim($p);
+        if ($p !== '') {
+            $out .= '<p' . $attr . '>' . nl2br(rich($p), false) . "</p>\n";
+        }
+    }
+    return $out;
+}
+
 /** Build a site URL relative to the install folder. */
 function url(string $path = ''): string
 {

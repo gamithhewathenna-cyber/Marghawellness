@@ -7,9 +7,9 @@
             <div class="container hero__content">
                 <p class="eyebrow eyebrow--tan hero__eyebrow"><?= e($s['eyebrow']) ?></p>
                 <?php if ($i === 0): ?>
-                <h1 class="hero__title"><?= $s['title_html'] /* trusted admin HTML */ ?></h1>
+                <h1 class="hero__title"><?= rich($s['title_html']) ?></h1>
                 <?php else: ?>
-                <h2 class="hero__title"><?= $s['title_html'] ?></h2>
+                <h2 class="hero__title"><?= rich($s['title_html']) ?></h2>
                 <?php endif; ?>
                 <p class="hero__text"><?= e($s['subtitle']) ?></p>
                 <a class="btn btn--rust hero__btn" href="<?= e(url($s['cta_url'])) ?>"><?= e($s['cta_label']) ?></a>

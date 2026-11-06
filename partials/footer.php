@@ -4,25 +4,25 @@
     <div class="container">
         <section class="newsletter" id="newsletter" aria-label="Stay in touch">
             <div class="newsletter__col">
-                <p class="eyebrow eyebrow--light">Lorem ipsum dolor sit</p>
-                <h2 class="newsletter__title">Lorem ipsum dolor sit amet consectetur. Egestas id tincidunt.</h2>
-                <p class="newsletter__text">Lorem ipsum dolor sit amet consectetur. Vitae varius eu aliquet mi massa pulvinar mattis euismod. Tempor eget rhoncus dolor magna vitae tortor. Massa ornare.</p>
+                <p class="eyebrow eyebrow--light"><?= e(setting('nl1_eyebrow')) ?></p>
+                <h2 class="newsletter__title"><?= rich(setting('nl1_title')) ?></h2>
+                <?= paras(setting('nl1_text'), 'newsletter__text') ?>
                 <form class="subscribe-form" action="<?= e(url('api/subscribe.php')) ?>" method="post" novalidate>
                     <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
                     <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
                     <label class="sr-only" for="subscribeEmail">Your email address</label>
                     <input class="subscribe-form__input" id="subscribeEmail" type="email" name="email" placeholder="Your email address" required>
-                    <button class="btn btn--rust subscribe-form__btn" type="submit">Subscribe</button>
+                    <button class="btn btn--rust subscribe-form__btn" type="submit"><?= e(setting('nl1_button')) ?></button>
                     <p class="subscribe-form__msg" role="status" aria-live="polite"><?= e($_SESSION['flash'] ?? '') ?></p><?php unset($_SESSION['flash']); ?>
                 </form>
             </div>
             <div class="newsletter__col">
-                <p class="eyebrow eyebrow--light">Lorem ipsum dolor sit</p>
-                <h2 class="newsletter__title">Lorem ipsum dolor sit amet consectetur.</h2>
-                <p class="newsletter__text">Lorem ipsum dolor sit amet consectetur. Vitae varius eu aliquet mi massa pulvinar mattis euismod. Tempor eget rhoncus dolor magna vitae tortor. Massa ornare.</p>
+                <p class="eyebrow eyebrow--light"><?= e(setting('nl2_eyebrow')) ?></p>
+                <h2 class="newsletter__title"><?= rich(setting('nl2_title')) ?></h2>
+                <?= paras(setting('nl2_text'), 'newsletter__text') ?>
                 <div class="newsletter__actions">
-                    <a class="btn btn--rust newsletter__btn-wide" href="<?= e(SOCIAL_WHATSAPP) ?>" target="_blank" rel="noopener">Subscribe</a>
-                    <a class="btn btn--rust newsletter__btn" href="<?= e(SOCIAL_INSTAGRAM) ?>" target="_blank" rel="noopener">Subscribe</a>
+                    <a class="btn btn--rust newsletter__btn-wide" href="<?= e(setting('social_whatsapp')) ?>" target="_blank" rel="noopener"><?= e(setting('nl2_button1')) ?></a>
+                    <a class="btn btn--rust newsletter__btn" href="<?= e(setting('social_instagram')) ?>" target="_blank" rel="noopener"><?= e(setting('nl2_button2')) ?></a>
                 </div>
             </div>
         </section>
@@ -30,10 +30,10 @@
         <div class="footer-main">
             <div class="footer-brand">
                 <a class="logo logo--footer" href="<?= e(url()) ?>">MĀRGHĀ</a>
-                <p class="footer-brand__tagline">Purposeful journeys through Sri Lanka<br>and the Maldives.</p>
+                <p class="footer-brand__tagline"><?= rich(setting('footer_tagline')) ?></p>
                 <div class="footer-social">
-                    <a href="<?= e(SOCIAL_INSTAGRAM) ?>" target="_blank" rel="noopener">Instagram</a>
-                    <a href="<?= e(SOCIAL_FACEBOOK) ?>" target="_blank" rel="noopener">Facebook</a>
+                    <a href="<?= e(setting('social_instagram')) ?>" target="_blank" rel="noopener">Instagram</a>
+                    <a href="<?= e(setting('social_facebook')) ?>" target="_blank" rel="noopener">Facebook</a>
                 </div>
             </div>
 
@@ -51,8 +51,8 @@
                 <div class="footer-links__col">
                     <h3>Community</h3>
                     <ul>
-                        <li><a href="<?= e(SOCIAL_WHATSAPP) ?>" target="_blank" rel="noopener">WhatsApp community</a></li>
-                        <li><a href="<?= e(SOCIAL_INSTAGRAM) ?>" target="_blank" rel="noopener">@margawellness</a></li>
+                        <li><a href="<?= e(setting('social_whatsapp')) ?>" target="_blank" rel="noopener">WhatsApp community</a></li>
+                        <li><a href="<?= e(setting('social_instagram')) ?>" target="_blank" rel="noopener"><?= e(setting('instagram_handle')) ?></a></li>
                     </ul>
                 </div>
             </div>

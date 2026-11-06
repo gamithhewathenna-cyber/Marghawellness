@@ -10,15 +10,15 @@
 declare(strict_types=1);
 
 // ---- Environment -------------------------------------------------
-define('APP_ENV', 'production');          // 'development' shows errors
+defined('APP_ENV') || define('APP_ENV', 'production');   // 'development' shows errors
 define('APP_NAME', 'Mārghā Wellness');
 define('APP_TAGLINE', 'Purposeful journeys through Sri Lanka and the Maldives.');
 
 // ---- Database ----------------------------------------------------
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'margkihr_Marghawellnessmain');
-define('DB_USER', 'margkihr_margamainadmin');
-define('DB_PASS', '7ZHb,[pd;+m$hh[P');
+defined('DB_HOST') || define('DB_HOST', 'localhost');
+defined('DB_NAME') || define('DB_NAME', 'margkihr_Marghawellnessmain');
+defined('DB_USER') || define('DB_USER', 'margkihr_margamainadmin');
+defined('DB_PASS') || define('DB_PASS', '7ZHb,[pd;+m$hh[P');
 define('DB_CHARSET', 'utf8mb4');
 
 // ---- Contact / social --------------------------------------------
@@ -30,8 +30,8 @@ define('SOCIAL_WHATSAPP', 'https://chat.whatsapp.com/');
 // ---- Base URL (auto-detected, works in root or a sub-folder) -----
 if (!defined('BASE_URL')) {
     $dir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
-    // API scripts live one level down — strip it so links stay correct
-    $dir = preg_replace('#/api$#', '', $dir);
+    // API + admin scripts live one level down — strip it so links stay correct
+    $dir = preg_replace('#/(api|admin)$#', '', $dir);
     define('BASE_URL', $dir === '' ? '' : $dir);
 }
 

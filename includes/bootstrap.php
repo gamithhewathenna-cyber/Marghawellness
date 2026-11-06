@@ -7,6 +7,7 @@ require_once ROOT_PATH . '/config/config.php';
 require_once ROOT_PATH . '/includes/Database.php';
 require_once ROOT_PATH . '/includes/functions.php';
 require_once ROOT_PATH . '/includes/content.php';
+require_once ROOT_PATH . '/includes/settings.php';
 require_once ROOT_PATH . '/config/navigation.php';
 
 if (session_status() === PHP_SESSION_NONE) {

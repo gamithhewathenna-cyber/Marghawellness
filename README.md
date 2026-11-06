@@ -26,6 +26,8 @@ index.php               Homepage (assembles the section partials in order)
 page.php                Front controller for all other routes (/journeys, /retreats …)
 .htaccess               Clean URLs, security headers, caching, folder protection
 api/subscribe.php       Newsletter endpoint (CSRF, honeypot, rate limit, PDO)
+admin/                  Admin panel (login, page text, listings, enquiries, subscribers, users)
+includes/settings.php   Editable page text: schema + defaults, setting() helper
 config/config.php       DB credentials, contact + social settings
 config/navigation.php   Every route + header/footer menus (single source of truth)
 includes/               Bootstrap, PDO wrapper, helpers, content repository
@@ -58,8 +60,32 @@ New routes are added in `config/navigation.php` (`PAGES`).
 ## Content
 
 Hero slides, retreats, journeys (with path filter: rest / soul / healing) and journal posts
-are read from MySQL. Add rows in phpMyAdmin; images go in `assets/images/` and are referenced
-by filename. Adding a second hero slide activates the slider arrows automatically.
+are read from MySQL and edited in the admin panel (below). Images are referenced by filename
+in `assets/images/`; uploads from the admin go to `assets/images/uploads/`. Adding a second
+hero slide activates the slider arrows automatically.
+
+## Admin panel — `/admin/`
+
+1. Import `database/admin.sql` in phpMyAdmin (already part of `schema.sql` for new installs).
+2. Open `https://your-domain/admin/` — the first visit shows **setup**: create the first admin
+   account. Setup locks itself as soon as one account exists, so do this right after upload.
+3. Sign in at `https://your-domain/admin/login.php`.
+
+| Screen            | What it edits                                                            |
+|-------------------|--------------------------------------------------------------------------|
+| Page text         | Every homepage heading, paragraph and section image, footer, social links, SEO |
+| Hero slides … Journal & news | Homepage listings (add, edit, reorder, hide, delete, upload images) |
+| Enquiries / Subscribers | Read, change status, search, download CSV                          |
+| Admin users       | Add/remove admins, change your password                                  |
+
+Page text defaults live in `includes/settings.php` (`settings_schema()`); a value saved in the
+admin overrides its default, and "Reset to original" removes the override. To make new text
+editable, add a field there and output it with `setting('key')` — use `e()` for plain text,
+`rich()` for text allowing `<em>/<strong>/<br>`, `paras()` for multi-paragraph text.
+New listing types are added in `admin/_inc/entities.php`.
+
+Security: bcrypt passwords, CSRF on every form, 5 failed logins per IP → 15‑minute lock, 2‑hour
+idle sign-out, uploads checked by content type and renamed, scripts blocked in the uploads folder.
 
 ## Images
 

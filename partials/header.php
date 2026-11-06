@@ -1,7 +1,7 @@
 <?php
 /** @var string $page_title  @var string $page_description  @var string $body_class */
 $page_title       = $page_title ?? APP_NAME;
-$page_description = $page_description ?? 'Thoughtfully curated wellness holidays in Sri Lanka and the Maldives, for deep rest and meaningful transformation.';
+$page_description = $page_description ?? setting('seo_default_description');
 $body_class       = $body_class ?? '';
 ?><!doctype html>
 <html lang="en">

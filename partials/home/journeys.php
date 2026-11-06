@@ -1,16 +1,14 @@
 <?php /** @var array $journeys  @var array $paths */ ?>
 <section class="journeys" aria-labelledby="journeys-heading">
     <div class="container">
-        <p class="eyebrow eyebrow--rust text-center">Mārgha Journeys</p>
-        <h2 class="journeys__title text-center" id="journeys-heading">Immersive experiences built to reconnect you with the world, <br>and with yourself.</h2>
+        <p class="eyebrow eyebrow--rust text-center"><?= e(setting('jr_eyebrow')) ?></p>
+        <h2 class="journeys__title text-center" id="journeys-heading"><?= rich(setting('jr_title')) ?></h2>
         <div class="journeys__copy text-center">
-            <p>Most travel skips the reason we actually go. MĀRGHA Journeys starts there, at the root of it: the need to connect, to see a world beyond ourselves, and in doing so, find our way back to who we really are.</p>
-            <p>These are immersive journeys through Sri Lanka's wildest and quietest corners , a night under a sky with no light for miles, days inside village</p>
-            <p>life, forest therapy and guided walks that put you back in your body and back in the present. At the centre of it is real disconnection - rom competition, from timelines, from the noise of ordinary life - and a chance to slow down, and heal</p>
+            <?= paras(setting('jr_copy')) ?>
         </div>
 
         <div class="filters" role="tablist" aria-label="Filter journeys">
-            <button class="filter is-active" type="button" role="tab" aria-selected="true" data-filter="all">All regions</button>
+            <button class="filter is-active" type="button" role="tab" aria-selected="true" data-filter="all"><?= e(setting('jr_filter_all')) ?></button>
             <?php foreach ($paths as $key => $label): ?>
             <button class="filter" type="button" role="tab" aria-selected="false" data-filter="<?= e($key) ?>"><?= e($label) ?></button>
             <?php endforeach; ?>
@@ -31,10 +29,10 @@
             </article>
             <?php endforeach; ?>
         </div>
-        <p class="journeys__empty" hidden>New journeys on this path are coming soon.</p>
+        <p class="journeys__empty" hidden><?= e(setting('jr_empty')) ?></p>
 
         <div class="text-center">
-            <a class="btn btn--green btn--arrow journeys__btn" href="<?= e(url('journeys')) ?>">View all Journeys <?= arrow_icon() ?></a>
+            <a class="btn btn--green btn--arrow journeys__btn" href="<?= e(url('journeys')) ?>"><?= e(setting('jr_button')) ?> <?= arrow_icon() ?></a>
         </div>
     </div>
 </section>

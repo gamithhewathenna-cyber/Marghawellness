@@ -1,0 +1,3 @@
+# Images uploaded through the admin live only on the server
+assets/images/uploads/*
+!assets/images/uploads/.htaccess

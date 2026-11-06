@@ -4,8 +4,8 @@ declare(strict_types=1);
 require __DIR__ . '/includes/bootstrap.php';
 
 $page_slug        = 'home';
-$page_title       = 'Mārghā Wellness — Wellness Holidays in Sri Lanka & the Maldives';
-$page_description = 'Thoughtfully curated wellness holidays in Sri Lanka, for deep rest and meaningful transformation, designed so you come back different.';
+$page_title       = setting('seo_home_title');
+$page_description = setting('seo_home_description');
 $body_class       = 'page-home';
 $preload_image    = 'hero-meditation.jpg';
 

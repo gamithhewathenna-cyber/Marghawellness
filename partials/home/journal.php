@@ -1,8 +1,8 @@
 <?php /** @var array $posts */ ?>
 <section class="journal" aria-labelledby="journal-heading">
     <div class="container">
-        <p class="eyebrow eyebrow--rust text-center">Blog | News</p>
-        <h2 class="journal__title text-center" id="journal-heading">From the journal</h2>
+        <p class="eyebrow eyebrow--rust text-center"><?= e(setting('jn_eyebrow')) ?></p>
+        <h2 class="journal__title text-center" id="journal-heading"><?= e(setting('jn_title')) ?></h2>
 
         <div class="journal__carousel">
             <button class="journal__arrow journal__arrow--prev" type="button" aria-label="Previous articles" data-journal-prev>
