@@ -14,6 +14,13 @@
         });
     }
 
+    // Section tabs: on small screens keep the current tab visible in the scrolling row
+    const tabs = document.querySelector('.section-nav ol');
+    const current = tabs?.querySelector('a[aria-current="page"]');
+    if (tabs && current && tabs.scrollWidth > tabs.clientWidth) {
+        tabs.scrollLeft = current.offsetLeft - (tabs.clientWidth - current.offsetWidth) / 2;
+    }
+
     // Confirm destructive actions (data-confirm on the form or on the clicked button)
     document.addEventListener('submit', e => {
         const msg = e.submitter?.dataset.confirm || e.target.dataset.confirm;
