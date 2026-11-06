@@ -11,23 +11,13 @@ PHP 8.0+ · MySQL 5.7+/MariaDB 10.3+ · Apache (cPanel) · no frameworks, no bui
 2. **Database** — cPanel › MySQL® Databases: create a database and a user, add the user to the
    database with *All Privileges*.
 3. **Import** — cPanel › phpMyAdmin › select the database › Import › `database/schema.sql`.
-4. **Configure** — database credentials are **never** put in `config/config.php` or Git.
-   Copy `config/secrets.example.php` to `/home/<account>/margha-secrets.php` (one folder
-   *above* `public_html`), fill in `DB_NAME`, `DB_USER`, `DB_PASS`, and set permissions to 600.
-   For local development use `config/secrets.local.php` (git-ignored).
+4. **Configure** — edit `config/config.php`: `DB_NAME`, `DB_USER`, `DB_PASS`, contact email and
+   social links.
 5. **PHP version** — cPanel › MultiPHP Manager: PHP 8.0 or newer (8.2+ recommended).
 6. **HTTPS** — once AutoSSL is active, uncomment the *Force HTTPS* lines in `.htaccess`.
 
 The homepage renders even before step 3 — it falls back to the built-in content in
 `includes/content.php` — but the newsletter form needs the database.
-
-## Deploying from GitHub (cPanel Git™ Version Control)
-
-Local → `git push` → cPanel › Git™ Version Control › *Update from Remote* → *Deploy HEAD Commit*.
-`.cpanel.yml` copies the code into `public_html` with rsync, skipping everything in
-`.deployignore` (Git data, `database/`, SQL files, docs, secret templates). It never deletes
-server files, never runs SQL, and never touches `margha-secrets.php` or admin uploads.
-The live database is changed only by hand in phpMyAdmin.
 
 ## Structure
 

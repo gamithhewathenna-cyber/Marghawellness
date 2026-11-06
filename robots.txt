@@ -1,2 +1,5 @@
 User-agent: *
 Disallow: /api/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /database/
