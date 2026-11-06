@@ -20,6 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(false, 'Method not allowed.', 405, $isAjax);
 }
 
+if (maintenance_on() && !is_admin_session()) {
+    respond(false, 'The website is under maintenance. Please try again soon.', 503, $isAjax);
+}
+
 // Honeypot: bots fill the hidden "company" field.
 if (!empty($_POST['company'])) {
     respond(true, 'Thank you for subscribing.', 200, $isAjax);

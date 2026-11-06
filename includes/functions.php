@@ -93,6 +93,35 @@ function partial(string $name, array $vars = []): void
     require ROOT_PATH . '/partials/' . $name . '.php';
 }
 
+/** True when someone is signed in to the admin in this browser. */
+function is_admin_session(): bool
+{
+    // Same 2-hour idle limit as the admin itself (ADMIN_IDLE_TIMEOUT).
+    return !empty($_SESSION['admin_id']) && time() - (int) ($_SESSION['admin_seen'] ?? 0) <= 7200;
+}
+
+function maintenance_on(): bool
+{
+    return setting('maintenance_enabled') === '1';
+}
+
+/**
+ * Show the maintenance page (HTTP 503) to visitors while maintenance mode is on.
+ * Signed-in admins pass through so they can keep checking the site.
+ */
+function maintenance_gate(): void
+{
+    if (!maintenance_on() || is_admin_session()) {
+        return;
+    }
+    http_response_code(503);
+    header('Retry-After: 3600');
+    header('X-Robots-Tag: noindex');
+    header('Cache-Control: no-store');
+    partial('maintenance');
+    exit;
+}
+
 /** Inline SVG arrow used on buttons. */
 function arrow_icon(): string
 {

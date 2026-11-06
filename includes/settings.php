@@ -23,6 +23,12 @@ function settings_schema(): array
         return $schema;
     }
     $schema = [
+        'maintenance' => ['label' => 'Maintenance mode', 'fields' => [
+            'maintenance_enabled' => ['label' => 'Turn on maintenance mode', 'type' => 'bool', 'default' => '0',
+                'help' => 'Visitors see the message below instead of the website. You stay signed in to the admin and can still view the real site.'],
+            'maintenance_title'   => ['label' => 'Heading', 'type' => 'text', 'default' => 'We’ll be back soon'],
+            'maintenance_message' => ['label' => 'Message', 'type' => 'paras', 'default' => "We’re making a few improvements to the Mārghā Wellness website and will be back shortly.\n\nIn the meantime, you can reach us at hello@margha.com or on Instagram @margawellness."],
+        ]],
         'general' => ['label' => 'General & social', 'fields' => [
             'contact_email'      => ['label' => 'Contact email', 'type' => 'email', 'default' => CONTACT_EMAIL, 'help' => 'Where enquiry notifications will be sent.'],
             'social_instagram'   => ['label' => 'Instagram link', 'type' => 'url', 'default' => SOCIAL_INSTAGRAM],

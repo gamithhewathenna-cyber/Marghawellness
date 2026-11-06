@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require __DIR__ . '/includes/bootstrap.php';
+maintenance_gate();
 
 $page_slug        = 'home';
 $page_title       = setting('seo_home_title');

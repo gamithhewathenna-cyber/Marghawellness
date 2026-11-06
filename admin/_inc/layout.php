@@ -51,7 +51,7 @@ function admin_header(string $title, string $active = ''): void
     admin_head($title);
     $nav = [
         'Overview' => ['dashboard' => ['Dashboard', admin_url(), 'home']],
-        'Homepage' => ['content' => ['Page text', admin_url('content.php'), 'text']],
+        'Website'  => ['content' => ['Page text & settings', admin_url('content.php'), 'text']],
         'Content'  => [],
         'Inbox'    => [],
         'Account'  => ['users' => ['Admin users', admin_url('users.php'), 'key']],
@@ -80,6 +80,9 @@ function admin_header(string $title, string $active = ''): void
     <div class="main">
         <header class="topbar">
             <button class="topbar__menu" type="button" aria-controls="sidebar" aria-expanded="false" data-menu>Menu</button>
+            <?php if (maintenance_on()): ?>
+            <a class="badge badge--new topbar__maint" href="<?= e(admin_url('content.php', ['group' => 'maintenance'])) ?>">Maintenance mode ON</a>
+            <?php endif; ?>
             <a class="topbar__link" href="<?= e(url()) ?>" target="_blank" rel="noopener"><?= admin_icon('ext') ?>View website</a>
             <span class="topbar__user"><?= e($user['name'] ?? '') ?></span>
             <form method="post" action="<?= e(admin_url('logout.php')) ?>">

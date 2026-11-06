@@ -7,6 +7,7 @@ declare(strict_types=1);
  * "coming soon" page is shown so all navigation works from day one.
  */
 require __DIR__ . '/includes/bootstrap.php';
+maintenance_gate();
 
 $slug = strtolower(trim((string) ($_GET['slug'] ?? ''), '/'));
 

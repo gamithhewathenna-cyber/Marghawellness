@@ -51,6 +51,7 @@ code { background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; font-s
 .topbar__link { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); text-decoration: none; background: none; border: 0; font: inherit; cursor: pointer; padding: 4px 0; }
 .topbar__link:hover { color: var(--rust); }
 .topbar__user { color: var(--muted); }
+.topbar__maint { text-decoration: none; text-transform: none; font-weight: 500; padding: 4px 12px; }
 .content { padding: 28px 32px 60px; max-width: 1180px; width: 100%; }
 
 /* ---------- Page head ---------- */
