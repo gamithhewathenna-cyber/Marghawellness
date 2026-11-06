@@ -299,6 +299,8 @@ strong { font-weight: 600; }
     background: var(--cream); color: var(--rust);
     font-family: var(--ff-serif); font-size: 31px; line-height: 1;
 }
+/* Uploaded PNG icon inside the badge (Admin › Home › How it comes together) */
+.step__icon--img img { display: block; width: 26px; height: 26px; object-fit: contain; }
 .step__label {
     display: block; margin-top: 18px;
     font-family: var(--ff-label); font-weight: 400; font-size: 14px; letter-spacing: .07em;
