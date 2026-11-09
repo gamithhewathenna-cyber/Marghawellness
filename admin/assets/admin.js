@@ -21,6 +21,11 @@
         tabs.scrollLeft = current.offsetLeft - (tabs.clientWidth - current.offsetWidth) / 2;
     }
 
+    // Selects that save as soon as they change (e.g. a user's access level)
+    document.querySelectorAll('select[data-autosubmit]').forEach(sel => {
+        sel.addEventListener('change', () => sel.form?.requestSubmit());
+    });
+
     // Confirm destructive actions (data-confirm on the form or on the clicked button)
     document.addEventListener('submit', e => {
         const msg = e.submitter?.dataset.confirm || e.target.dataset.confirm;

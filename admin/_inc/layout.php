@@ -58,13 +58,21 @@ function admin_header(string $title, string $active = ''): void
         'Inbox'    => [],
         'Settings' => [
             'maintenance' => ['Maintenance mode', admin_url('maintenance.php'), 'tool'],
-            'users'       => ['Admin users', admin_url('users.php'), 'key'],
+            'users'       => ['Users', admin_url('users.php'), 'users'],
+            'account'     => ['My account', admin_url('account.php'), 'key'],
         ],
     ];
-    foreach (admin_pages() as $key => $page) {
+    // Viewers (e.g. a client) only get the dashboard and their own account.
+    if (!is_full_admin($user)) {
+        $nav = [
+            'Overview' => ['dashboard' => ['Dashboard', admin_url(), 'grid']],
+            'Account'  => ['account' => ['My account', admin_url('account.php'), 'key']],
+        ];
+    }
+    foreach (is_full_admin($user) ? admin_pages() : [] as $key => $page) {
         $nav['Pages']['page_' . $key] = [$page['label'], admin_url('pages.php', ['page' => $key]), $key === 'home' ? 'home' : 'text'];
     }
-    foreach (admin_entities() as $key => $ent) {
+    foreach (is_full_admin($user) ? admin_entities() : [] as $key => $ent) {
         if (!empty($ent['hidden'])) continue;
         $group = ($ent['can_create'] ?? true) ? 'Listings' : 'Inbox';
         $nav[$group][$key] = [$ent['label'], admin_url('manage.php', ['type' => $key]), $ent['icon']];
@@ -89,11 +97,11 @@ function admin_header(string $title, string $active = ''): void
     <div class="main">
         <header class="topbar">
             <button class="topbar__menu" type="button" aria-controls="sidebar" aria-expanded="false" data-menu>Menu</button>
-            <?php if (maintenance_on()): ?>
+            <?php if (maintenance_on() && is_full_admin($user)): ?>
             <a class="badge badge--new topbar__maint" href="<?= e(admin_url('maintenance.php')) ?>">Maintenance mode ON</a>
             <?php endif; ?>
             <a class="topbar__link" href="<?= e(url()) ?>" target="_blank" rel="noopener"><?= admin_icon('ext') ?>View website</a>
-            <span class="topbar__user"><?= e($user['name'] ?? '') ?></span>
+            <a class="topbar__user" href="<?= e(admin_url('account.php')) ?>"><?= e($user['name'] ?? '') ?><?= is_full_admin($user) ? '' : ' <span class="badge badge--viewer">Viewer</span>' ?></a>
             <form method="post" action="<?= e(admin_url('logout.php')) ?>">
                 <?= csrf_field() ?>
                 <button class="topbar__link" type="submit"><?= admin_icon('out') ?>Sign out</button>

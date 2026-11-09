@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS admin_users (
     username       VARCHAR(60)  NOT NULL,
     name           VARCHAR(120) NOT NULL,
     email          VARCHAR(190) NULL,
+    role           ENUM('admin','viewer') NOT NULL DEFAULT 'admin',
     password_hash  VARCHAR(255) NOT NULL,
     last_login_at  DATETIME NULL,
     created_at     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

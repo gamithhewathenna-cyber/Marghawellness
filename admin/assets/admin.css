@@ -233,3 +233,23 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
     .table td.actions { justify-content: flex-start; padding-top: 8px; }
     .table td.actions::before { display: none; }
 }
+
+/* ---------- User levels ---------- */
+.badge--admin { background: #f3e4dc; color: var(--rust); }
+.badge--viewer { background: var(--info-bg); color: var(--info); }
+.topbar__user { text-decoration: none; }
+.topbar__user:hover { color: var(--rust); }
+.inline-form { margin: 0; }
+.inline-form select { width: auto; padding: 5px 30px 5px 10px; font-size: 13px; }
+.reset { display: inline-block; position: relative; margin-right: 4px; }
+.reset > summary { list-style: none; }
+.reset > summary::-webkit-details-marker { display: none; }
+.reset__form { position: absolute; right: 0; top: calc(100% + 6px); z-index: 10; display: flex; gap: 6px; padding: 10px; width: 300px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+.reset__form input { flex: 1; padding: 6px 10px; font-size: 13px; }
+.preview-card { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; border-left: 5px solid var(--rust); }
+.preview-card p { margin: 0; max-width: 560px; }
+.stat--static:hover { border-color: var(--line); }
+@media (max-width: 780px) {
+    .reset__form { position: static; width: 100%; margin-top: 6px; }
+    .reset { display: block; margin: 0 0 6px; }
+}

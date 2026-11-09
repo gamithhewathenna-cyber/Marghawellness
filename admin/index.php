@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require __DIR__ . '/_inc/bootstrap.php';
-$user = require_admin();
+$user = require_login();
 
 /** Count rows, or null if the table doesn't exist yet. */
 function count_rows(string $sql): ?int
@@ -12,6 +12,54 @@ function count_rows(string $sql): ?int
     } catch (Throwable) {
         return null;
     }
+}
+
+/* ---------------- Viewer dashboard (client preview) ---------------- */
+// No enquiries, subscribers or edit links — just the website and a content overview.
+if (!is_full_admin($user)) {
+    $overview = [
+        ['Wellness retreats', count_rows('SELECT COUNT(*) FROM retreats WHERE is_featured = 1'), 'on the homepage'],
+        ['Journeys',          count_rows('SELECT COUNT(*) FROM journeys WHERE is_featured = 1'), 'on the homepage'],
+        ['Journal posts',     count_rows("SELECT COUNT(*) FROM posts WHERE status = 'published'"), 'published'],
+    ];
+    admin_header('Dashboard', 'dashboard');
+    ?>
+    <div class="page-head">
+        <div>
+            <h1>Welcome, <?= e(explode(' ', $user['name'])[0]) ?></h1>
+            <p class="muted">You’re signed in with a viewer account for the Mārghā Wellness website.</p>
+        </div>
+    </div>
+
+    <section class="panel preview-card">
+        <div>
+            <h2>Preview the website</h2>
+            <?php if (maintenance_on()): ?>
+            <p class="muted">The website is currently hidden from the public while work is in progress. Because you’re signed in, you can still see the latest version.</p>
+            <?php else: ?>
+            <p class="muted">See the website exactly as visitors see it.</p>
+            <?php endif; ?>
+        </div>
+        <a class="btn btn--primary btn--large" href="<?= e(url()) ?>" target="_blank" rel="noopener"><?= admin_icon('ext') ?> Open the website</a>
+    </section>
+
+    <div class="stats">
+        <?php foreach ($overview as [$label, $count, $note]): ?>
+        <div class="stat stat--static">
+            <span class="stat__value"><?= $count === null ? '—' : $count ?></span>
+            <span class="stat__label"><?= e($label) ?></span>
+            <span class="stat__note"><?= e($note) ?></span>
+        </div>
+        <?php endforeach; ?>
+    </div>
+
+    <section class="panel">
+        <div class="panel__head"><h2>Your account</h2><a href="<?= e(admin_url('account.php')) ?>">Manage</a></div>
+        <p class="muted">Change your password any time from <a href="<?= e(admin_url('account.php')) ?>">My account</a>. You’ll be signed out automatically after 2 hours without activity.</p>
+    </section>
+    <?php
+    admin_footer();
+    exit;
 }
 
 $cards = [
@@ -83,6 +131,7 @@ admin_header('Dashboard', 'dashboard');
             <li><a href="<?= e(admin_url('manage.php', ['type' => 'posts', 'action' => 'new'])) ?>">Write a journal post</a></li>
             <li><a href="<?= e(admin_url('manage.php', ['type' => 'journeys', 'action' => 'new'])) ?>">Add a journey</a></li>
             <li><a href="<?= e(admin_url('export.php', ['type' => 'subscribers'])) ?>">Download subscribers (CSV)</a></li>
+            <li><a href="<?= e(admin_url('users.php')) ?>">Give a client viewer access</a></li>
         </ul>
         <?php if ($recentSubs): ?>
         <h3 class="panel__sub">Newest subscribers</h3>

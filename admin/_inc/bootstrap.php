@@ -142,6 +142,30 @@ function csrf_field(): string
 /* Authentication                                                      */
 /* ------------------------------------------------------------------ */
 
+/**
+ * User levels.
+ *   admin  – full access to everything
+ *   viewer – Dashboard, own Account and the website (also past maintenance mode). Can't edit anything.
+ */
+const ADMIN_ROLES = [
+    'admin'  => 'Admin — full access',
+    'viewer' => 'Viewer — dashboard, account & website only',
+];
+
+/** True once the `role` column exists (database/roles.sql has been run). Until then everyone is an admin. */
+function roles_enabled(): bool
+{
+    static $ok = null;
+    if ($ok === null) {
+        try {
+            $ok = (bool) db()->query("SHOW COLUMNS FROM admin_users LIKE 'role'")->fetch();
+        } catch (Throwable) {
+            $ok = false;
+        }
+    }
+    return $ok;
+}
+
 function current_admin(): ?array
 {
     static $user = false;
@@ -158,24 +182,45 @@ function current_admin(): ?array
         flash('You were signed out after a period of inactivity.', 'info');
         return null;
     }
-    $stmt = db()->prepare('SELECT id, username, name, email, last_login_at FROM admin_users WHERE id = ?');
+    $cols = 'id, username, name, email, last_login_at' . (roles_enabled() ? ', role' : '');
+    $stmt = db()->prepare("SELECT $cols FROM admin_users WHERE id = ?");
     $stmt->execute([$id]);
     $user = $stmt->fetch() ?: null;
     if ($user) {
+        $user['role'] = isset(ADMIN_ROLES[$user['role'] ?? '']) ? $user['role'] : 'admin';
         $_SESSION['admin_seen'] = time();
+        $_SESSION['admin_role'] = $user['role'];   // lets the public site know (e.g. maintenance bar)
     } else {
         admin_logout();
     }
     return $user;
 }
 
-function require_admin(): array
+function is_full_admin(?array $user = null): bool
+{
+    $user ??= current_admin();
+    return ($user['role'] ?? 'admin') === 'admin';
+}
+
+/** Any signed-in user (admin or viewer): Dashboard, Account. */
+function require_login(): array
 {
     require_tables(['admin_users']);
     $user = current_admin();
     if (!$user) {
         $_SESSION['admin_return'] = $_SERVER['REQUEST_URI'] ?? '';
         redirect(admin_url('login.php'));
+    }
+    return $user;
+}
+
+/** Full admins only — every editing screen. Viewers are sent back to the dashboard. */
+function require_admin(): array
+{
+    $user = require_login();
+    if (!is_full_admin($user)) {
+        flash('Your account can view the dashboard and website, but not edit content.', 'info');
+        redirect(admin_url());
     }
     return $user;
 }
@@ -219,13 +264,14 @@ function attempt_login(string $username, string $password): ?array
     session_regenerate_id(true);
     $_SESSION['admin_id']   = (int) $user['id'];
     $_SESSION['admin_seen'] = time();
+    $_SESSION['admin_role'] = isset(ADMIN_ROLES[$user['role'] ?? '']) ? $user['role'] : 'admin';
     unset($_SESSION['csrf']);  // fresh token for the new session
     return $user;
 }
 
 function admin_logout(): void
 {
-    unset($_SESSION['admin_id'], $_SESSION['admin_seen']);
+    unset($_SESSION['admin_id'], $_SESSION['admin_seen'], $_SESSION['admin_role']);
     session_regenerate_id(true);
 }
 
