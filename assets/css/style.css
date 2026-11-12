@@ -609,6 +609,7 @@ strong { font-weight: 600; }
 
     .wellness { padding: 72px 0; }
     .wellness__inner { grid-template-columns: 1fr; gap: 48px; padding-left: var(--gutter); }
+    .wellness__intro { padding-right: var(--gutter); } /* same space on the right as the left */
     .wellness__title, .wellness__copy { max-width: 620px; }
     .wellness .btn { margin-top: 36px; }
     .retreat-track { grid-auto-columns: 280px; }
@@ -737,3 +738,7 @@ strong { font-weight: 600; }
 @media (max-width: 640px) {
     .admin-bar { bottom: 10px; font-size: 12.5px; padding: 7px 14px; border-radius: 14px; }
 }
+
+/* ---------- Text never touches the screen edges ----------
+   Long words or web addresses typed in the admin wrap instead of overflowing. */
+h1, h2, h3, p, li, a, span, label { overflow-wrap: break-word; overflow-wrap: anywhere; }
