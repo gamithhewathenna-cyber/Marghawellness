@@ -18,6 +18,7 @@ const PAGES = [
     'sri-lanka'      => ['Sri Lanka',           'Sri Lanka: Your Destination'],
     'our-approach'   => ['Our approach',        'Our Approach'],
     'faqs'           => ['FAQs',                'Frequently Asked Questions'],
+    'partner-with-us' => ['Partner With Us',    'Partner With Us'],
     'sustainability' => ['Sustainability',      'Sustainability'],
     'terms'          => ['Terms and Conditions','Terms and Conditions'],
     'privacy'        => ['Privacy Policy',      'Privacy Policy'],
@@ -35,5 +36,5 @@ const NAV_NOT_CLICKABLE = ['journeys', 'retreats', 'journal', 'news', 'our-story
 /** Footer link columns: heading => [slug => label]. */
 const FOOTER_NAV = [
     'COMPANY'  => ['journeys' => 'Journeys', 'retreats' => 'Retreats', 'journal' => 'Journal', 'news' => 'News', 'our-story' => 'Our Story'],
-    'Platform' => ['our-approach' => 'Our approach', 'our-story' => 'Our story', 'faqs' => 'FAQs', 'sustainability' => 'Sustainability'],
+    'Platform' => ['our-approach' => 'Our approach', 'faqs' => 'FAQs', 'partner-with-us' => 'Partner With Us', 'sustainability' => 'Sustainability'],
 ];
