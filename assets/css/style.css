@@ -644,7 +644,7 @@ strong { font-weight: 600; }
 
 /* Mobile */
 @media (max-width: 640px) {
-    :root { --header-h: 72px; --gutter: 20px; }
+    :root { --header-h: 72px; --gutter: 28px; } /* side padding on phones */
     /* Scrolled header on phones: solid (no slider text showing through) and no taller than at the top */
     .site-header.is-scrolled { --header-h: 64px; background: var(--green); }
     body { font-size: 15px; }
@@ -662,8 +662,8 @@ strong { font-weight: 600; }
     .hero__title { font-size: 38px; line-height: 41px; }
     .hero__text { font-size: 15.5px; line-height: 23px; margin-top: 18px; }
     .hero__arrow { bottom: 20px; width: 30px; height: 54px; }
-    .hero__arrow--prev { left: auto; right: 64px; }
-    .hero__arrow--next { right: 20px; }
+    .hero__arrow--prev { left: auto; right: calc(var(--gutter) + 44px); }
+    .hero__arrow--next { right: var(--gutter); }
 
     .margha-way { padding: 64px 0 56px; }
     .margha-way__title { font-size: 23px; line-height: 31px; }
