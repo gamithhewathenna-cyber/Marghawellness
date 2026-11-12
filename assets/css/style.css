@@ -279,7 +279,7 @@ strong { font-weight: 600; }
 /* ==========================================================================
    Process — How your Wellness Holiday comes together
    ========================================================================== */
-.process { background: var(--rust); color: var(--white); padding: 70px 0 64px; }
+.process { background: #8A310C; color: var(--white); padding: 70px 0 64px; }
 .process .eyebrow { font-size: 13px; letter-spacing: .26em; }
 .process__title {
     font-family: var(--ff-serif); font-weight: 400; font-size: 60px; line-height: 65px;
@@ -299,11 +299,11 @@ strong { font-weight: 600; }
     margin-top: 38px; counter-reset: none;
 }
 .step {
-    background: var(--green-card); padding: 18px 18px 26px; min-height: 447px;
+    background: #F3EEE6; color: var(--ink); padding: 18px 18px 26px; min-height: 447px; /* cream cards */
 }
 .step__icon {
     display: grid; place-items: center; width: 45px; height: 45px; border-radius: 50%;
-    background: var(--cream); color: var(--rust);
+    background: #8A310C; color: #F3EEE6; /* rust badge so it shows on the cream card */
     font-family: var(--ff-serif); font-size: 31px; line-height: 1;
 }
 /* Uploaded PNG icon inside the badge (Admin › Home › How it comes together) */
@@ -311,7 +311,7 @@ strong { font-weight: 600; }
 .step__label {
     display: block; margin-top: 18px;
     font-family: var(--ff-label); font-weight: 400; font-size: 14px; letter-spacing: .07em;
-    text-transform: uppercase; color: var(--tan);
+    text-transform: uppercase; color: #8A310C;
 }
 .step__title {
     font-family: var(--ff-serif); font-weight: 400; font-size: 20px; line-height: 27px;
@@ -319,7 +319,7 @@ strong { font-weight: 600; }
 }
 .step__title strong { font-weight: 700; }
 .step__text {
-    font-size: 14px; line-height: 18.5px; letter-spacing: .04em; color: #e2dfd8;
+    font-size: 14px; line-height: 18.5px; letter-spacing: .04em; color: var(--ink-soft);
     margin-top: 24px;
 }
 .step__text + .step__text { margin-top: 18px; }
