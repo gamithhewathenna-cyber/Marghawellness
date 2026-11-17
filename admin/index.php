@@ -128,6 +128,7 @@ admin_header('Dashboard', 'dashboard');
             <li><a href="<?= e(admin_url('pages.php', ['page' => 'home'])) ?>">Edit the homepage</a></li>
             <li><a href="<?= e(admin_url('pages.php', ['page' => 'home', 'section' => 'hero'])) ?>">Change the hero banner</a></li>
             <li><a href="<?= e(admin_url('pages.php', ['page' => 'site', 'section' => 'footer'])) ?>">Edit the footer</a></li>
+            <li><a href="<?= e(admin_url('pages.php', ['page' => 'site', 'section' => 'enquire'])) ?>">Change the Enquire Now pop-up photo &amp; text</a></li>
             <li><a href="<?= e(admin_url('manage.php', ['type' => 'posts', 'action' => 'new'])) ?>">Write a journal post</a></li>
             <li><a href="<?= e(admin_url('manage.php', ['type' => 'journeys', 'action' => 'new'])) ?>">Add a journey</a></li>
             <li><a href="<?= e(admin_url('export.php', ['type' => 'subscribers'])) ?>">Download subscribers (CSV)</a></li>

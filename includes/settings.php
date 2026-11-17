@@ -32,8 +32,8 @@ function settings_schema(): array
         ]],
         // Full-screen enquiry form opened by every "Enquire Now" button (partials/enquire.php)
         'enquire' => ['label' => 'Enquiry form', 'fields' => [
+            'eq_image'         => ['label' => 'Side photo (left side of the pop-up)', 'type' => 'image', 'default' => 'cta-yoga.jpg', 'help' => 'Portrait or square photo, about 1200px wide. The bottom fades into dark green behind the text.'],
             'eq_title'         => ['label' => 'Form title', 'type' => 'rich', 'default' => 'Begin your <em>journey</em>', 'help' => 'The word inside <em>…</em> is shown in rust.'],
-            'eq_image'         => ['label' => 'Side photo', 'type' => 'image', 'default' => 'cta-yoga.jpg', 'help' => 'Portrait or square photo, about 1200px wide. The bottom fades into dark green behind the text.'],
             'eq_side_title'    => ['label' => 'Side heading — line 1', 'type' => 'text', 'default' => 'Tell us where you are.'],
             'eq_side_subtitle' => ['label' => 'Side heading — line 2 (gold)', 'type' => 'text', 'default' => 'We’ll shape the path.'],
             'eq_side_text'     => ['label' => 'Side text', 'type' => 'paras', 'rows' => 3, 'default' => 'No forms to fill in about places or prices. Just a few details about you, and a real person replies with where to begin.'],
