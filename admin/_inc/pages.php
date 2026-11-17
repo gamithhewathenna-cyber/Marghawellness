@@ -55,6 +55,8 @@ function admin_pages(): array
             'url'   => '',
             'intro' => 'Content that appears on every page of the website.',
             'sections' => [
+                'enquire' => ['label' => 'Enquiry form', 'settings' => 'enquire', 'anchor' => 'enquire',
+                              'intro' => 'The full-screen form that opens from every “Enquire Now” button. Submissions arrive in Inbox › Enquiries.'],
                 'footer'  => ['label' => 'Footer newsletter', 'settings' => 'footer', 'anchor' => 'newsletter',
                               'intro' => 'The two newsletter columns at the top of the footer.'],
                 'general' => ['label' => 'Contact & social links', 'settings' => 'general',

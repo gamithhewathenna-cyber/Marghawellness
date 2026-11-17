@@ -147,6 +147,95 @@
         });
     });
 
+    /* ---------- "Enquire Now" full-screen form ---------- */
+    const enq = $('.enquire[role="dialog"]');
+    if (enq) {
+        const form = $('.enquire-form', enq);
+        const msg = $('.enquire-form__msg', enq);
+        const body = $('[data-enquire-body]', enq);
+        const done = $('[data-enquire-done]', enq);
+        let lastFocus = null, isOpen = false, hideTimer = null;
+        const isEnquireLink = a => a && a.pathname && /\/enquire\/?$/.test(a.pathname) && a.origin === location.origin;
+        const focusables = () => $$('button, [href], input:not(.hp), select, textarea', enq).filter(el => !el.disabled && el.offsetParent !== null);
+
+        const open = () => {
+            if (isOpen) return;
+            isOpen = true; clearTimeout(hideTimer);
+            lastFocus = document.activeElement;
+            document.body.classList.remove('nav-open');            // close the mobile menu if open
+            enq.hidden = false;
+            document.documentElement.classList.add('enquire-open');
+            requestAnimationFrame(() => { if (isOpen) enq.classList.add('is-open'); });
+            if (location.hash !== '#enquire') history.pushState({ enquire: true }, '', '#enquire');
+            setTimeout(() => (done.hidden ? $('input:not(.hp)', form) : done)?.focus(), reduceMotion ? 0 : 250);
+        };
+        const close = (fromHistory = false) => {
+            if (!isOpen) return;                                     // already closed / closing
+            isOpen = false;
+            enq.classList.remove('is-open');
+            document.documentElement.classList.remove('enquire-open');
+            hideTimer = setTimeout(() => {
+                enq.hidden = true;
+                if (!done.hidden) { done.hidden = true; body.hidden = false; form.reset(); msg.textContent = ''; }
+            }, reduceMotion ? 0 : 300);
+            if (!fromHistory && location.hash === '#enquire') history.back();
+            lastFocus?.focus?.();
+        };
+
+        // Any link to /enquire opens the pop-up (header, mobile menu, call-to-action, hero button …)
+        document.addEventListener('click', e => {
+            const a = e.target.closest('a');
+            if (isEnquireLink(a) && !e.metaKey && !e.ctrlKey && !e.shiftKey) { e.preventDefault(); open(); }
+        });
+        $$('[data-enquire-close]', enq).forEach(b => b.addEventListener('click', () => close()));
+        enq.addEventListener('keydown', e => {
+            if (e.key === 'Escape') { e.preventDefault(); close(); }
+            if (e.key === 'Tab') {                                    // keep focus inside the pop-up
+                const f = focusables(); if (!f.length) return;
+                if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+                else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+            }
+        });
+        window.addEventListener('popstate', () => { if (location.hash !== '#enquire') close(true); else open(); });
+        if (location.hash === '#enquire') open();                     // shareable link: yoursite/#enquire
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            $$('.ef-field', form).forEach(f => f.classList.remove('has-error'));
+            msg.classList.remove('is-error');
+            const errs = {};
+            if (!form.full_name.value.trim()) errs.full_name = 'Please tell us your name.';
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.value.trim())) errs.email = 'Please enter a valid email address.';
+            const showErrors = errors => {
+                Object.keys(errors).forEach(k => form.elements[k]?.closest('.ef-field')?.classList.add('has-error'));
+                msg.textContent = Object.values(errors)[0];
+                msg.classList.add('is-error');
+                form.elements[Object.keys(errors)[0]]?.focus();
+            };
+            if (Object.keys(errs).length) return showErrors(errs);
+
+            const btn = $('.enquire-form__submit', form);
+            btn.disabled = true; msg.textContent = 'Sending…';
+            try {
+                const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'X-Requested-With': 'fetch', 'Accept': 'application/json' } });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.ok !== false) {
+                    body.hidden = true; done.hidden = false; done.focus();
+                    $('.enquire__main', enq).scrollTop = 0;
+                } else if (data.errors && Object.keys(data.errors).length) {
+                    showErrors(data.errors);
+                } else {
+                    msg.textContent = data.message || 'Something went wrong. Please try again.'; msg.classList.add('is-error');
+                }
+            } catch {
+                msg.textContent = 'Network error. Please check your connection and try again.'; msg.classList.add('is-error');
+            } finally {
+                btn.disabled = false;
+                if (!msg.classList.contains('is-error') && !done.hidden) msg.textContent = '';
+            }
+        });
+    }
+
     /* ---------- Reveal on scroll ---------- */
     if ('IntersectionObserver' in window && !reduceMotion) {
         const targets = $$('.pillar, .retreat-card, .step, .journey-card, .post-card, .destination__text > *, .founder__text, .cta-band__content');

@@ -30,6 +30,21 @@ function settings_schema(): array
             'maintenance_title'   => ['label' => 'Heading', 'type' => 'text', 'default' => 'We’ll be back soon'],
             'maintenance_message' => ['label' => 'Message', 'type' => 'paras', 'default' => "We’re making a few improvements to the Mārghā Wellness website and will be back shortly.\n\nIn the meantime, you can reach us at hello@margha.com or on Instagram @margawellness."],
         ]],
+        // Full-screen enquiry form opened by every "Enquire Now" button (partials/enquire.php)
+        'enquire' => ['label' => 'Enquiry form', 'fields' => [
+            'eq_title'         => ['label' => 'Form title', 'type' => 'rich', 'default' => 'Begin your <em>journey</em>', 'help' => 'The word inside <em>…</em> is shown in rust.'],
+            'eq_image'         => ['label' => 'Side photo', 'type' => 'image', 'default' => 'cta-yoga.jpg', 'help' => 'Portrait or square photo, about 1200px wide. The bottom fades into dark green behind the text.'],
+            'eq_side_title'    => ['label' => 'Side heading — line 1', 'type' => 'text', 'default' => 'Tell us where you are.'],
+            'eq_side_subtitle' => ['label' => 'Side heading — line 2 (gold)', 'type' => 'text', 'default' => 'We’ll shape the path.'],
+            'eq_side_text'     => ['label' => 'Side text', 'type' => 'paras', 'rows' => 3, 'default' => 'No forms to fill in about places or prices. Just a few details about you, and a real person replies with where to begin.'],
+            'eq_side_points'   => ['label' => 'Side bullet points (one per line)', 'type' => 'textarea', 'rows' => 4, 'default' => "A personal reply within a day, never a template\nReady-made journeys or fully customised holidays\nNo obligation, no payment, no pressure"],
+            'eq_stages'        => ['label' => '“Where are you on your wellness journey?” choices (one per line)', 'type' => 'textarea', 'rows' => 8, 'default' => "I’m running on empty — Burnout, exhaustion, I need to stop\nI’m new to wellness travel — Curious, and not sure where to start\nI’ve done retreats before — Ready to go deeper, with more guidance\nI’m at a turning point — Seeking direction, purpose or a new chapter\nI’m healing from something — Want physician-led, guided care\nI’m planning for more than one — A partner, family, friends or a team\nI’m not sure yet — Help me work it out"],
+            'eq_looking'       => ['label' => '“What are you looking for?” choices (one per line)', 'type' => 'textarea', 'rows' => 5, 'default' => "A ready-made MĀRGHĀ journey\nA fully customised holiday\nA group or team retreat\nI’m not sure yet"],
+            'eq_button'        => ['label' => 'Button label', 'type' => 'text', 'default' => 'Begin the conversation'],
+            'eq_note'          => ['label' => 'Small note under the button', 'type' => 'text', 'default' => 'We reply personally within a day. Your details stay with us and are never shared.'],
+            'eq_success_title' => ['label' => 'Thank-you heading (after sending)', 'type' => 'text', 'default' => 'Thank you — your journey has begun.'],
+            'eq_success_text'  => ['label' => 'Thank-you message', 'type' => 'paras', 'rows' => 3, 'default' => 'We’ve received your details. A real person from the MĀRGHĀ team will reply personally within a day.'],
+        ]],
         'general' => ['label' => 'General & social', 'fields' => [
             'contact_email'      => ['label' => 'Contact email', 'type' => 'email', 'default' => CONTACT_EMAIL, 'help' => 'Where enquiry notifications will be sent.'],
             'social_instagram'   => ['label' => 'Instagram link', 'type' => 'url', 'default' => SOCIAL_INSTAGRAM],
@@ -166,6 +181,23 @@ function settings_saved(bool $refresh = false): array
         }
     }
     return $values;
+}
+
+/** A setting edited as "one item per line", as a list of non-empty lines. */
+function setting_lines(string $key): array
+{
+    return array_values(array_filter(array_map('trim', preg_split('/\R/u', setting($key)) ?: []), 'strlen'));
+}
+
+/** Travel month choices for the enquiry form: this month + the next 23, as "March 2027". */
+function enquiry_months(): array
+{
+    $months = [];
+    $d = new DateTime('first day of this month');
+    for ($i = 0; $i < 24; $i++, $d->modify('+1 month')) {
+        $months[] = $d->format('F Y');
+    }
+    return $months;
 }
 
 /** Current value of a setting: saved value, else the default. */

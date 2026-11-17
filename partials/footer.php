@@ -69,6 +69,8 @@
     </div>
 </footer>
 
+<?php if (current_slug() !== 'enquire') { partial('enquire'); } /* "Enquire Now" pop-up */ ?>
+
 <script src="<?= e(asset('js/main.js')) ?>" defer></script>
 </body>
 </html>

@@ -386,6 +386,9 @@ function render_field(string $name, array $def, mixed $value, ?string $error = n
         $html .= '<label for="' . $id . '">' . $label . '</label>';
         switch ($type) {
             case 'readonly':
+                if (($def['format'] ?? '') === 'yesno' && $value !== '') {
+                    $value = $value ? 'Yes' : 'No';
+                }
                 $html .= '<div class="readonly">' . ($value === '' ? '<span class="muted">—</span>' : nl2br(e((string) $value))) . '</div>';
                 break;
             case 'textarea':
