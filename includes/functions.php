@@ -136,3 +136,15 @@ function arrow_icon(): string
 {
     return '<svg class="btn__arrow" width="16" height="12" viewBox="0 0 16 12" aria-hidden="true"><path d="M0 6h14.5M9.5 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
 }
+
+/** Text with one item per line → list of non-empty trimmed lines. */
+function text_lines(?string $text): array
+{
+    return array_values(array_filter(array_map('trim', preg_split('/\R/u', (string) $text) ?: []), 'strlen'));
+}
+
+/** Text with one item per line and " | " between parts → list of part arrays (padded to $parts). */
+function text_items(?string $text, int $parts = 2): array
+{
+    return array_map(fn($l) => array_pad(array_map('trim', explode('|', $l)), $parts, ''), text_lines($text));
+}

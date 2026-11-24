@@ -376,6 +376,11 @@ function read_field(string $name, array $def, array &$errors): mixed
 /** Render one form field. */
 function render_field(string $name, array $def, mixed $value, ?string $error = null): string
 {
+    // Section divider inside a long form (not a database column)
+    if ($def['type'] === 'heading') {
+        return '<h2 class="form-section">' . e($def['label']) . '</h2>'
+            . (!empty($def['help']) ? '<p class="form-section__help">' . e($def['help']) . '</p>' : '');
+    }
     $id    = 'f_' . $name;
     $type  = $def['type'];
     $label = e($def['label']) . (!empty($def['required']) ? ' <span class="req" aria-hidden="true">*</span>' : '');

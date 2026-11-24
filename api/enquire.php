@@ -58,6 +58,8 @@ $data = [
     'travel_month'   => $clean('travel_month', 40),
     'dates_flexible' => empty($_POST['dates_flexible']) ? 0 : 1,
 ];
+// Which Wellness Package the enquiry came from (hidden field, set on package pages) — kept in the message.
+$package = $clean('package', 160);
 
 $errors = [];
 if ($data['full_name'] === '') $errors['full_name'] = 'Please tell us your name.';
@@ -84,7 +86,7 @@ try {
     // otherwise those answers are kept in the message so nothing is lost.
     $have  = array_column($pdo->query('SHOW COLUMNS FROM enquiries')->fetchAll(), 'Field');
     $row   = [];
-    $extra = [];
+    $extra = $package !== '' ? ['Package of interest: ' . $package] : [];
     foreach ($data as $col => $val) {
         if (in_array($col, $have, true)) {
             $row[$col] = $val === '' ? null : $val;
@@ -118,6 +120,7 @@ if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
         'Wellness journey: ' . $data['journey_stage'],
         'Looking for:      ' . $data['interest'],
         'Travel:           ' . $data['travel_month'] . ($data['dates_flexible'] ? ' (dates flexible)' : ''),
+        'Package:          ' . ($package !== '' ? $package : '—'),
         '',
         'Reply directly to this email to answer ' . $data['full_name'] . '.',
         'All enquiries: ' . (isset($_SERVER['HTTP_HOST']) ? 'https://' . $_SERVER['HTTP_HOST'] : '') . url('admin/manage.php?type=enquiries'),

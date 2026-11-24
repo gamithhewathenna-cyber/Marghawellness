@@ -68,6 +68,7 @@ function admin_pages(): array
                 'bridge'   => ['label' => 'Bridge to Journeys', 'settings' => 'wp_bridge', 'anchor' => 'wp-bridge'],
                 'profile'  => ['label' => 'Wellness Path Profile', 'settings' => 'wp_profile', 'anchor' => 'profile'],
                 'faq'      => ['label' => 'FAQs', 'settings' => 'wp_faq', 'anchor' => 'wp-faq'],
+                'pkpage'   => ['label' => 'Package page labels', 'settings' => 'wp_pkpage', 'intro' => 'Headings and button labels shared by every Wellness Package page. Each package’s own content is edited in Wellness Packages.'],
                 'seo'      => ['label' => 'SEO (Google)', 'settings' => 'wp_seo'],
             ],
         ],

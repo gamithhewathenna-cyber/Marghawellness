@@ -97,41 +97,43 @@ partial('header', compact('page_title', 'page_description', 'body_class', 'prelo
         </div>
 
         <form class="wp-filters" data-wp-filters aria-label="Filter programmes" onsubmit="return false">
-            <label><span>Depth</span>
-                <select name="depth"><option value="">All depths</option><option value="begin">Begin</option><option value="deepen">Deepen</option><option value="immerse">Immerse</option></select>
+            <?php // Filter choices come from Admin › Package Categories
+            foreach (['depth' => 'Depth', 'path' => 'Path', 'audience' => 'For'] as $type => $label): ?>
+            <label><span><?= e($label) ?></span>
+                <select name="<?= $type === 'audience' ? 'for' : $type ?>">
+                    <option value=""><?= e(WELLNESS_CATEGORY_TYPES[$type][1]) ?></option>
+                    <?php foreach (get_wellness_categories($type) as $slug => $name): ?>
+                    <option value="<?= e($slug) ?>"><?= e($name) ?></option>
+                    <?php endforeach; ?>
+                </select>
             </label>
-            <label><span>Path</span>
-                <select name="path"><option value="">All paths</option><option value="rest">Rest</option><option value="soul">Soul</option><option value="healing">Healing</option></select>
-            </label>
-            <label><span>For</span>
-                <select name="for"><option value="">Everyone</option><option value="solo">Solo</option><option value="women">Women</option><option value="couples">Couples</option><option value="teams">Teams</option></select>
-            </label>
+            <?php endforeach; ?>
             <label><span>Nights</span>
                 <select name="nights"><option value="">Any length</option><option value="short">3 to 5 nights</option><option value="week">7 nights</option><option value="long">14 to 21 nights</option></select>
             </label>
         </form>
 
         <div class="wp-pk-grid" data-wp-programmes>
-            <?php foreach (get_wellness_programmes() as $pg):   // Admin › Listings › Wellness programmes
+            <?php foreach (get_wellness_programmes() as $pg):   // Admin › Wellness Packages
                 $name   = (string) $pg['title'];
-                $depth  = ucfirst((string) $pg['depth']);
-                $path   = ucfirst((string) $pg['path']);
+                $depth  = wellness_category_name('depth', (string) $pg['depth']);
+                $path   = wellness_category_name('path', (string) $pg['path']);
                 $aud    = array_filter(array_map('trim', explode(',', (string) $pg['audience'])));
-                $for    = implode(', ', array_map('ucfirst', $aud));
-                $forKeys = implode(' ', array_map($key, $aud));
+                $for    = implode(', ', array_map(fn($a) => wellness_category_name('audience', $a), $aud));
                 $nights = (string) $pg['nights'];
                 $image  = (string) $pg['image'];
-                $desc   = (string) $pg['summary']; ?>
-            <article class="wp-pk" data-depth="<?= e($key($depth)) ?>" data-path="<?= e($key($path)) ?>" data-for="<?= e($forKeys) ?>" data-nights="<?= e($nightsBucket($nights)) ?>">
-                <div class="wp-pk__media">
+                $desc   = (string) $pg['summary'];
+                $link   = package_url((string) $pg['slug']); ?>
+            <article class="wp-pk" data-depth="<?= e((string) $pg['depth']) ?>" data-path="<?= e((string) $pg['path']) ?>" data-for="<?= e(implode(' ', $aud)) ?>" data-nights="<?= e($nightsBucket($nights)) ?>">
+                <a class="wp-pk__media" href="<?= e($link) ?>" tabindex="-1" aria-hidden="true">
                     <?php if ($image !== ''): ?><img src="<?= e(img($image)) ?>" alt="" loading="lazy"><?php endif; ?>
                     <span class="wp-pk__depth"><?= e($depth) ?></span>
-                </div>
+                </a>
                 <div class="wp-pk__body">
                     <p class="wp-pk__meta"><?= e(implode(' · ', array_filter([$path, $nights !== '' ? str_replace('-', '–', $nights) . ' nights' : '', $for]))) ?></p>
-                    <h3 class="wp-pk__title"><?= e($name) ?></h3>
+                    <h3 class="wp-pk__title"><a href="<?= e($link) ?>"><?= e($name) ?></a></h3>
                     <p class="wp-pk__text"><?= e($desc) ?></p>
-                    <a class="wp-pk__link" href="<?= e($enquire) ?>"><?= e(setting('wp_pk_button')) ?> <?= arrow_icon() ?></a>
+                    <a class="wp-pk__link" href="<?= e($link) ?>"><?= e(setting('wp_pk_button')) ?> <?= arrow_icon() ?></a>
                 </div>
             </article>
             <?php endforeach; ?>

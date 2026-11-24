@@ -1030,3 +1030,98 @@ html.enquire-open, html.enquire-open body { overflow: hidden; }
     .wp-faq__item summary { font-size: 19px; }
     .wp-faq__item p { padding-right: 0; }
 }
+
+/* ==========================================================================
+   Wellness Package page (wellness/package.php — pages/wellness-package.php)
+   ========================================================================== */
+.wp-pk__media { display: block; }
+.wp-pk__title a:hover { color: var(--rust); }
+
+.pk-crumbs { font-size: 13px; color: #d8d3ca; margin-bottom: 18px; }
+.pk-crumbs a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.4); }
+.pk-crumbs span { margin: 0 6px; opacity: .6; }
+.pk-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.pk-actions .btn { height: auto; min-height: 46px; padding: 12px 24px; white-space: normal; text-align: center; }
+.pk-h { font-family: var(--ff-serif); font-weight: 500; font-size: 28px; color: var(--ink-soft); margin-bottom: 18px; }
+
+/* Introduction */
+.pk-intro { background: var(--cream); }
+.pk-intro__inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: start; }
+.pk-intro .wp-title { margin-top: 0; }
+.pk-intro .wp-lead { margin-top: 0; font-size: 17px; }
+.pk-intro .wp-lead + .wp-lead { margin-top: 16px; }
+
+/* Lists with icons (fit, included) */
+.pk-list li { position: relative; padding: 12px 0 12px 34px; border-bottom: 1px solid #d8cfc2; font-size: 15.5px; line-height: 1.5; }
+.pk-list li::before {
+    content: ''; position: absolute; left: 0; top: 13px; width: 20px; height: 20px; border-radius: 50%;
+    background: no-repeat center / 12px 12px;
+}
+.pk-list--yes li::before { background-color: #8A310C; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5' fill='none' stroke='%23F3EEE6' stroke-width='1.6'/%3E%3C/svg%3E"); }
+.pk-list--no li::before  { background-color: #cdbfae; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 6h6' fill='none' stroke='%232a2722' stroke-width='1.6'/%3E%3C/svg%3E"); }
+.pk-list--plus li::before { background-color: var(--green); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M6 3v6M3 6h6' fill='none' stroke='%23F3EEE6' stroke-width='1.6'/%3E%3C/svg%3E"); }
+
+/* Fit */
+.pk-fit { background: #F3EEE6; }
+.pk-fit__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 22px; }
+
+/* Your week */
+.pk-week { background: var(--green); }
+.pk-week__list { margin-top: 48px; border-top: 1px solid rgba(243,238,230,.18); }
+.pk-week__item { display: grid; grid-template-columns: 200px 1fr; gap: 32px; padding: 26px 0; border-bottom: 1px solid rgba(243,238,230,.18); color: var(--cream); }
+.pk-week__day { font-family: var(--ff-label); font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: var(--tan-light); padding-top: 6px; }
+.pk-week__item h3 { font-family: var(--ff-serif); font-weight: 500; font-size: 26px; }
+.pk-week__item p { font-size: 15.5px; line-height: 1.6; margin-top: 6px; color: #d8d3ca; max-width: 720px; }
+
+/* Sample day */
+.pk-day { background: var(--cream); }
+.pk-day__inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; align-items: start; }
+.pk-day__list li { display: grid; grid-template-columns: 80px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid #d8cfc2; font-size: 16px; line-height: 1.5; }
+.pk-day__list li:first-child { border-top: 1px solid #d8cfc2; }
+.pk-day__list time { font-family: var(--ff-serif); font-size: 21px; color: var(--rust); line-height: 1.1; }
+
+/* Included / not included / add-ons */
+.pk-incl { background: #F3EEE6; }
+.pk-incl__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; margin-top: 22px; }
+
+/* Price panel */
+.pk-price { background: var(--green); color: var(--cream); padding: 72px 0; }
+.pk-price__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.pk-price__eyebrow { color: var(--tan-light); }
+.pk-price__amount { font-family: var(--ff-serif); font-size: 52px; line-height: 1.1; margin-top: 12px; }
+.pk-price__amount span { font-size: 24px; font-style: italic; color: var(--tan-light); margin-right: 6px; }
+.pk-price__amount--ask { font-size: 40px; }
+.pk-price__basis { font-size: 16px; margin-top: 6px; color: #d8d3ca; }
+.pk-price__details { margin-top: 20px; font-size: 14.5px; color: #d8d3ca; }
+.pk-price__details li + li { margin-top: 6px; }
+.pk-price .pk-actions { margin-top: 0; }
+
+/* Read before you go */
+.pk-read { background: var(--beige); }
+.pk-read__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 44px; }
+.pk-read__card { display: flex; flex-direction: column; background: #F3EEE6; padding: 26px 26px 28px; min-height: 180px; color: var(--ink); }
+.pk-read__label { font-family: var(--ff-label); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--rust); }
+.pk-read__card h3 { font-family: var(--ff-serif); font-weight: 500; font-size: 23px; line-height: 1.25; margin-top: 12px; flex: 1; }
+.pk-read__more { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--rust); }
+a.pk-read__card:hover h3 { color: var(--rust); }
+
+.pk-back { background: var(--beige); padding: 0 0 72px; }
+.pk-back__link { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: .05em; color: var(--rust); }
+
+@media (max-width: 1024px) {
+    .pk-intro__inner, .pk-day__inner, .pk-price__inner { grid-template-columns: 1fr; gap: 32px; }
+    .pk-incl__grid { grid-template-columns: 1fr 1fr; }
+    .pk-read__grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+    .pk-fit__grid, .pk-incl__grid, .pk-read__grid { grid-template-columns: 1fr; gap: 36px; }
+    .pk-week__item { grid-template-columns: 1fr; gap: 6px; padding: 22px 0; }
+    .pk-week__item h3 { font-size: 23px; }
+    .pk-day__list li { grid-template-columns: 64px 1fr; gap: 12px; font-size: 15px; }
+    .pk-price { padding: 56px 0; }
+    .pk-price__amount { font-size: 40px; }
+    .pk-actions .btn { width: 100%; }
+    .pk-h { font-size: 25px; }
+    .pk-read__grid { gap: 16px; }
+    .pk-read__card { min-height: 0; }
+}

@@ -54,6 +54,7 @@ $v = fn(string $k): string => e((string) ($old[$k] ?? ''));
                 <form class="enquire-form" action="<?= e(url('api/enquire.php')) ?>" method="post" novalidate>
                     <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
                     <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+                    <input type="hidden" name="package" value="">  <!-- set when opened from a Wellness Package page -->
 
                     <div class="ef-field">
                         <label for="ef_name">Full name</label>

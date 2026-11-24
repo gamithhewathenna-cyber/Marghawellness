@@ -206,7 +206,11 @@
         // Any link to /enquire opens the pop-up (header, mobile menu, call-to-action, hero button …)
         document.addEventListener('click', e => {
             const a = e.target.closest('a');
-            if (isEnquireLink(a) && !e.metaKey && !e.ctrlKey && !e.shiftKey) { e.preventDefault(); open(); }
+            if (isEnquireLink(a) && !e.metaKey && !e.ctrlKey && !e.shiftKey) {
+                e.preventDefault();
+                if (form.elements.package) form.elements.package.value = a.dataset.package || '';   // e.g. "Arogya" from a package page
+                open();
+            }
         });
         $$('[data-enquire-close]', enq).forEach(b => b.addEventListener('click', () => close()));
         enq.addEventListener('keydown', e => {

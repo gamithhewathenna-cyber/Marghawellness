@@ -60,7 +60,7 @@ if ($action === 'save') {
 
     $data = [];
     foreach ($ent['fields'] as $name => $def) {
-        if ($def['type'] !== 'readonly') {
+        if ($def['type'] !== 'readonly' && $def['type'] !== 'heading') {   // headings are form dividers, not columns
             $data[$name] = read_field($name, $def, $errors);
         }
     }
@@ -132,6 +132,9 @@ if ($action === 'edit' || $action === 'new') {
         </div>
         <?php if ($ent['key'] === 'enquiries' && !empty($values['email'])): ?>
         <a class="btn" href="mailto:<?= e($values['email']) ?>?subject=<?= rawurlencode('Your Mārghā Wellness enquiry') ?>">Reply by email</a>
+        <?php endif; ?>
+        <?php if (!$isNew && isset($ent['view']) && !empty($values['slug'])): ?>
+        <a class="btn" href="<?= e(($ent['view'])($values)) ?>" target="_blank" rel="noopener">View on website ↗</a>
         <?php endif; ?>
     </div>
 
