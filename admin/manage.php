@@ -26,7 +26,7 @@ $self      = fn(array $q = []): string => admin_url('manage.php', ['type' => $en
 $return  = safe_return((string) ($_POST['return'] ?? $_GET['return'] ?? ''));
 $back    = $return ?: $self();
 $owner   = admin_page_for('list', $ent['key']);
-$navKey  = !empty($ent['hidden']) && $owner ? 'page_' . $owner['page'] : $ent['key'];
+$navKey  = $ent['nav'] ?? (!empty($ent['hidden']) && $owner ? 'page_' . $owner['page'] : $ent['key']);
 $crumbs  = $return && $owner
     ? '<a href="' . e($return) . '">' . e($owner['label']) . '</a> ›'
     : '<a href="' . e($self()) . '">' . e($ent['label']) . '</a> ›';
@@ -200,7 +200,18 @@ $stmt->execute($params);
 $rows = $stmt->fetchAll();
 
 admin_header($ent['label'], $navKey);
+// Screens grouped under one sidebar item show inner tabs (e.g. Wellness Packages: Packages | Categories)
+$tabs  = $ent['tabs'] ?? [];
+$group = $tabs ? admin_entity((string) array_key_first($tabs)) : null;
 ?>
+<?php if ($tabs): ?>
+<p class="crumbs"><?= e($group['label'] ?? '') ?></p>
+<nav class="tabs tabs--inner" aria-label="<?= e($group['label'] ?? '') ?>">
+    <?php foreach ($tabs as $key => $label): ?>
+    <a href="<?= e(admin_url('manage.php', ['type' => $key])) ?>"<?= $key === $ent['key'] ? ' aria-current="page"' : '' ?>><?= e($label) ?></a>
+    <?php endforeach; ?>
+</nav>
+<?php endif; ?>
 <div class="page-head">
     <div>
         <h1><?= e($ent['label']) ?></h1>

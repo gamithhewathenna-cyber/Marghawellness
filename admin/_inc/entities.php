@@ -84,7 +84,8 @@ function admin_entities(): array
         ],
         'wellness_programmes' => [
             'label' => 'Wellness Packages', 'singular' => 'package', 'icon' => 'leaf',
-            'intro' => 'Each package has its own page (e.g. Arogya) and a card on the Wellness page. Sections of the package page only appear once they have content. Depths, paths and “suitable for” options are managed in Package Categories.',
+            'tabs'  => ['wellness_programmes' => 'Packages', 'wellness_categories' => 'Categories'],   // inner tabs on this screen
+            'intro' => 'Each package has its own page (e.g. Arogya) and a card on the Wellness page. Sections of the package page only appear once they have content. Depths, paths and “suitable for” options are managed in the Categories tab.',
             'order' => 'sort_order, id', 'title' => 'title', 'search' => ['title', 'summary'],
             'list'  => ['image' => 'Image', 'title' => 'Package', 'depth' => 'Depth', 'path' => 'Path', 'nights' => 'Nights', 'sort_order' => 'Order', 'is_active' => 'Shown'],
             'view'  => fn(array $row) => package_url((string) $row['slug']),
@@ -146,6 +147,8 @@ function admin_entities(): array
         ],
         'wellness_categories' => [
             'label' => 'Package Categories', 'singular' => 'category', 'icon' => 'grid',
+            'hidden' => true, 'nav' => 'wellness_programmes',                                           // shown as a tab inside Wellness Packages
+            'tabs'  => ['wellness_programmes' => 'Packages', 'wellness_categories' => 'Categories'],
             'intro' => 'The depths, paths and “suitable for” options used by Wellness Packages and by the filters on the Wellness page. New categories appear in both straight away.',
             'order' => "FIELD(type, 'depth', 'path', 'audience'), sort_order, id", 'title' => 'name',
             'list'  => ['type' => 'Type', 'name' => 'Name', 'slug' => 'URL name', 'sort_order' => 'Order'],
