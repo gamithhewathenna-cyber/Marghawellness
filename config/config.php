@@ -30,9 +30,20 @@ define('SOCIAL_WHATSAPP', 'https://chat.whatsapp.com/');
 // ---- Base URL (auto-detected, works in root or a sub-folder) -----
 if (!defined('BASE_URL')) {
     $dir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
-    // API + admin scripts live one level down — strip it so links stay correct
-    $dir = preg_replace('#/(api|admin)$#', '', $dir);
+    // Scripts inside a sub-folder of the site (api/, admin/, wellness/ …): strip that folder
+    // so every link still points at the site root.
+    $root = defined('ROOT_PATH') ? rtrim(str_replace('\\', '/', (string) realpath(ROOT_PATH)), '/') : '';
+    $file = str_replace('\\', '/', (string) realpath($_SERVER['SCRIPT_FILENAME'] ?? ''));
+    $sub  = ($root !== '' && $file !== '' && stripos($file, $root . '/') === 0)
+        ? rtrim(str_replace('\\', '/', dirname(substr($file, strlen($root)))), '/')
+        : '';
+    if ($sub !== '' && strcasecmp(substr($dir, -strlen($sub)), $sub) === 0) {
+        $dir = substr($dir, 0, -strlen($sub));
+    } else {
+        $dir = (string) preg_replace('#/(api|admin|wellness)$#', '', $dir);
+    }
     define('BASE_URL', $dir === '' ? '' : $dir);
+    unset($root, $file, $sub);
 }
 
 // ---- Error handling ----------------------------------------------

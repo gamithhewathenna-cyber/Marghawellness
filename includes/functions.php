@@ -39,6 +39,15 @@ function url(string $path = ''): string
     return BASE_URL . '/' . $path;
 }
 
+/**
+ * Link to a page by slug. Pages built as their own folder (e.g. /wellness/index.php) get a
+ * trailing slash so they work without any server rewrite rules.
+ */
+function page_url(string $slug): string
+{
+    return is_file(ROOT_PATH . '/' . $slug . '/index.php') ? url($slug . '/') : url($slug);
+}
+
 /** Asset URL with cache-busting version based on file mtime. */
 function asset(string $path): string
 {

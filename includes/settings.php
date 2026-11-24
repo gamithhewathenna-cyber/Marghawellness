@@ -45,6 +45,88 @@ function settings_schema(): array
             'eq_success_title' => ['label' => 'Thank-you heading (after sending)', 'type' => 'text', 'default' => 'Thank you — your journey has begun.'],
             'eq_success_text'  => ['label' => 'Thank-you message', 'type' => 'paras', 'rows' => 3, 'default' => 'We’ve received your details. A real person from the MĀRGHĀ team will reply personally within a day.'],
         ]],
+        /* ---------- Wellness page (/wellness — pages/wellness.php) ----------
+           List fields: one item per line; " | " separates the parts of an item. */
+        'wp_hero' => ['label' => 'Hero', 'fields' => [
+            'wp_hero_image'   => ['label' => 'Background photo', 'type' => 'image', 'default' => 'cta-yoga.jpg', 'help' => 'Wide landscape photo, about 2400px wide.'],
+            'wp_hero_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'MĀRGHĀ Wellness · Sri Lanka'],
+            'wp_hero_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'For the body that has been <em>running on reserve</em>.'],
+            'wp_hero_text'    => ['label' => 'Text', 'type' => 'paras', 'rows' => 3, 'default' => 'Rest is not the same as repair. MĀRGHĀ Wellness places you in one place, with partner physicians and practitioners who set your programme, so the stay changes something that lasts.'],
+            'wp_hero_btn1'    => ['label' => 'Button 1 (goes to the Wellness Path Profile)', 'type' => 'text', 'default' => 'Take the Wellness Path Profile'],
+            'wp_hero_btn2'    => ['label' => 'Button 2 (opens the enquiry form)', 'type' => 'text', 'default' => 'Speak to a specialist'],
+            'wp_hero_note'    => ['label' => 'Small note under the buttons', 'type' => 'text', 'default' => 'A personal reply within a day · No obligation · Treatments set by our partner physicians and practitioners'],
+        ]],
+        'wp_facts' => ['label' => 'Fact bar', 'fields' => [
+            'wp_facts' => ['label' => 'Facts (one per line)', 'type' => 'textarea', 'rows' => 5, 'default' => "You stay. One place, deeply.\n3 to 21 nights\nPractitioner-set, not chosen from a menu\nSri Lanka first, the Maldives to follow"],
+        ]],
+        'wp_isit' => ['label' => 'Is it you?', 'fields' => [
+            'wp_isit_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Is it you?'],
+            'wp_isit_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'What if you are not <em>tired</em>, but <em>depleted</em>?'],
+            'wp_isit_intro'   => ['label' => 'Intro', 'type' => 'paras', 'rows' => 2, 'default' => 'Sleep fixes tired. Depleted is a different problem, and a change of view rarely touches it.'],
+            'wp_isit_items'   => ['label' => 'Signs (one per line: Heading | text)', 'type' => 'textarea', 'rows' => 4, 'default' => "Waking up already behind. | The day starts in debt, and a long weekend does not clear it.\nThe holiday you need a holiday from. | You come home with a tan and the same tension.\nA body that stopped signalling. | You used to know when you were hungry, tired, done. Now you do not."],
+            'wp_isit_close'   => ['label' => 'Closing line', 'type' => 'rich', 'default' => '<strong>Distraction is not repair.</strong> Something has to actually intervene: in the body, in the nervous system, in the pace of your days.'],
+        ]],
+        'wp_depths' => ['label' => 'Three depths', 'fields' => [
+            'wp_depths_eyebrow'  => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Three depths'],
+            'wp_depths_title'    => ['label' => 'Title', 'type' => 'rich', 'default' => 'Where are you on the path? <em>Start where you are.</em>'],
+            'wp_depths_intro'    => ['label' => 'Intro', 'type' => 'paras', 'rows' => 2, 'default' => 'Every programme sits at one of three depths, so a first-timer is never sold a 21-night stay and a returning guest is never talked down to.'],
+            'wp_depths_items'    => ['label' => 'Depths (one per line: Name | nights | text | programmes)', 'type' => 'textarea', 'rows' => 4, 'default' => "Begin | 3 to 5 nights | A first experience of practitioner-set care. Gentle, short, no knowledge needed. | Heal, Uplift, Unplug & Reconnect\nDeepen | 7 nights | A full, consultation-led week. Enough time for treatment to build and for you to feel the difference. | Arogya\nImmerse | 14 to 21 nights | Long stays for deep depletion, big transitions and committed practice, with silence and spiritual depth available. | Revive, Longevity"],
+        ]],
+        'wp_packages' => ['label' => 'Wellness packages', 'fields' => [
+            'wp_pk_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Wellness programmes'],
+            'wp_pk_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Six programmes. <em>One question:</em> how deep do you need to go?'],
+            'wp_pk_items'   => ['label' => 'Programmes (one per line: Name | Depth | Path | For | Nights | Image | Description)', 'type' => 'textarea', 'rows' => 7,
+                'help' => 'Depth: Begin, Deepen or Immerse. Path: Rest, Soul or Healing. For: any of Solo, Women, Couples, Teams (comma-separated). Nights: e.g. 3-5, 7, 14-21. Image: a filename in assets/images, or an uploaded image path such as uploads/….jpg.',
+                'default' => "Heal | Begin | Healing | Solo, Women, Couples | 3-5 | retreat-ocean-breath.jpg | Full programme details coming soon.\nUplift | Begin | Soul | Solo, Women | 3-5 | journal-2.jpg | Full programme details coming soon.\nUnplug & Reconnect | Begin | Rest | Solo, Couples, Teams | 3-5 | retreat-dark-sky.jpg | Full programme details coming soon.\nArogya | Deepen | Healing | Solo, Couples | 7 | journey-south-coast.jpg | Full programme details coming soon.\nRevive | Immerse | Rest | Solo, Women | 14 | journey-tree-of-life.jpg | Full programme details coming soon.\nLongevity | Immerse | Healing | Solo, Couples | 21 | journal-1.jpg | Full programme details coming soon."],
+            'wp_pk_button'  => ['label' => 'Card button label (opens the enquiry form until programme pages exist)', 'type' => 'text', 'default' => 'View programme'],
+            'wp_pk_empty'   => ['label' => 'Message when no programme matches the filters', 'type' => 'text', 'default' => 'No programme matches.'],
+            'wp_pk_empty_link' => ['label' => 'Link text after that message (opens the enquiry form)', 'type' => 'text', 'default' => 'Talk to a specialist'],
+        ]],
+        'wp_held' => ['label' => 'How a stay is held', 'fields' => [
+            'wp_held_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'How a stay is held'],
+            'wp_held_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Nobody should have to design <em>their own recovery</em>.'],
+            'wp_held_items'   => ['label' => 'Steps (one per line: Heading | text)', 'type' => 'textarea', 'rows' => 4, 'default' => "The Conversation | Before anything is booked, we talk about what is actually going on.\nThe Match | Your Wellness Path Profile decides the practitioners, the place and the pace.\nThe Journey | Transfers, timings and one point of contact, all handled.\nThe Return | A follow-up, a practice to keep and a practitioner still reachable."],
+        ]],
+        'wp_why' => ['label' => 'Why Sri Lanka', 'fields' => [
+            'wp_why_image'   => ['label' => 'Photo', 'type' => 'image', 'default' => 'destination-sigiriya.jpg'],
+            'wp_why_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Why Sri Lanka for this'],
+            'wp_why_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Ayurveda here is not a <em>spa menu</em>.'],
+            'wp_why_items'   => ['label' => 'Points (one per line)', 'type' => 'textarea', 'rows' => 4, 'default' => "It is a living medical tradition with registered physicians, practised for generations.\nOcean, rainforest and highland sit within a few hours of each other, so a programme can hold the landscape it needs.\nNamed a top trending wellness destination for 2026 by BookRetreats, as reported by Time Out Asia."],
+        ]],
+        'wp_rely' => ['label' => 'What you can rely on', 'fields' => [
+            'wp_rely_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Our promise'],
+            'wp_rely_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'What you can <em>rely on</em>'],
+            'wp_rely_items'   => ['label' => 'Promises (one per line)', 'type' => 'textarea', 'rows' => 4, 'default' => "Partner physicians and practitioners set every programme.\nA health form goes to your practitioner before you arrive.\nPrice per person, with everything included listed, and nothing hidden.\nOne named MĀRGHĀ contact from first conversation to the follow-up after you return."],
+        ]],
+        'wp_people' => ['label' => 'Practitioners & places', 'fields' => [
+            'wp_people_show'   => ['label' => 'Show this section on the website', 'type' => 'bool', 'default' => '0', 'help' => 'Keep this off until partner agreements are signed.'],
+            'wp_people_title1' => ['label' => 'Practitioners — title', 'type' => 'rich', 'default' => 'The practitioners <em>behind each programme</em>.'],
+            'wp_people_text1'  => ['label' => 'Practitioners — text', 'type' => 'paras', 'rows' => 3, 'default' => 'Profiles of our partner physicians and practitioners will appear here.'],
+            'wp_people_title2' => ['label' => 'Places — title', 'type' => 'rich', 'default' => 'The places <em>we stay</em>.'],
+            'wp_people_text2'  => ['label' => 'Places — text', 'type' => 'paras', 'rows' => 3, 'default' => 'Our partner properties will appear here.'],
+        ]],
+        'wp_bridge' => ['label' => 'Bridge to Journeys', 'fields' => [
+            'wp_bridge_title'  => ['label' => 'Title', 'type' => 'rich', 'default' => 'Not sure you need to lie down? <em>Some people need to wake up.</em>'],
+            'wp_bridge_text'   => ['label' => 'Text', 'type' => 'paras', 'rows' => 2, 'default' => 'If rest is not the problem and life feels disconnected, our Journeys move you through the island instead.'],
+            'wp_bridge_button' => ['label' => 'Button label', 'type' => 'text', 'default' => 'See MĀRGHĀ Journeys'],
+        ]],
+        'wp_profile' => ['label' => 'Wellness Path Profile', 'fields' => [
+            'wp_profile_eyebrow'  => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Wellness Path Profile'],
+            'wp_profile_title'    => ['label' => 'Title', 'type' => 'rich', 'default' => 'Five questions. <em>One honest suggestion.</em>'],
+            'wp_profile_text'     => ['label' => 'Text', 'type' => 'paras', 'rows' => 3, 'default' => 'The Wellness Path Profile takes about three minutes. Nothing is booked, and you hear from a person, not a funnel.'],
+            'wp_profile_question' => ['label' => 'Question', 'type' => 'text', 'default' => 'What brings you here?', 'help' => 'The answers are the “Where are you on your wellness journey?” choices from the Enquiry form, so the chosen answer carries straight into the form.'],
+            'wp_profile_button'   => ['label' => 'Button label', 'type' => 'text', 'default' => 'Continue'],
+        ]],
+        'wp_faq' => ['label' => 'FAQs', 'fields' => [
+            'wp_faq_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Questions'],
+            'wp_faq_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Frequently asked <em>questions</em>'],
+            'wp_faq_items'   => ['label' => 'Questions (one per line: Question | answer)', 'type' => 'textarea', 'rows' => 12, 'default' => "Do I have to be unwell to come? | No. Many guests come depleted rather than ill. Your practitioner will tell you honestly whether a programme suits you.\nIs this medical treatment? | Treatments are set and delivered by our partner physicians and practitioners, not by MĀRGHĀ. We arrange the journey. Nothing here is medical advice.\nHow long should I stay? | Three to five nights is a first reset. A week is where a programme begins to build. Longer stays are for deeper recovery. Your practitioner will advise.\nCan I come alone? | Yes. Most programmes are private and you are never expected to join a group.\nI have a health condition, take medication or am pregnant. | Tell us in the first conversation. Your health form goes to the practitioner, who may adjust or decline treatments.\nWhat does a day look like? | Slow and scheduled: gentle movement, treatment, food chosen for you, an empty hour, early sleep. See the sample day on each programme page.\nWhat does it cost? | Each page shows a price per person, what is included and what is not.\nWhen is the best time to go? | It depends on the property. The south-west coast is usually best from about December to March. We will advise by date.\nWhat if I need to change dates? | Our change policy is being finalised. Please ask us in your first conversation."],
+        ]],
+        'wp_seo' => ['label' => 'SEO', 'fields' => [
+            'wp_seo_title'       => ['label' => 'Page title (browser tab and Google)', 'type' => 'text', 'max' => 120, 'default' => 'Wellness — Practitioner-led wellness stays in Sri Lanka | Mārghā Wellness'],
+            'wp_seo_description' => ['label' => 'Description (Google)', 'type' => 'textarea', 'rows' => 3, 'max' => 300, 'default' => 'Rest is not the same as repair. Practitioner-set wellness programmes in Sri Lanka, from 3 to 21 nights, with partner physicians and one MĀRGHĀ contact throughout.'],
+        ]],
+
         'general' => ['label' => 'General & social', 'fields' => [
             'contact_email'      => ['label' => 'Contact email', 'type' => 'email', 'default' => CONTACT_EMAIL, 'help' => 'Where enquiry notifications will be sent.'],
             'social_instagram'   => ['label' => 'Instagram link', 'type' => 'url', 'default' => SOCIAL_INSTAGRAM],
@@ -204,4 +286,17 @@ function enquiry_months(): array
 function setting(string $key): string
 {
     return settings_saved()[$key] ?? settings_defaults()[$key] ?? '';
+}
+
+/**
+ * A list setting where each line has parts separated by " | ",
+ * e.g. "Heading | text". Returns one array of trimmed parts per line,
+ * padded to at least $parts entries so templates can index safely.
+ */
+function setting_items(string $key, int $parts = 2): array
+{
+    return array_map(
+        fn($line) => array_pad(array_map('trim', explode('|', $line)), $parts, ''),
+        setting_lines($key)
+    );
 }

@@ -8,6 +8,7 @@ declare(strict_types=1);
  * "coming soon" layout until they are built.
  */
 const PAGES = [
+    'wellness'       => ['Wellness',            'Wellness'],
     'journeys'       => ['Journeys',            'Journeys'],
     'retreats'       => ['Retreats',            'Wellness Retreats'],
     'journal'        => ['Journal',             'The Journal'],
@@ -25,7 +26,7 @@ const PAGES = [
 ];
 
 /** Main header navigation (order as in the design). */
-const MAIN_NAV = ['journeys', 'retreats', 'journal', 'news', 'our-story'];
+const MAIN_NAV = ['wellness', 'journeys', 'retreats', 'journal', 'news', 'our-story'];
 
 /**
  * Header menu items shown as plain text (not clickable) until their page is built.

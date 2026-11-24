@@ -147,6 +147,27 @@
         });
     });
 
+    /* ---------- Wellness page: programme filters ---------- */
+    const wpFilters = $('[data-wp-filters]');
+    if (wpFilters) {
+        const cards = $$('.wp-pk', $('[data-wp-programmes]'));
+        const empty = $('[data-wp-empty]');
+        const apply = () => {
+            const f = Object.fromEntries(new FormData(wpFilters));
+            let shown = 0;
+            cards.forEach(c => {
+                const ok = (!f.depth || c.dataset.depth === f.depth)
+                    && (!f.path || c.dataset.path === f.path)
+                    && (!f.for || c.dataset.for.split(' ').includes(f.for))
+                    && (!f.nights || c.dataset.nights === f.nights);
+                c.hidden = !ok;
+                if (ok) shown++;
+            });
+            if (empty) empty.hidden = shown > 0;
+        };
+        wpFilters.addEventListener('change', apply);
+    }
+
     /* ---------- "Enquire Now" full-screen form ---------- */
     const enq = $('.enquire[role="dialog"]');
     if (enq) {
@@ -198,6 +219,22 @@
         });
         window.addEventListener('popstate', () => { if (location.hash !== '#enquire') close(true); else open(); });
         if (location.hash === '#enquire') open();                     // shareable link: yoursite/#enquire
+
+        // Wellness page — Wellness Path Profile: the chosen answer is carried into the enquiry form.
+        const profile = $('[data-wp-profile]');
+        if (profile) {
+            const pmsg = $('[data-wp-profile-msg]', profile);
+            profile.addEventListener('submit', e => {
+                e.preventDefault();
+                const picked = $('input[name="stage"]:checked', profile);
+                if (!picked) { pmsg.textContent = 'Choose the answer that feels closest.'; return; }
+                pmsg.textContent = '';
+                const stage = $('#ef_stage', enq);
+                if (stage) stage.value = picked.value;
+                open();
+            });
+            profile.addEventListener('change', () => { pmsg.textContent = ''; });
+        }
 
         form.addEventListener('submit', async e => {
             e.preventDefault();

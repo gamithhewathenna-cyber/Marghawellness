@@ -43,7 +43,7 @@
                     <h3><?= e($heading) ?></h3>
                     <ul>
                         <?php foreach ($slugs as $slug => $label): ?>
-                        <li><a href="<?= e(url($slug)) ?>"><?= e($label) ?></a></li>
+                        <li><a href="<?= e(page_url($slug)) ?>"><?= e($label) ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>

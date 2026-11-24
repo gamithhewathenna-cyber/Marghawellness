@@ -45,7 +45,7 @@ $body_class       = $body_class ?? '';
                 <?php if (in_array($slug, NAV_NOT_CLICKABLE, true)): ?>
                 <li><span class="main-nav__text"><?= e(PAGES[$slug][0]) ?></span></li>
                 <?php else: ?>
-                <li><a href="<?= e(url($slug)) ?>"<?= current_slug() === $slug ? ' aria-current="page"' : '' ?>><?= e(PAGES[$slug][0]) ?></a></li>
+                <li><a href="<?= e(page_url($slug)) ?>"<?= current_slug() === $slug ? ' aria-current="page"' : '' ?>><?= e(PAGES[$slug][0]) ?></a></li>
                 <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
