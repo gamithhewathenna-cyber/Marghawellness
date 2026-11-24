@@ -18,7 +18,7 @@ function count_rows(string $sql): ?int
 // No enquiries, subscribers or edit links — just the website and a content overview.
 if (!is_full_admin($user)) {
     $overview = [
-        ['Wellness retreats', count_rows('SELECT COUNT(*) FROM retreats WHERE is_featured = 1'), 'on the homepage'],
+        ['Wellness packages', count_rows('SELECT COUNT(*) FROM wellness_programmes WHERE is_active = 1'), 'on the website'],
         ['Journeys',          count_rows('SELECT COUNT(*) FROM journeys WHERE is_featured = 1'), 'on the homepage'],
         ['Journal posts',     count_rows("SELECT COUNT(*) FROM posts WHERE status = 'published'"), 'published'],
     ];
@@ -64,7 +64,7 @@ if (!is_full_admin($user)) {
 
 $cards = [
     ['Hero slides',  'hero_slides', count_rows('SELECT COUNT(*) FROM hero_slides WHERE is_active = 1'), 'shown'],
-    ['Retreats',     'retreats',    count_rows('SELECT COUNT(*) FROM retreats WHERE is_featured = 1'), 'on homepage'],
+    ['Wellness packages', 'wellness_programmes', count_rows('SELECT COUNT(*) FROM wellness_programmes WHERE is_active = 1'), 'on the website'],
     ['Journeys',     'journeys',    count_rows('SELECT COUNT(*) FROM journeys WHERE is_featured = 1'), 'on homepage'],
     ['Posts',        'posts',       count_rows("SELECT COUNT(*) FROM posts WHERE status = 'published'"), 'published'],
     ['Enquiries',    'enquiries',   count_rows("SELECT COUNT(*) FROM enquiries WHERE status = 'new'"), 'new'],

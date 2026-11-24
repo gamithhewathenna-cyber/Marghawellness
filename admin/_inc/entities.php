@@ -49,7 +49,7 @@ function admin_entities(): array
             ],
         ],
         'retreats' => [
-            'label' => 'Wellness retreats', 'singular' => 'retreat', 'icon' => 'leaf',
+            'label' => 'Wellness retreats', 'singular' => 'retreat', 'icon' => 'leaf', 'hidden' => true, // replaced by Wellness Packages (table kept, not shown in the admin)
             'intro' => 'Cards in the “Wellness Holidays” section of the homepage (up to 8 featured retreats).',
             'order' => 'sort_order, id', 'title' => 'title', 'search' => ['title', 'summary'],
             'list'  => ['image' => 'Image', 'title' => 'Title', 'duration' => 'Duration', 'sort_order' => 'Order', 'is_featured' => 'On homepage'],
