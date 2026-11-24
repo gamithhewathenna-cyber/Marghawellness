@@ -26,7 +26,7 @@ const PAGES = [
 ];
 
 /** Main header navigation (order as in the design). */
-const MAIN_NAV = ['wellness', 'journeys', 'retreats', 'journal', 'news', 'our-story'];
+const MAIN_NAV = ['wellness', 'journeys', 'journal', 'news', 'our-story'];   // 'retreats' hidden (replaced by Wellness)
 
 /**
  * Header menu items shown as plain text (not clickable) until their page is built.
