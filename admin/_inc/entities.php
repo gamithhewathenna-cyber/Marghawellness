@@ -100,6 +100,10 @@ function admin_entities(): array
                 'hero_image'    => ['label' => 'Package page photo (optional)', 'type' => 'image', 'max' => 255, 'help' => 'Large photo behind the package page heading, about 2400px wide. Leave empty to use the card photo.'],
                 'summary'       => ['label' => 'Short description', 'type' => 'textarea', 'required' => true, 'max' => 300, 'rows' => 3, 'help' => 'Card text, and the line under the package name. E.g. “The Ayurvedic week. A full programme under a partner physician’s consultation, adjusted day by day.”'],
 
+                '_facts'        => ['label' => 'Key facts', 'type' => 'heading', 'help' => 'The strip under the photo and the “At a glance” card beside the page.'],
+                'facts'         => ['label' => 'Key facts strip (one per line: Label | value)', 'type' => 'textarea', 'rows' => 6, 'help' => 'E.g. “Shape | You stay, one place”. Leave empty to show Depth, Nights and Path automatically.'],
+                'at_a_glance'   => ['label' => 'At a glance (one per line: Label | value)', 'type' => 'textarea', 'rows' => 5, 'help' => 'E.g. “Group | Private, 1–2 guests”.'],
+
                 '_intro'        => ['label' => 'Introduction', 'type' => 'heading'],
                 'headline'      => ['label' => 'Headline', 'type' => 'rich', 'max' => 200, 'help' => 'E.g. “A week to actually feel the difference.” Use <em>…</em> for a rust italic word.'],
                 'description'   => ['label' => 'Introduction text', 'type' => 'paras', 'rows' => 5],
@@ -109,7 +113,7 @@ function admin_entities(): array
                 'fit_not'       => ['label' => 'Perhaps not yet if… (one per line)', 'type' => 'textarea', 'rows' => 4],
 
                 '_week'         => ['label' => 'Your week', 'type' => 'heading'],
-                'week'          => ['label' => 'Days (one per line: Day | Title | text)', 'type' => 'textarea', 'rows' => 7, 'help' => 'E.g. “Day 1 | Arrive | Private transfer, a quiet room …”'],
+                'week'          => ['label' => 'Days (one per line: Day | Label | Title | text | tags)', 'type' => 'textarea', 'rows' => 7, 'help' => 'E.g. “1 | Arrive | Arrive and be received | Private transfer, a quiet room … | Consultation · assessment”. Day can be a range such as 3–5. Label and tags are optional.'],
                 'sample_day'    => ['label' => 'Sample day (one per line: Time | text)', 'type' => 'textarea', 'rows' => 7, 'help' => 'E.g. “07:00 | Gentle yoga and breathwork …”'],
 
                 '_incl'         => ['label' => 'Included / not included', 'type' => 'heading'],
@@ -121,6 +125,14 @@ function admin_entities(): array
                 'price_from'    => ['label' => 'Price from', 'type' => 'text', 'max' => 80, 'help' => 'E.g. “USD 2,450”. Leave empty to show “Price on request”.'],
                 'price_basis'   => ['label' => 'Price basis', 'type' => 'text', 'max' => 120, 'help' => 'E.g. “per person, twin-share”.'],
                 'price_details' => ['label' => 'Price notes (one per line)', 'type' => 'textarea', 'rows' => 3, 'help' => 'E.g. “Single supplement USD 600” and “A 30% deposit secures your dates”.'],
+
+                '_faq'          => ['label' => 'Questions & related packages', 'type' => 'heading'],
+                'faq'           => ['label' => 'Questions (one per line: Question | answer)', 'type' => 'textarea', 'rows' => 6],
+                'related'       => ['label' => '“Step up, or step down” packages', 'type' => 'text', 'max' => 255, 'help' => 'URL names of other packages, separated by commas, e.g. “heal, revive”. Leave empty to suggest packages at the next depth up and down automatically.'],
+
+                '_people'       => ['label' => 'Practitioner card', 'type' => 'heading', 'help' => 'Keep hidden until partner agreements are signed.'],
+                'practitioner_show' => ['label' => 'Show the practitioner card', 'type' => 'bool', 'default' => 0],
+                'practitioner'  => ['label' => 'Practitioner (Name | qualification | one line about them)', 'type' => 'text', 'max' => 300],
 
                 '_read'         => ['label' => 'Read before you go', 'type' => 'heading'],
                 'reading'       => ['label' => 'Articles (one per line: Label | Title | link — link optional)', 'type' => 'textarea', 'rows' => 4, 'help' => 'E.g. “Before | What an Ayurvedic consultation actually involves. | journal”. The link can be a page on this site or a full https:// address.'],

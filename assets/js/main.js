@@ -147,6 +147,18 @@
         });
     });
 
+    /* ---------- Package page: highlight the section you are reading in the sticky menu ---------- */
+    const pkNav = $('[data-pk-nav]');
+    if (pkNav && 'IntersectionObserver' in window) {
+        const links = $$('.pk-nav__links a', pkNav);
+        const targets = links.map(a => document.getElementById(a.hash.slice(1))).filter(Boolean);
+        const setActive = id => links.forEach(a => a.classList.toggle('is-active', a.hash === '#' + id));
+        const spy = new IntersectionObserver(entries => {
+            entries.forEach(en => { if (en.isIntersecting) setActive(en.target.id); });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        targets.forEach(t => spy.observe(t));
+    }
+
     /* ---------- Wellness page: programme filters ---------- */
     const wpFilters = $('[data-wp-filters]');
     if (wpFilters) {

@@ -136,20 +136,21 @@ function package_url(string $slug): string
 function wellness_fallback_packages(): array
 {
     $soon = 'Full programme details coming soon.';
-    $base = fn(array $p) => $p + ['hero_image' => '', 'headline' => '', 'description' => '', 'fit_for' => '', 'fit_not' => '', 'week' => '',
-        'sample_day' => '', 'included' => '', 'not_included' => '', 'addons' => '', 'price_from' => '', 'price_basis' => '',
-        'price_details' => '', 'reading' => '', 'seo_title' => '', 'seo_description' => '', 'is_active' => 1];
+    $base = fn(array $p) => $p + ['hero_image' => '', 'headline' => '', 'description' => '', 'facts' => '', 'at_a_glance' => '', 'fit_for' => '', 'fit_not' => '',
+        'week' => '', 'sample_day' => '', 'included' => '', 'not_included' => '', 'addons' => '', 'price_from' => '', 'price_basis' => '',
+        'price_details' => '', 'faq' => '', 'related' => '', 'practitioner' => '', 'practitioner_show' => 0, 'reading' => '',
+        'seo_title' => '', 'seo_description' => '', 'is_active' => 1];
     return array_map($base, [
-        ['slug' => 'heal',             'title' => 'Heal',               'depth' => 'begin',   'path' => 'healing', 'audience' => 'solo,women,couples', 'nights' => '3-5', 'image' => 'retreat-ocean-breath.jpg', 'summary' => $soon],
-        ['slug' => 'uplift',           'title' => 'Uplift',             'depth' => 'begin',   'path' => 'soul',    'audience' => 'solo,women',         'nights' => '3-5', 'image' => 'journal-2.jpg',            'summary' => $soon],
-        ['slug' => 'unplug-reconnect', 'title' => 'Unplug & Reconnect', 'depth' => 'begin',   'path' => 'rest',    'audience' => 'solo,couples,teams', 'nights' => '3-5', 'image' => 'retreat-dark-sky.jpg',     'summary' => $soon],
-        ['slug' => 'arogya',           'title' => 'Arogya',             'depth' => 'deepen',  'path' => 'healing', 'audience' => 'solo,couples',       'nights' => '7',   'image' => 'journey-south-coast.jpg',
+        // Arogya — the first fully written package (shown first)
+        ['slug' => 'arogya', 'title' => 'Arogya', 'depth' => 'deepen', 'path' => 'healing', 'audience' => 'solo,couples', 'nights' => '7', 'image' => 'journey-south-coast.jpg',
          'summary'      => 'The Ayurvedic week. A full programme under a partner physician’s consultation, adjusted day by day.',
          'headline'     => 'A week to actually feel the difference.',
          'description'  => 'Arogya is for the person who has tried quick fixes and is ready for a proper programme. It starts with a consultation, not a menu. Your partner physician decides what the week contains, then adjusts it as your body responds.',
+         'facts'        => "Depth | Deepen\nNights | 7\nPath | Healing\nShape | You stay, one place\nLed by | Partner Ayurvedic physician\nSeason | [VERIFY]",
+         'at_a_glance'  => "Nights | 7\nGroup | Private, 1–2 guests\nDates | Rolling · [TBC]\nWhere | [Partner property]\nTreatments by | Partner physician",
          'fit_for'      => "You are burnt out, sleeping badly or running on stress\nA weekend away has not been enough\nYou want treatment set for you, not chosen by you",
          'fit_not'      => "You want a spa break with a pool and no consultation\nYou have an acute medical condition (speak to your doctor first)\nYou would rather move through the island (see Journeys)",
-         'week'         => "Day 1 | Arrive | Private transfer, a quiet room, a first conversation with your partner physician. Nothing is scheduled that you did not agree to.\nDay 2 | The programme is set | Your physician sets the programme from the consultation. Gentle movement, food built for you, early sleep.\nDays 3 to 5 | Treatment builds | Daily bodywork and therapies, adjusted each morning according to how you responded.\nDay 6 | Stillness | A lighter day: breathwork, meditation, silence in the garden. The empty hour that feels harder than it sounds.\nDay 7 | Plan the return | A final consultation. You leave with a practice for home and a way to reach your practitioner afterwards.",
+         'week'         => "1 | Arrive | Arrive and be received | Private transfer, a quiet room, a first conversation with your partner physician. Nothing is scheduled that you did not agree to. | Consultation · assessment\n2 | Settle | The programme is set | Your physician sets the programme from the consultation. Gentle movement, food built for you, early sleep. | Practitioner-set\n3–5 | Treat | Treatment builds | Daily bodywork and therapies, adjusted each morning according to how you responded. | Adjusted daily\n6 | Deepen | Stillness | A lighter day: breathwork, meditation, silence in the garden. The empty hour that feels harder than it sounds. | Breathwork · silence\n7 | Return | Plan the return | A final consultation. You leave with a practice for home and a way to reach your practitioner afterwards. | Follow-up booked",
          'sample_day'   => "06:00 | Light arrives before the alarm. There is no alarm.\n07:00 | Gentle yoga and breathwork, adjusted to your body that morning.\n09:00 | Treatment as set by your physician.\n11:00 | An empty hour. Deliberately.\n13:00 | Food chosen for your constitution.\n16:00 | Short check-in. Small adjustments.\n20:30 | Early dark, early sleep.",
          'included'     => "Seven nights at [property TBC]\nInitial and final physician consultations\nDaily treatments as prescribed [count: VERIFY]\nDaily yoga, breathwork and meditation\nAll meals built around your programme\nPrivate airport transfers\nOne MĀRGHĀ contact throughout\nFollow-up after you return",
          'not_included' => "International flights\nTravel insurance\nOptional add-ons\nPersonal expenses",
@@ -157,10 +158,58 @@ function wellness_fallback_packages(): array
          'price_from'   => 'USD ———',
          'price_basis'  => 'per person, twin-share',
          'price_details'=> "Single supplement [TBC]\nDeposit [25–30%: TBC] secures your dates",
-         'reading'      => "Before | What an Ayurvedic consultation actually involves.\nDuring | Four minutes of breathwork for the middle of a hard day.\nAfter | How to keep a programme going at home."],
-        ['slug' => 'revive',           'title' => 'Revive',             'depth' => 'immerse', 'path' => 'rest',    'audience' => 'solo,women',         'nights' => '14',  'image' => 'journey-tree-of-life.jpg', 'summary' => $soon],
-        ['slug' => 'longevity',        'title' => 'Longevity',          'depth' => 'immerse', 'path' => 'healing', 'audience' => 'solo,couples',       'nights' => '21',  'image' => 'journal-1.jpg',            'summary' => $soon],
+         'faq'          => "Is this suitable if I’m new to wellness travel? | Yes. Arogya begins with a consultation, so no prior knowledge is needed. If a shorter first step suits you better, we may suggest a Begin programme such as Heal.\nWhat if I have a health condition or take medication? | Tell us in the first conversation. Your health form goes to the practitioner, who may adjust or decline treatments.\nCan I travel solo? | Yes. Arogya is private, and you are never expected to join a group.\nWhat happens if I need to change dates? | Our change policy is being finalised. Please ask us in your first conversation.",
+         'related'      => 'heal, revive',
+         'reading'      => "Before | What an Ayurvedic consultation actually involves.\nDuring | Four minutes of breathwork for the middle of a hard day.\nAfter | How to keep a programme going at home.",
+         'sort_order'   => 0],
+        ['slug' => 'heal',             'title' => 'Heal',               'depth' => 'begin',   'path' => 'healing', 'audience' => 'solo,women,couples', 'nights' => '3-5', 'image' => 'retreat-ocean-breath.jpg', 'summary' => $soon, 'sort_order' => 1],
+        ['slug' => 'uplift',           'title' => 'Uplift',             'depth' => 'begin',   'path' => 'soul',    'audience' => 'solo,women',         'nights' => '3-5', 'image' => 'journal-2.jpg',            'summary' => $soon, 'sort_order' => 2],
+        ['slug' => 'unplug-reconnect', 'title' => 'Unplug & Reconnect', 'depth' => 'begin',   'path' => 'rest',    'audience' => 'solo,couples,teams', 'nights' => '3-5', 'image' => 'retreat-dark-sky.jpg',     'summary' => $soon, 'sort_order' => 3],
+        ['slug' => 'revive',           'title' => 'Revive',             'depth' => 'immerse', 'path' => 'rest',    'audience' => 'solo,women',         'nights' => '14',  'image' => 'journey-tree-of-life.jpg', 'summary' => $soon, 'sort_order' => 5],
+        ['slug' => 'longevity',        'title' => 'Longevity',          'depth' => 'immerse', 'path' => 'healing', 'audience' => 'solo,couples',       'nights' => '21',  'image' => 'journal-1.jpg',            'summary' => $soon, 'sort_order' => 6],
     ]);
+}
+
+/**
+ * "Step up, or step down" packages for a package page: the ones named in its
+ * Related field, otherwise the nearest packages at the depth above and below.
+ */
+function get_related_packages(array $pkg, int $limit = 3): array
+{
+    $all = array_values(array_filter(get_wellness_programmes(), fn($p) => $p['slug'] !== $pkg['slug']));
+    $wanted = array_filter(array_map('trim', explode(',', (string) ($pkg['related'] ?? ''))));
+    if ($wanted) {
+        $bySlug = array_column($all, null, 'slug');
+        return array_slice(array_values(array_filter(array_map(fn($s) => $bySlug[$s] ?? null, $wanted))), 0, $limit);
+    }
+    $order = array_keys(get_wellness_categories('depth'));
+    $here  = array_search($pkg['depth'], $order, true);
+    $pick  = [];
+    foreach ([$here - 1, $here + 1] as $i) {                 // one step down, one step up
+        foreach ($all as $p) {
+            if ($here !== false && isset($order[$i]) && $p['depth'] === $order[$i]) { $pick[] = $p; break; }
+        }
+    }
+    foreach ($all as $p) {                                    // fill up with others
+        if (count($pick) >= $limit) break;
+        if (!in_array($p, $pick, true)) $pick[] = $p;
+    }
+    return array_slice($pick, 0, $limit);
+}
+
+/**
+ * Week lines → [day, label, title, text, tags]. Accepts the full format
+ * "1 | Arrive | Arrive and be received | text | tags" and the short one "Day 1 | Arrive | text".
+ */
+function package_week(string $text): array
+{
+    return array_map(function (array $parts) {
+        if (count(array_filter($parts, 'strlen')) <= 3 && ($parts[3] ?? '') === '') {
+            [$day, $title, $body] = array_pad($parts, 3, '');
+            return [trim((string) preg_replace('/^days?\s*/i', '', $day)), '', $title, $body, ''];
+        }
+        return array_pad($parts, 5, '');
+    }, text_items($text, 5));
 }
 
 /** Packages shown on the Wellness page (active only, in display order). */
