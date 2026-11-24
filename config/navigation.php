@@ -32,7 +32,7 @@ const MAIN_NAV = ['wellness', 'journeys', 'journal', 'news', 'our-story'];   // 
  * Header menu items shown as plain text (not clickable) until their page is built.
  * Remove a slug from this list to make that menu item a link again.
  */
-const NAV_NOT_CLICKABLE = ['journeys', 'retreats', 'journal', 'news', 'our-story'];
+const NAV_NOT_CLICKABLE = ['retreats', 'journal', 'news', 'our-story'];
 
 /** Footer link columns: heading => [slug => label]. */
 const FOOTER_NAV = [

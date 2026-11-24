@@ -240,3 +240,36 @@ function get_wellness_package(string $slug): ?array
     }
     return $p;
 }
+
+/* ==========================================================================
+   Journeys page (/journeys) — journey routes come from the `journeys` table
+   (Admin › Listings › Journeys). Filter options are fixed below.
+   ========================================================================== */
+const JOURNEY_DEPTHS  = ['first-steps' => 'First steps', 'finding-footing' => 'Finding footing', 'going-deeper' => 'Going deeper'];
+const JOURNEY_STYLES  = ['womens-group' => 'Women’s group', 'solo' => 'Solo', 'couples' => 'Couples', 'friends' => 'Friends'];
+const JOURNEY_EFFORTS = ['gentle' => 'Gentle', 'active' => 'Active', 'demanding' => 'Demanding'];
+
+/** Starter routes from the approved design — used until database/journeys.sql has been run. */
+function journey_fallback_routes(): array
+{
+    $r = fn(array $j) => $j + ['price_from' => 0, 'region' => '', 'description' => '', 'is_featured' => 0];
+    return array_map($r, [
+        ['slug' => 'womens-circle-getaway', 'title' => 'The Women’s Circle Getaway', 'depth' => 'first-steps',     'path' => 'rest',    'tagline' => 'Five nights, six women',        'route' => 'Negombo → Kitulgala → Galle / Ahangama',      'summary' => 'The pilot. A small group moving from coast to river forest to the south coast, with breathwork, water and unhurried company.', 'nights' => '5',          'effort' => 'gentle',    'group_size' => 'Women’s group of six',  'wellness' => 'Breathwork · water · bodywork',        'style' => 'womens-group',          'image' => 'retreat-couples.jpg'],
+        ['slug' => 'the-mountain-path',     'title' => 'The Mountain Path',          'depth' => 'finding-footing', 'path' => 'soul',    'tagline' => 'Tea country on foot',           'route' => 'Kandy → Pekoe Trail → Riverston',             'summary' => 'Walking days through tea country, a night above the cloud line, and silence at dawn. Built on the Pekoe Trail.',              'nights' => '7 · [VERIFY]', 'effort' => 'active',    'group_size' => 'Small group',           'wellness' => 'Breathwork at altitude · silence',     'style' => 'solo,couples,friends',  'image' => 'journey-tree-of-life.jpg'],
+        ['slug' => 'the-dark-sky-path',     'title' => 'The Dark-Sky Path',          'depth' => 'finding-footing', 'path' => 'soul',    'tagline' => 'No light for forty kilometres', 'route' => 'Highlands → Dark-sky camp',                   'summary' => 'A night camp where the sky isn’t washed out. Designed around the idea that awe is a kind of medicine.',                       'nights' => '6 · [VERIFY]', 'effort' => 'active',    'group_size' => 'Small group',           'wellness' => 'Stillness · stargazing · fire',        'style' => 'solo,couples,friends',  'image' => 'retreat-dark-sky.jpg'],
+        ['slug' => 'the-forest-path',       'title' => 'The Forest Path',            'depth' => 'going-deeper',    'path' => 'healing', 'tagline' => 'Rainforest, slowly',            'route' => 'Deniyaya forest retreat → Sinharaja edge',     'summary' => 'Days inside the forest with local naturalists, forest therapy walks and village meals, ending with bodywork.',              'nights' => '8 · [VERIFY]', 'effort' => 'demanding', 'group_size' => 'Small group',           'wellness' => 'Forest therapy · practitioner finale', 'style' => 'solo,couples,friends',  'image' => 'journey-south-coast.jpg'],
+        ['slug' => 'the-soul-path',         'title' => 'The Soul Path',              'depth' => 'going-deeper',    'path' => 'soul',    'tagline' => 'Culture, ritual, silence',      'route' => 'Cultural heartland → hill temples → coast',   'summary' => 'For those drawn to the spiritual side: temple mornings, teachers, meditation and long quiet stretches.',                  'nights' => '9 · [VERIFY]', 'effort' => 'active',    'group_size' => 'Small group or private', 'wellness' => 'Meditation · teacher-led practice',   'style' => 'solo,couples,friends',  'image' => 'destination-sigiriya.jpg'],
+        ['slug' => 'the-ocean-path',        'title' => 'The Ocean Path',             'depth' => 'going-deeper',    'path' => 'rest',    'tagline' => 'Water, sunrise, surf',          'route' => 'South coast → Mirissa → Galle',               'summary' => 'Sunrise yoga by the waves, mindful surfing and Ayurveda bodywork at the end of the day.',                                  'nights' => '7 · [VERIFY]', 'effort' => 'active',    'group_size' => 'Small group or private', 'wellness' => 'Sunrise yoga · bodywork',              'style' => 'solo,couples,friends',  'image' => 'journey-maldives.jpg'],
+    ]);
+}
+
+/** Journey routes for the Journeys page, in display order. */
+function get_journey_routes(): array
+{
+    $rows = Database::fetchAll('SELECT * FROM journeys WHERE on_journeys_page = 1 ORDER BY sort_order, id');
+    // Before database/journeys.sql the column doesn't exist (query fails) → show the starter routes.
+    if ($rows === null) {
+        return journey_fallback_routes();
+    }
+    return $rows;
+}

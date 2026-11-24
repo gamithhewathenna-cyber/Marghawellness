@@ -156,6 +156,66 @@ function settings_schema(): array
             'wp_seo_description' => ['label' => 'Description (Google)', 'type' => 'textarea', 'rows' => 3, 'max' => 300, 'default' => 'Rest is not the same as repair. Practitioner-set wellness programmes in Sri Lanka, from 3 to 21 nights, with partner physicians and one MĀRGHĀ contact throughout.'],
         ]],
 
+        /* ---------- Journeys page (/journeys — pages/journeys.php) ----------
+           List fields: one item per line; " | " separates the parts of an item. */
+        'jp_hero' => ['label' => 'Hero', 'fields' => [
+            'jp_hero_image'   => ['label' => 'Background photo', 'type' => 'image', 'default' => 'destination-sigiriya.jpg', 'help' => 'Wide landscape photo, about 2400px wide.'],
+            'jp_hero_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'MĀRGHĀ Journeys · Sri Lanka'],
+            'jp_hero_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Not a resort.<br>A route.'],
+            'jp_hero_text'    => ['label' => 'Text', 'type' => 'paras', 'rows' => 3, 'default' => 'For the life that has gone quiet. Move through the island with local guides and naturalists, with wellness threaded through the days, so you come home awake.'],
+            'jp_hero_btn1'    => ['label' => 'Button 1 (goes to the journey cards)', 'type' => 'text', 'default' => 'Find your journey'],
+            'jp_hero_btn2'    => ['label' => 'Button 2 (opens the enquiry form)', 'type' => 'text', 'default' => 'Talk to a specialist'],
+            'jp_hero_note'    => ['label' => 'Small note under the buttons', 'type' => 'text', 'default' => 'A personal reply within a day · No obligation · Treatments set by our partner physicians and practitioners'],
+        ]],
+        'jp_facts' => ['label' => 'Fact bar', 'fields' => [
+            'jp_facts' => ['label' => 'Facts (one per line: Title | small text)', 'type' => 'textarea', 'rows' => 5, 'default' => "You move | The island, in sequence\n5 to 12 nights | Short escape to deep immersion\nLocal guides and naturalists | Naturalists, locals, facilitators\nSmall groups | Or entirely private"],
+        ]],
+        'jp_island' => ['label' => 'One island', 'fields' => [
+            'jp_island_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'One island'],
+            'jp_island_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Everything inside a<br>three-hour drive.'],
+            'jp_island_text'    => ['label' => 'Text', 'type' => 'paras', 'rows' => 2, 'default' => 'Ocean, rainforest and highland sit close enough to move through in one journey, a closeness few destinations offer.'],
+            'jp_island_items'   => ['label' => 'Landscapes (one per line: Small label | Title | text)', 'type' => 'textarea', 'rows' => 4, 'default' => "Coast | Ocean | Sunrise yoga, water, the slow end of the day.\nLowland | Rainforest | Forest therapy, river valleys, village meals.\nHighland | Tea country | Walking trails and mornings above the cloud.\nOpen sky | Dark sky | Camps where the night sky is actually visible."],
+        ]],
+        'jp_depths' => ['label' => 'Three depths', 'fields' => [
+            'jp_depths_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Where are you on the path?'],
+            'jp_depths_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Three depths of<br>immersion.'],
+            'jp_depths_intro'   => ['label' => 'Intro', 'type' => 'paras', 'rows' => 2, 'default' => 'Choose by how much you want to be moved, not only by how long you have.'],
+            'jp_depths_items'   => ['label' => 'Depths (one per line: Name | Effort · nights | text | You might be…)', 'type' => 'textarea', 'rows' => 4, 'default' => "First steps | Gentle · 5 nights | Short, supported and social. A way into slow travel without feeling out of your depth. | new to this, travelling with friends, wanting company.\nFinding footing | Active · 6 to 8 nights | Real walking days, a camp night, time off-grid. Enough effort to feel it, enough care to enjoy it. | past the sampler, ready for some discomfort that means something.\nGoing deeper | Demanding · 9 to 12 nights | Long, quiet journeys with teachers, ritual and silence. For those who want a turning point. | marking a milestone, drawn to spiritual practice, returning for more."],
+        ]],
+        'jp_list' => ['label' => 'Journey cards', 'fields' => [
+            'jp_list_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'MĀRGHĀ Journeys'],
+            'jp_list_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Six routes and <em>one tailor-made door</em>.'],
+            'jp_list_button'  => ['label' => 'Card button label (opens the enquiry form until journey pages exist)', 'type' => 'text', 'default' => 'View journey'],
+            'jp_list_count'   => ['label' => 'Counter text after the number of journeys', 'type' => 'text', 'default' => 'journeys + tailor-made'],
+            'jp_list_empty'   => ['label' => 'Message when no journey matches the filters', 'type' => 'text', 'default' => 'No journey matches those filters yet.'],
+            'jp_list_empty_link' => ['label' => 'Link text after that message (opens the enquiry form)', 'type' => 'text', 'default' => 'Ask us to design one'],
+        ]],
+        'jp_discovery' => ['label' => 'The Discovery Path (tailor-made)', 'fields' => [
+            'jp_disc_label'  => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Tailor-made'],
+            'jp_disc_title'  => ['label' => 'Title', 'type' => 'text', 'default' => 'The Discovery Path'],
+            'jp_disc_tag'    => ['label' => 'Tagline', 'type' => 'text', 'default' => 'Your own MĀRGHĀ'],
+            'jp_disc_text'   => ['label' => 'Text', 'type' => 'paras', 'rows' => 3, 'default' => 'Tell us what you are carrying and what you want to leave behind, and we design it from there.'],
+            'jp_disc_button' => ['label' => 'Button label (opens the enquiry form)', 'type' => 'text', 'default' => 'Design my journey'],
+            'jp_disc_image'  => ['label' => 'Photo', 'type' => 'image', 'default' => 'journey-maldives.jpg'],
+        ]],
+        'jp_compare' => ['label' => 'Which one is yours?', 'fields' => [
+            'jp_cmp_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Which one is yours?'],
+            'jp_cmp_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'The difference, plainly.'],
+            'jp_cmp_col1'    => ['label' => 'Column 1 heading', 'type' => 'text', 'default' => 'MĀRGHĀ Wellness'],
+            'jp_cmp_col2'    => ['label' => 'Column 2 heading', 'type' => 'text', 'default' => 'MĀRGHĀ Journeys'],
+            'jp_cmp_rows'    => ['label' => 'Rows (one per line: Label | Wellness | Journeys)', 'type' => 'textarea', 'rows' => 6, 'default' => "The need | Something in the body needs repair | Something in the life needs waking\nThe shape | You stay. One place, deeply. | You move. The island, in sequence.\nWho leads | Partner physicians and practitioners | Naturalists, local guides, facilitators\nThe days | Slow, scheduled, adjusted daily | Active, exploratory, weather-led\nLength | 3 to 21 nights | 5 to 12 nights\nYou return | Restored | Changed"],
+            'jp_cmp_close'   => ['label' => 'Closing line', 'type' => 'text', 'default' => 'Most people eventually do both. We usually suggest starting with the one you are resisting.'],
+        ]],
+        'jp_faq' => ['label' => 'FAQs', 'fields' => [
+            'jp_faq_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'Questions'],
+            'jp_faq_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Frequently asked <em>questions</em>'],
+            'jp_faq_items'   => ['label' => 'Questions (one per line: Question | answer)', 'type' => 'textarea', 'rows' => 8, 'default' => "How fit do I need to be? | Each journey shows an effort level. Gentle means walks of an hour or two; Active means half-day walks; Demanding means long days. Tell us your honest level and we will match it.\nCan I join a group alone? | Yes. Most guests do. Groups are small and hosted by a MĀRGHĀ team member.\nWhat if the weather turns? | Routes are weather-led. We carry alternatives and will adjust with your guide on the day.\nIs it safe? | Guides are local and experienced, vehicles are private, and we keep one named contact reachable throughout. [VERIFY: guide qualifications, first-aid cover, insurance requirements]\nIs wellness part of it or an add-on? | It is part of it: breathwork, silence, bodywork at the end of a hard day. Your guide and a practitioner shape it together.\nWhat is not included? | Flights, insurance and personal expenses. Each journey page lists the rest."],
+        ]],
+        'jp_seo' => ['label' => 'SEO', 'fields' => [
+            'jp_seo_title'       => ['label' => 'Page title (browser tab and Google)', 'type' => 'text', 'max' => 120, 'default' => 'Journeys — Guided routes through Sri Lanka | Mārghā Wellness'],
+            'jp_seo_description' => ['label' => 'Description (Google)', 'type' => 'textarea', 'rows' => 3, 'max' => 300, 'default' => 'Not a resort. A route. Move through Sri Lanka with local guides and naturalists, with wellness threaded through the days. 5 to 12 nights, small groups or private.'],
+        ]],
+
         'general' => ['label' => 'General & social', 'fields' => [
             'contact_email'      => ['label' => 'Contact email', 'type' => 'email', 'default' => CONTACT_EMAIL, 'help' => 'Where enquiry notifications will be sent.'],
             'social_instagram'   => ['label' => 'Instagram link', 'type' => 'url', 'default' => SOCIAL_INSTAGRAM],

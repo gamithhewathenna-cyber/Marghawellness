@@ -159,6 +159,40 @@
         targets.forEach(t => spy.observe(t));
     }
 
+    /* ---------- Journeys page: filter chips (one choice per group; click again to clear) ---------- */
+    const jrBar = $('[data-jr-filters]');
+    if (jrBar) {
+        const cards = $$('.jr-card[data-depth]');
+        const empty = $('[data-jr-empty]');
+        const count = $('[data-jr-count]', jrBar);
+        const picked = {};
+        const apply = () => {
+            let shown = 0;
+            cards.forEach(c => {
+                const ok = Object.entries(picked).every(([g, v]) => !v || (g === 'style' ? c.dataset.style.split(' ').includes(v) : c.dataset[g] === v));
+                c.hidden = !ok;
+                if (ok) shown++;
+            });
+            if (count) count.textContent = shown;
+            if (empty) empty.hidden = shown > 0;
+        };
+        $$('.jr-chips', jrBar).forEach(group => {
+            const g = group.dataset.group;
+            group.addEventListener('click', e => {
+                const chip = e.target.closest('.jr-chip');
+                if (!chip) return;
+                const v = chip.dataset.value;
+                picked[g] = picked[g] === v ? '' : v;              // clicking the active chip clears it
+                $$('.jr-chip', group).forEach(c => {
+                    const on = c.dataset.value === picked[g];
+                    c.classList.toggle('is-on', on);
+                    c.setAttribute('aria-pressed', String(on));
+                });
+                apply();
+            });
+        });
+    }
+
     /* ---------- Wellness page: programme filters ---------- */
     const wpFilters = $('[data-wp-filters]');
     if (wpFilters) {

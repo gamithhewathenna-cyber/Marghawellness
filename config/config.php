@@ -40,7 +40,7 @@ if (!defined('BASE_URL')) {
     if ($sub !== '' && strcasecmp(substr($dir, -strlen($sub)), $sub) === 0) {
         $dir = substr($dir, 0, -strlen($sub));
     } else {
-        $dir = (string) preg_replace('#/(api|admin|wellness)$#', '', $dir);
+        $dir = (string) preg_replace('#/(api|admin|wellness|journeys)$#', '', $dir);
     }
     define('BASE_URL', $dir === '' ? '' : $dir);
     unset($root, $file, $sub);
