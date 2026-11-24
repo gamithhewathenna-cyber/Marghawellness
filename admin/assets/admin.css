@@ -253,3 +253,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
     .reset__form { position: static; width: 100%; margin-top: 6px; }
     .reset { display: block; margin: 0 0 6px; }
 }
+
+/* Tick-box group (field type "checks") */
+.field__label { display: block; font-weight: 500; margin-bottom: 8px; }
+.checks { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.checks .check { font-weight: 400; }

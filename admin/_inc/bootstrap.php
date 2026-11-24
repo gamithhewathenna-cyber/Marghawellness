@@ -60,6 +60,10 @@ function admin_cell(string $col, mixed $val, array $ent): string
     if ($def['type'] === 'bool') {
         return $val ? '<span class="badge badge--yes">Yes</span>' : '<span class="badge badge--no">No</span>';
     }
+    if ($def['type'] === 'checks') {
+        $labels = array_map(fn($k) => $def['options'][$k] ?? $k, array_filter(explode(',', (string) $val)));
+        return e(implode(', ', $labels));
+    }
     if ($def['type'] === 'select') {
         $label = $def['options'][$val] ?? $val;
         return '<span class="badge badge--' . e((string) $val) . '">' . e(explode(' — ', (string) $label)[0]) . '</span>';
@@ -303,6 +307,14 @@ function read_field(string $name, array $def, array &$errors): mixed
     if ($type === 'bool') {
         return empty($raw) ? 0 : 1;
     }
+    // Tick boxes (several choices): stored as a comma-separated list of option keys, e.g. "solo,couples".
+    if ($type === 'checks') {
+        $picked = array_values(array_intersect(array_keys($def['options']), is_array($raw) ? $raw : []));
+        if (!empty($def['required']) && !$picked) {
+            $errors[$name] = "Tick at least one option for $label.";
+        }
+        return implode(',', $picked);
+    }
 
     $value = is_string($raw) ? trim(str_replace("\r\n", "\n", $raw)) : '';
 
@@ -382,6 +394,14 @@ function render_field(string $name, array $def, mixed $value, ?string $error = n
 
     if ($type === 'bool') {
         $html .= '<label class="check"><input type="checkbox" ' . $attr . ' value="1"' . ($value ? ' checked' : '') . '> ' . $label . '</label>';
+    } elseif ($type === 'checks') {
+        $on = array_filter(explode(',', (string) $value));
+        $html .= '<span class="field__label">' . $label . '</span><div class="checks">';
+        foreach ($def['options'] as $k => $opt) {
+            $html .= '<label class="check"><input type="checkbox" name="f[' . e($name) . '][]" value="' . e((string) $k) . '"'
+                . (in_array((string) $k, $on, true) ? ' checked' : '') . '> ' . e($opt) . '</label>';
+        }
+        $html .= '</div>';
     } else {
         $html .= '<label for="' . $id . '">' . $label . '</label>';
         switch ($type) {

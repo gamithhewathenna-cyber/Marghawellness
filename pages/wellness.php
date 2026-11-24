@@ -112,8 +112,16 @@ partial('header', compact('page_title', 'page_description', 'body_class', 'prelo
         </form>
 
         <div class="wp-pk-grid" data-wp-programmes>
-            <?php foreach (setting_items('wp_pk_items', 7) as [$name, $depth, $path, $for, $nights, $image, $desc]):
-                $forKeys = implode(' ', array_map($key, array_filter(array_map('trim', explode(',', $for))))); ?>
+            <?php foreach (get_wellness_programmes() as $pg):   // Admin › Listings › Wellness programmes
+                $name   = (string) $pg['title'];
+                $depth  = ucfirst((string) $pg['depth']);
+                $path   = ucfirst((string) $pg['path']);
+                $aud    = array_filter(array_map('trim', explode(',', (string) $pg['audience'])));
+                $for    = implode(', ', array_map('ucfirst', $aud));
+                $forKeys = implode(' ', array_map($key, $aud));
+                $nights = (string) $pg['nights'];
+                $image  = (string) $pg['image'];
+                $desc   = (string) $pg['summary']; ?>
             <article class="wp-pk" data-depth="<?= e($key($depth)) ?>" data-path="<?= e($key($path)) ?>" data-for="<?= e($forKeys) ?>" data-nights="<?= e($nightsBucket($nights)) ?>">
                 <div class="wp-pk__media">
                     <?php if ($image !== ''): ?><img src="<?= e(img($image)) ?>" alt="" loading="lazy"><?php endif; ?>

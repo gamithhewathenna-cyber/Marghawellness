@@ -84,3 +84,28 @@ function get_posts(): array
         $p + ['slug' => 'ayurveda-vs-hela-wedakama-3', 'image' => 'journal-3.jpg'],
     ];
 }
+
+/**
+ * Wellness page programme cards (Admin › Listings › Wellness programmes).
+ * Falls back to the six starter programmes until the wellness_programmes table exists.
+ * audience is a comma-separated list: solo, women, couples, teams.
+ */
+function get_wellness_programmes(): array
+{
+    $rows = Database::fetchAll(
+        'SELECT slug, title, depth, path, audience, nights, image, summary
+           FROM wellness_programmes WHERE is_active = 1 ORDER BY sort_order, id'
+    );
+    if ($rows !== null) {
+        return $rows;     // table exists — show exactly what the admin has (even if empty)
+    }
+    $soon = 'Full programme details coming soon.';
+    return [
+        ['slug' => 'heal',               'title' => 'Heal',               'depth' => 'begin',   'path' => 'healing', 'audience' => 'solo,women,couples', 'nights' => '3-5', 'image' => 'retreat-ocean-breath.jpg', 'summary' => $soon],
+        ['slug' => 'uplift',             'title' => 'Uplift',             'depth' => 'begin',   'path' => 'soul',    'audience' => 'solo,women',         'nights' => '3-5', 'image' => 'journal-2.jpg',            'summary' => $soon],
+        ['slug' => 'unplug-reconnect',   'title' => 'Unplug & Reconnect', 'depth' => 'begin',   'path' => 'rest',    'audience' => 'solo,couples,teams', 'nights' => '3-5', 'image' => 'retreat-dark-sky.jpg',     'summary' => $soon],
+        ['slug' => 'arogya',             'title' => 'Arogya',             'depth' => 'deepen',  'path' => 'healing', 'audience' => 'solo,couples',       'nights' => '7',   'image' => 'journey-south-coast.jpg',  'summary' => $soon],
+        ['slug' => 'revive',             'title' => 'Revive',             'depth' => 'immerse', 'path' => 'rest',    'audience' => 'solo,women',         'nights' => '14',  'image' => 'journey-tree-of-life.jpg', 'summary' => $soon],
+        ['slug' => 'longevity',          'title' => 'Longevity',          'depth' => 'immerse', 'path' => 'healing', 'audience' => 'solo,couples',       'nights' => '21',  'image' => 'journal-1.jpg',            'summary' => $soon],
+    ];
+}
