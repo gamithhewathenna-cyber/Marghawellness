@@ -138,6 +138,23 @@ if ($action === 'edit' || $action === 'new') {
         <?php endif; ?>
     </div>
 
+    <?php
+    // Rule R1: a package still containing placeholders such as [TBC] or [VERIFY] is not ready to publish.
+    if (!empty($ent['placeholder_check']) && !$isNew) {
+        $unfinished = [];
+        foreach ($ent['fields'] as $fname => $fdef) {
+            if (is_string($values[$fname] ?? null) && preg_match('/\[[^\]]*\]/u', $values[$fname])) {
+                $unfinished[] = $fdef['label'];
+            }
+        }
+        if ($unfinished): ?>
+    <div class="notice notice--warn" role="status">
+        <strong>Not ready to publish:</strong> this <?= e($singular) ?> still contains placeholders in square brackets (such as [TBC] or [VERIFY]) in:
+        <?= e(implode(', ', array_map(fn($l) => preg_replace('/\s*\(.*$/', '', $l), $unfinished))) ?>.
+        Replace them before making it visible on the website.
+    </div>
+        <?php endif;
+    } ?>
     <?php if ($errors): ?>
     <div class="notice notice--error" role="alert">
         <?= isset($errors['_']) ? e($errors['_']) : 'Please fix the highlighted fields.' ?>

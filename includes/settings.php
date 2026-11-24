@@ -185,7 +185,7 @@ function settings_schema(): array
         'jp_list' => ['label' => 'Journey cards', 'fields' => [
             'jp_list_eyebrow' => ['label' => 'Small heading', 'type' => 'text', 'default' => 'MĀRGHĀ Journeys'],
             'jp_list_title'   => ['label' => 'Title', 'type' => 'rich', 'default' => 'Six routes and <em>one tailor-made door</em>.'],
-            'jp_list_button'  => ['label' => 'Card button label (opens the enquiry form until journey pages exist)', 'type' => 'text', 'default' => 'View journey'],
+            'jp_list_button'  => ['label' => 'Card button label (opens the journey page)', 'type' => 'text', 'default' => 'View journey'],
             'jp_list_count'   => ['label' => 'Counter text after the number of journeys', 'type' => 'text', 'default' => 'journeys + tailor-made'],
             'jp_list_empty'   => ['label' => 'Message when no journey matches the filters', 'type' => 'text', 'default' => 'No journey matches those filters yet.'],
             'jp_list_empty_link' => ['label' => 'Link text after that message (opens the enquiry form)', 'type' => 'text', 'default' => 'Ask us to design one'],
@@ -214,6 +214,31 @@ function settings_schema(): array
         'jp_seo' => ['label' => 'SEO', 'fields' => [
             'jp_seo_title'       => ['label' => 'Page title (browser tab and Google)', 'type' => 'text', 'max' => 120, 'default' => 'Journeys — Guided routes through Sri Lanka | Mārghā Wellness'],
             'jp_seo_description' => ['label' => 'Description (Google)', 'type' => 'textarea', 'rows' => 3, 'max' => 300, 'default' => 'Not a resort. A route. Move through Sri Lanka with local guides and naturalists, with wellness threaded through the days. 5 to 12 nights, small groups or private.'],
+        ]],
+
+        // Shared headings and labels on every Journey Package page (pages/journey-package.php)
+        'jp_pkpage' => ['label' => 'Journey page labels', 'fields' => [
+            'jk_nav_overview'  => ['label' => 'Menu bar — Overview', 'type' => 'text', 'default' => 'Overview'],
+            'jk_nav_route'     => ['label' => 'Menu bar — Route', 'type' => 'text', 'default' => 'Route'],
+            'jk_nav_days'      => ['label' => 'Menu bar — Your days', 'type' => 'text', 'default' => 'Your days'],
+            'jk_nav_included'  => ['label' => 'Menu bar — Included', 'type' => 'text', 'default' => 'Included'],
+            'jk_nav_price'     => ['label' => 'Menu bar — Price', 'type' => 'text', 'default' => 'Price'],
+            'jk_nav_faq'       => ['label' => 'Menu bar — FAQ', 'type' => 'text', 'default' => 'FAQ'],
+            'jk_nav_enquire'   => ['label' => 'Menu bar — Enquire button', 'type' => 'text', 'default' => 'Enquire'],
+            'jk_btn_enquire'   => ['label' => 'Price card — Enquire button', 'type' => 'text', 'default' => 'Enquire about this journey'],
+            'jk_btn_profile'   => ['label' => 'Price card — Path Profile button', 'type' => 'text', 'default' => 'Take the Path Profile'],
+            'jk_days_title'    => ['label' => 'Your days — title', 'type' => 'text', 'default' => 'Your {count} days', 'help' => '{count} becomes the number of days in words, e.g. “Your five days”.'],
+            'jk_good_title'    => ['label' => 'Good to know — list title', 'type' => 'text', 'default' => 'Good to know'],
+            'jk_places_label'  => ['label' => 'Places card — small heading', 'type' => 'text', 'default' => 'Places'],
+            'jk_talk_title'    => ['label' => '“Not sure yet?” card — title', 'type' => 'text', 'default' => 'Not sure yet?'],
+            'jk_talk_text'     => ['label' => '“Not sure yet?” card — text', 'type' => 'textarea', 'rows' => 2, 'default' => 'Talk to a Wellness Destination Specialist. Thirty minutes, no obligation.'],
+            'jk_talk_link'     => ['label' => '“Not sure yet?” card — link text', 'type' => 'text', 'default' => 'Book a conversation'],
+            'jk_related_title' => ['label' => '“Where next?” — title', 'type' => 'rich', 'default' => 'Where next?'],
+            'jk_form_eyebrow'  => ['label' => 'Bottom enquiry form — small heading', 'type' => 'text', 'default' => 'Enquire'],
+            'jk_form_title'    => ['label' => 'Bottom enquiry form — title', 'type' => 'rich', 'default' => 'Tell us where you are.'],
+            'jk_form_button'   => ['label' => 'Bottom enquiry form — button', 'type' => 'text', 'default' => 'Send enquiry'],
+            'jk_form_thanks'   => ['label' => 'Bottom enquiry form — thank-you message', 'type' => 'text', 'default' => 'Thank you. A real person from the MĀRGHĀ team will reply personally within a day.'],
+            'jk_back'          => ['label' => 'Link back to all journeys', 'type' => 'text', 'default' => 'All journeys'],
         ]],
 
         'general' => ['label' => 'General & social', 'fields' => [

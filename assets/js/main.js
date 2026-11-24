@@ -159,6 +159,40 @@
         targets.forEach(t => spy.observe(t));
     }
 
+    /* ---------- Journey page: "Tell us where you are." enquiry form (sends without reloading) ---------- */
+    $$('form[data-inline-enquiry]').forEach(form => {
+        const msg = $('.jk-form__msg', form);
+        const btn = $('button[type="submit"]', form);
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            $$('input', form).forEach(i => i.classList.remove('is-invalid'));
+            const bad = [];
+            if (!form.full_name.value.trim()) bad.push(form.full_name);
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.value.trim())) bad.push(form.email);
+            if (bad.length) {
+                bad.forEach(i => i.classList.add('is-invalid'));
+                msg.textContent = 'Please add your name and a valid email address.';
+                bad[0].focus();
+                return;
+            }
+            btn.disabled = true; msg.textContent = 'Sending…';
+            try {
+                const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'X-Requested-With': 'fetch', 'Accept': 'application/json' } });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.ok !== false) {
+                    form.classList.add('is-sent');
+                    msg.textContent = msg.dataset.thanks || 'Thank you.';
+                } else {
+                    msg.textContent = data.message || 'Something went wrong. Please try again.';
+                }
+            } catch {
+                msg.textContent = 'Network error. Please check your connection and try again.';
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    });
+
     /* ---------- Journeys page: filter chips (one choice per group; click again to clear) ---------- */
     const jrBar = $('[data-jr-filters]');
     if (jrBar) {

@@ -266,3 +266,6 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
 
 /* Inner tabs on grouped screens (e.g. Wellness Packages: Packages | Categories) */
 .tabs--inner { margin: -4px 0 22px; }
+
+/* Rule R1 warning: package still contains [placeholders] */
+.notice--warn { background: #fdf0dc; color: #7a4b05; }

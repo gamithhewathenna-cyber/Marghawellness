@@ -252,7 +252,7 @@ const JOURNEY_EFFORTS = ['gentle' => 'Gentle', 'active' => 'Active', 'demanding'
 /** Starter routes from the approved design — used until database/journeys.sql has been run. */
 function journey_fallback_routes(): array
 {
-    $r = fn(array $j) => $j + ['price_from' => 0, 'region' => '', 'description' => '', 'is_featured' => 0];
+    $r = fn(array $j) => $j + journey_fallback_details($j['slug']) + ['price_from' => 0, 'region' => '', 'description' => '', 'is_featured' => 0];
     return array_map($r, [
         ['slug' => 'womens-circle-getaway', 'title' => 'The Women’s Circle Getaway', 'depth' => 'first-steps',     'path' => 'rest',    'tagline' => 'Five nights, six women',        'route' => 'Negombo → Kitulgala → Galle / Ahangama',      'summary' => 'The pilot. A small group moving from coast to river forest to the south coast, with breathwork, water and unhurried company.', 'nights' => '5',          'effort' => 'gentle',    'group_size' => 'Women’s group of six',  'wellness' => 'Breathwork · water · bodywork',        'style' => 'womens-group',          'image' => 'retreat-couples.jpg'],
         ['slug' => 'the-mountain-path',     'title' => 'The Mountain Path',          'depth' => 'finding-footing', 'path' => 'soul',    'tagline' => 'Tea country on foot',           'route' => 'Kandy → Pekoe Trail → Riverston',             'summary' => 'Walking days through tea country, a night above the cloud line, and silence at dawn. Built on the Pekoe Trail.',              'nights' => '7 · [VERIFY]', 'effort' => 'active',    'group_size' => 'Small group',           'wellness' => 'Breathwork at altitude · silence',     'style' => 'solo,couples,friends',  'image' => 'journey-tree-of-life.jpg'],
@@ -272,4 +272,97 @@ function get_journey_routes(): array
         return journey_fallback_routes();
     }
     return $rows;
+}
+
+/* ==========================================================================
+   Journey Packages — one page per journey (journeys/journey.php?p=slug).
+   Content lives in the `journeys` table (Admin › Journey Packages).
+   ========================================================================== */
+
+/** Link to a journey's own page. Works without server rewrite rules. */
+function journey_url(string $slug): string
+{
+    return url('journeys/journey.php?p=' . rawurlencode($slug));
+}
+
+/** Detail-page content for the starter journeys (used until database/journey-packages.sql is run). */
+function journey_fallback_details(string $slug): array
+{
+    $details = [
+        'womens-circle-getaway' => [
+            'sort_order'   => 0,
+            'badge'        => 'First steps · 5 nights · Group of six',
+            'hero_text'    => 'Five nights, six women, coast to river forest to the south coast. A gentle way into moving through the island together.',
+            'headline'     => 'A small group, a real route.',
+            'description'  => 'Not a resort. A route, shared with five other women. Local guides, water, a forest and the sea, with wellness threaded through the days rather than bolted on.',
+            'facts'        => "Depth | First steps\nNights | 5\nEffort | Gentle\nShape | You move: 3 stops\nGroup | 6 guests\nDates | [TBC]",
+            'at_a_glance'  => "Nights | 5\nGroup | 6 women\nEffort | Gentle\nRoute | Negombo → Kitulgala → Galle / Ahangama\nDeparture | [TBC]",
+            'fit_for'      => "You want company, not a solo retreat\nYou are new to slow travel, or want to try it with others\nYou would like movement and water more than treatments",
+            'fit_not'      => "You want a long, treatment-led stay (see Wellness)\nYou prefer total privacy\nYou need a high-intensity trek (see Mountain Path)",
+            'route_stops'  => "Negombo | 1 night\nKitulgala | 2 nights\nGalle / Ahangama | 2 nights",
+            'week'         => "1 | Negombo | Arrive and exhale | Meet the group and your guide at the coast. Breathwork at sunset, a long dinner and nothing to prove. | Coast · gentle\n2 | Kitulgala | Into the river forest | Drive inland to the rainforest edge. A guided forest walk and a first swim in the river. | Forest · water\n3 | Kitulgala | A day of moving | A longer walk with a local naturalist, lunch cooked by a village family, silence at dusk. This is the hard part, and the good part. | Active · the “good hard part”\n4 | Galle / Ahangama | Down to the sea | Travel south. Bodywork in the afternoon, sunset at the fort. | Coast · bodywork\n5 | Ahangama | Return, gently | Sunrise yoga by the waves, a closing circle and a practice to take home. | Closing circle",
+            'included'     => "Five nights [properties TBC]\nPrivate vehicle with driver\nLocal guide and naturalist-led walks\nDaily breathwork, yoga or stillness practice\nMeals as itinerary [VERIFY]\nOne bodywork session [VERIFY]\nOne MĀRGHĀ host with the group\nA follow-up circle after you return",
+            'not_included' => "International flights\nTravel insurance\nOptional extra treatments\nPersonal expenses",
+            'good_to_know' => "Walking days of two to four hours, easy to moderate\nMinimum group of [VERIFY] to depart\nSingle-room supplement [TBC]",
+            'price_basis'  => 'per person, twin-share',
+            'price_details'=> "Deposit [25–30%: TBC]\nDeparture [TBC]",
+            'places'       => 'Six places. Places left show once dates are live.',
+            'places_show'  => 0,
+            'faq'          => "How fit do I need to be? | This is a Gentle journey: walking days of two to four hours, easy to moderate. Tell us your honest level and we will match it.\nWhat if I have a health condition or take medication? | Tell us in the first conversation. Your health form goes to the practitioner, who may adjust or decline treatments.\nCan I travel solo? | Yes. Most guests join on their own, and the group is hosted by a MĀRGHĀ team member.\nWhat happens if I need to change dates? | Our change policy is being finalised. Please ask us in your first conversation.",
+            'related'      => 'the-mountain-path, the-dark-sky-path, wellness:heal',
+            'reading'      => "Before | Your first wellness trip: what to pack and what to expect.\nDuring | When did you last see the Milky Way?\nAfter | Why the first group is six.",
+        ],
+    ];
+    return $details[$slug] ?? [];
+}
+
+/** One journey by its URL name, or null. Journeys hidden from the Journeys page are visible only to signed-in admins. */
+function get_journey_package(string $slug): ?array
+{
+    if (!preg_match('/^[a-z0-9-]{1,140}$/', $slug)) {
+        return null;
+    }
+    $rows = Database::fetchAll('SELECT * FROM journeys WHERE slug = ? LIMIT 1', [$slug]);
+    $row  = $rows[0] ?? null;
+    if ($rows === null || ($row && !array_key_exists('depth', $row))) {
+        // Journeys table not updated yet → starter journeys only
+        foreach (journey_fallback_routes() as $j) {
+            if ($j['slug'] === $slug) return $j;
+        }
+        return null;
+    }
+    if (!$row) {
+        return null;
+    }
+    if (isset($row['on_journeys_page']) && !$row['on_journeys_page'] && !is_admin_session()) {
+        return null;
+    }
+    // Before database/journey-packages.sql the page columns don't exist yet → use the starter page content.
+    return array_key_exists('route_stops', $row) ? $row : $row + journey_fallback_details($slug);
+}
+
+/**
+ * "Where next?" cards: slugs from the Related field (prefix wellness: for a Wellness Package,
+ * e.g. "the-mountain-path, wellness:heal"), otherwise the next journeys in the list.
+ */
+function get_journey_related(array $journey, int $limit = 3): array
+{
+    $all    = array_values(array_filter(get_journey_routes(), fn($j) => $j['slug'] !== $journey['slug']));
+    $bySlug = array_column($all, null, 'slug');
+    $out    = [];
+    foreach (array_filter(array_map('trim', explode(',', (string) ($journey['related'] ?? '')))) as $ref) {
+        if (str_starts_with($ref, 'wellness:')) {
+            $w = get_wellness_package(substr($ref, 9));
+            if ($w) $out[] = ['kind' => 'wellness', 'url' => package_url($w['slug']), 'meta' => 'MĀRGHĀ Wellness', 'title' => $w['title'], 'text' => $w['summary'], 'image' => $w['image']];
+        } elseif (isset($bySlug[$ref])) {
+            $j = $bySlug[$ref];
+            $out[] = ['kind' => 'journey', 'url' => journey_url($j['slug']), 'meta' => JOURNEY_DEPTHS[$j['depth']] ?? '', 'title' => $j['title'], 'text' => $j['tagline'] ?? '', 'image' => $j['image']];
+        }
+    }
+    if (!$out) {
+        foreach (array_slice($all, 0, $limit) as $j) {
+            $out[] = ['kind' => 'journey', 'url' => journey_url($j['slug']), 'meta' => JOURNEY_DEPTHS[$j['depth']] ?? '', 'title' => $j['title'], 'text' => $j['tagline'] ?? '', 'image' => $j['image']];
+        }
+    }
+    return array_slice($out, 0, $limit);
 }

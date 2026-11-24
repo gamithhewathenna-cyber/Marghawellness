@@ -139,13 +139,13 @@ partial('header', compact('page_title', 'page_description', 'body_class', 'prelo
                 $effort   = (string) ($j['effort'] ?? '');
                 ?>
             <article class="jr-card" data-depth="<?= e($depthKey) ?>" data-path="<?= e($pathKey) ?>" data-style="<?= e(str_replace(',', ' ', (string) ($j['style'] ?? ''))) ?>" data-effort="<?= e($effort) ?>">
-                <div class="jr-card__media">
+                <a class="jr-card__media" href="<?= e(journey_url((string) $j['slug'])) ?>" tabindex="-1" aria-hidden="true">
                     <?php if (!empty($j['image'])): ?><img src="<?= e(img((string) $j['image'])) ?>" alt="" loading="lazy"><?php endif; ?>
                     <?php if (isset(JOURNEY_DEPTHS[$depthKey])): ?><span class="jr-card__pill"><?= e(JOURNEY_DEPTHS[$depthKey]) ?></span><?php endif; ?>
-                </div>
+                </a>
                 <div class="jr-card__body">
                     <?php if ($pathKey !== ''): ?><p class="jr-card__path"><?= $pathIcon($pathKey) ?><?= e(ucfirst((string) preg_replace('/^the | path$/i', '', $paths[$pathKey] ?? $pathKey))) ?></p><?php endif; ?>
-                    <h3 class="jr-card__title"><?= e((string) $j['title']) ?></h3>
+                    <h3 class="jr-card__title"><a href="<?= e(journey_url((string) $j['slug'])) ?>"><?= e((string) $j['title']) ?></a></h3>
                     <?php if (!empty($j['tagline'])): ?><p class="jr-card__tag"><?= e((string) $j['tagline']) ?></p><?php endif; ?>
                     <?php if (!empty($j['route'])): ?><p class="jr-card__route"><?= e((string) $j['route']) ?></p><?php endif; ?>
                     <p class="jr-card__text"><?= e((string) $j['summary']) ?></p>
@@ -157,7 +157,7 @@ partial('header', compact('page_title', 'page_description', 'body_class', 'prelo
                     </dl>
                     <div class="jr-card__foot">
                         <p class="jr-card__price">From <strong><?= e(trim((string) ($j['price_pp'] ?? '')) !== '' ? (string) $j['price_pp'] : '[USD ——]') ?></strong> pp</p>
-                        <a class="jr-card__link" href="<?= e($enquire) ?>" data-package="<?= e((string) $j['title']) ?>"><?= e(setting('jp_list_button')) ?> →</a>
+                        <a class="jr-card__link" href="<?= e(journey_url((string) $j['slug'])) ?>"><?= e(setting('jp_list_button')) ?> →</a>
                     </div>
                 </div>
             </article>

@@ -60,6 +60,12 @@ $data = [
 ];
 // Which Wellness Package the enquiry came from (hidden field, set on package pages) — kept in the message.
 $package = $clean('package', 160);
+// Extra free-text answers from the journey page form ("Tell us where you are.") — kept in the message.
+$freeText = array_filter([
+    'Preferred dates'               => $clean('dates_text', 120),
+    'Travelling with'               => $clean('companions', 160),
+    'Hopes to leave behind'         => $clean('hopes', 300),
+], 'strlen');
 
 $errors = [];
 if ($data['full_name'] === '') $errors['full_name'] = 'Please tell us your name.';
@@ -87,6 +93,7 @@ try {
     $have  = array_column($pdo->query('SHOW COLUMNS FROM enquiries')->fetchAll(), 'Field');
     $row   = [];
     $extra = $package !== '' ? ['Package of interest: ' . $package] : [];
+    foreach ($freeText as $label => $text) { $extra[] = $label . ': ' . $text; }
     foreach ($data as $col => $val) {
         if (in_array($col, $have, true)) {
             $row[$col] = $val === '' ? null : $val;
@@ -121,6 +128,7 @@ if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
         'Looking for:      ' . $data['interest'],
         'Travel:           ' . $data['travel_month'] . ($data['dates_flexible'] ? ' (dates flexible)' : ''),
         'Package:          ' . ($package !== '' ? $package : '—'),
+        ...array_map(fn($l, $t) => str_pad($l . ':', 18) . $t, array_keys($freeText), $freeText),
         '',
         'Reply directly to this email to answer ' . $data['full_name'] . '.',
         'All enquiries: ' . (isset($_SERVER['HTTP_HOST']) ? 'https://' . $_SERVER['HTTP_HOST'] : '') . url('admin/manage.php?type=enquiries'),
