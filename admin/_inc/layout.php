@@ -62,17 +62,20 @@ function admin_header(string $title, string $active = ''): void
             'account'     => ['My account', admin_url('account.php'), 'key'],
         ],
     ];
-    // Viewers (e.g. a client) only get the dashboard and their own account.
+    $editor = can_edit_content($user);
     if (!is_full_admin($user)) {
-        $nav = [
-            'Overview' => ['dashboard' => ['Dashboard', admin_url(), 'grid']],
-            'Account'  => ['account' => ['My account', admin_url('account.php'), 'key']],
-        ];
+        // Content editors: everything except Settings (Maintenance mode, Users).
+        unset($nav['Settings']);
+        $nav['Account'] = ['account' => ['My account', admin_url('account.php'), 'key']];
+        if (!$editor) {
+            // Viewers (e.g. a client) only get the dashboard and their own account.
+            $nav = ['Overview' => $nav['Overview'], 'Account' => $nav['Account']];
+        }
     }
-    foreach (is_full_admin($user) ? admin_pages() : [] as $key => $page) {
+    foreach ($editor ? admin_pages() : [] as $key => $page) {
         $nav['Pages']['page_' . $key] = [$page['label'], admin_url('pages.php', ['page' => $key]), $key === 'home' ? 'home' : 'text'];
     }
-    foreach (is_full_admin($user) ? admin_entities() : [] as $key => $ent) {
+    foreach ($editor ? admin_entities() : [] as $key => $ent) {
         if (!empty($ent['hidden'])) continue;
         $group = ($ent['can_create'] ?? true) ? 'Listings' : 'Inbox';
         $nav[$group][$key] = [$ent['label'], admin_url('manage.php', ['type' => $key]), $ent['icon']];
@@ -101,7 +104,8 @@ function admin_header(string $title, string $active = ''): void
             <a class="badge badge--new topbar__maint" href="<?= e(admin_url('maintenance.php')) ?>">Maintenance mode ON</a>
             <?php endif; ?>
             <a class="topbar__link" href="<?= e(url()) ?>" target="_blank" rel="noopener"><?= admin_icon('ext') ?>View website</a>
-            <a class="topbar__user" href="<?= e(admin_url('account.php')) ?>"><?= e($user['name'] ?? '') ?><?= is_full_admin($user) ? '' : ' <span class="badge badge--viewer">Viewer</span>' ?></a>
+            <?php $roleBadge = ['editor' => 'Content editor', 'viewer' => 'Viewer'][$user['role'] ?? 'admin'] ?? ''; ?>
+            <a class="topbar__user" href="<?= e(admin_url('account.php')) ?>"><?= e($user['name'] ?? '') ?><?= $roleBadge !== '' ? ' <span class="badge badge--' . e($user['role']) . '">' . e($roleBadge) . '</span>' : '' ?></a>
             <form method="post" action="<?= e(admin_url('logout.php')) ?>">
                 <?= csrf_field() ?>
                 <button class="topbar__link" type="submit"><?= admin_icon('out') ?>Sign out</button>

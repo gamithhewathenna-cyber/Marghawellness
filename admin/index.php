@@ -16,7 +16,7 @@ function count_rows(string $sql): ?int
 
 /* ---------------- Viewer dashboard (client preview) ---------------- */
 // No enquiries, subscribers or edit links — just the website and a content overview.
-if (!is_full_admin($user)) {
+if (!can_edit_content($user)) {
     $overview = [
         ['Wellness packages', count_rows('SELECT COUNT(*) FROM wellness_programmes WHERE is_active = 1'), 'on the website'],
         ['Journeys',          count_rows('SELECT COUNT(*) FROM journeys WHERE is_featured = 1'), 'on the homepage'],
@@ -132,7 +132,7 @@ admin_header('Dashboard', 'dashboard');
             <li><a href="<?= e(admin_url('manage.php', ['type' => 'posts', 'action' => 'new'])) ?>">Write a journal post</a></li>
             <li><a href="<?= e(admin_url('manage.php', ['type' => 'journeys', 'action' => 'new'])) ?>">Add a journey</a></li>
             <li><a href="<?= e(admin_url('export.php', ['type' => 'subscribers'])) ?>">Download subscribers (CSV)</a></li>
-            <li><a href="<?= e(admin_url('users.php')) ?>">Give a client viewer access</a></li>
+            <?php if (is_full_admin($user)): ?><li><a href="<?= e(admin_url('users.php')) ?>">Give someone access (Admin, Content editor or Viewer)</a></li><?php endif; ?>
         </ul>
         <?php if ($recentSubs): ?>
         <h3 class="panel__sub">Newest subscribers</h3>

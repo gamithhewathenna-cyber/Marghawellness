@@ -29,6 +29,8 @@ $body_class       = $body_class ?? '';
 <div class="admin-bar" role="status">
     <?php if (($_SESSION['admin_role'] ?? 'admin') === 'admin'): ?>
     Maintenance mode is on — visitors see the maintenance page. <a href="<?= e(url('admin/maintenance.php')) ?>">Turn off</a>
+    <?php elseif ($_SESSION['admin_role'] === 'editor'): ?>
+    Maintenance mode is on — visitors see the maintenance page. Only an Admin can turn it off.
     <?php else: ?>
     Preview — you’re seeing the website before it goes public.
     <?php endif; ?>

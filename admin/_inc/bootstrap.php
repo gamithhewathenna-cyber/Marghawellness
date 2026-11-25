@@ -149,12 +149,30 @@ function csrf_field(): string
 /**
  * User levels.
  *   admin  – full access to everything
+ *   editor – Content editor: all pages, packages, listings, inbox and image uploads. No Settings
+ *            (Maintenance mode, Users).
  *   viewer – Dashboard, own Account and the website (also past maintenance mode). Can't edit anything.
  */
 const ADMIN_ROLES = [
     'admin'  => 'Admin — full access',
+    'editor' => 'Content editor — edit pages, packages & listings, upload images (no Settings)',
     'viewer' => 'Viewer — dashboard, account & website only',
 ];
+
+/** True once the `role` column accepts the Content editor level (database/editor-role.sql). */
+function editor_role_enabled(): bool
+{
+    static $ok = null;
+    if ($ok === null) {
+        try {
+            $col = db()->query("SHOW COLUMNS FROM admin_users LIKE 'role'")->fetch();
+            $ok  = $col && str_contains((string) $col['Type'], "'editor'");
+        } catch (Throwable) {
+            $ok = false;
+        }
+    }
+    return $ok;
+}
 
 /** True once the `role` column exists (database/roles.sql has been run). Until then everyone is an admin. */
 function roles_enabled(): bool
@@ -206,7 +224,25 @@ function is_full_admin(?array $user = null): bool
     return ($user['role'] ?? 'admin') === 'admin';
 }
 
-/** Any signed-in user (admin or viewer): Dashboard, Account. */
+/** Admins and Content editors can change website content. */
+function can_edit_content(?array $user = null): bool
+{
+    $user ??= current_admin();
+    return in_array($user['role'] ?? 'admin', ['admin', 'editor'], true);
+}
+
+/** Content screens (pages, packages, listings, inbox, uploads): admins and Content editors. */
+function require_editor(): array
+{
+    $user = require_login();
+    if (!can_edit_content($user)) {
+        flash('Your account can view the dashboard and website, but not edit content.', 'info');
+        redirect(admin_url());
+    }
+    return $user;
+}
+
+/** Any signed-in user (admin, editor or viewer): Dashboard, Account. */
 function require_login(): array
 {
     require_tables(['admin_users']);
@@ -218,12 +254,14 @@ function require_login(): array
     return $user;
 }
 
-/** Full admins only — every editing screen. Viewers are sent back to the dashboard. */
+/** Full admins only — Settings (Maintenance mode, Users). Others are sent back to the dashboard. */
 function require_admin(): array
 {
     $user = require_login();
     if (!is_full_admin($user)) {
-        flash('Your account can view the dashboard and website, but not edit content.', 'info');
+        flash(can_edit_content($user)
+            ? 'Settings are only available to Admins. You can edit all pages, packages and listings.'
+            : 'Your account can view the dashboard and website, but not edit content.', 'info');
         redirect(admin_url());
     }
     return $user;

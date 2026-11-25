@@ -6,7 +6,7 @@ declare(strict_types=1);
  * defined in admin/_inc/entities.php.  ?type=retreats&action=edit&id=3
  */
 require __DIR__ . '/_inc/bootstrap.php';
-require_admin();
+require_editor();   // Admins and Content editors
 
 $ent = admin_entity((string) ($_POST['type'] ?? $_GET['type'] ?? ''));
 if (!$ent) {

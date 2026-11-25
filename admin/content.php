@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Kept so existing bookmarks and links still land in the right place.
  */
 require __DIR__ . '/_inc/bootstrap.php';
-require_admin();
+require_editor();   // Admins and Content editors
 
 $group = (string) ($_GET['group'] ?? '');
 if ($group === 'maintenance') {

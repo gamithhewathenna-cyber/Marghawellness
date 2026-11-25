@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Pages and sections are defined in admin/_inc/pages.php.
  */
 require __DIR__ . '/_inc/bootstrap.php';
-require_admin();
+require_editor();   // Admins and Content editors
 require_tables(['settings']);
 
 $pages   = admin_pages();

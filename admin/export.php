@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 /** CSV download for enquiries and subscribers (opens in Excel / Google Sheets). */
 require __DIR__ . '/_inc/bootstrap.php';
-require_admin();
+require_editor();   // Admins and Content editors
 
 $ent = admin_entity((string) ($_GET['type'] ?? ''));
 if (!$ent || empty($ent['export'])) {

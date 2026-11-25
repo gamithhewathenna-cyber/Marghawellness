@@ -40,10 +40,12 @@ admin_header('My account', 'account');
             <li><span class="muted">Name</span><strong><?= e($me['name']) ?></strong></li>
             <li><span class="muted">Username</span><span><?= e($me['username']) ?></span></li>
             <li><span class="muted">Email</span><span><?= $me['email'] ? e($me['email']) : '<span class="muted">—</span>' ?></span></li>
-            <li><span class="muted">Access level</span><span class="badge badge--<?= e($me['role']) ?>"><?= e(ucfirst($me['role'])) ?></span></li>
+            <li><span class="muted">Access level</span><span class="badge badge--<?= e($me['role']) ?>"><?= e(['admin' => 'Admin', 'editor' => 'Content editor', 'viewer' => 'Viewer'][$me['role']] ?? ucfirst($me['role'])) ?></span></li>
             <li><span class="muted">Last sign-in</span><span><?= $me['last_login_at'] ? e(date('j M Y, H:i', strtotime($me['last_login_at']))) : '—' ?></span></li>
         </ul>
-        <?php if (!is_full_admin($me)): ?>
+        <?php if ($me['role'] === 'editor'): ?>
+        <p class="muted panel__sub">As a Content editor you can edit every page, package and listing and upload images. Settings (Maintenance mode and Users) are managed by an Admin.</p>
+        <?php elseif ($me['role'] === 'viewer'): ?>
         <p class="muted panel__sub">Your account can view the dashboard and the website (including while it’s in maintenance mode). To change names or details, contact the site administrator.</p>
         <?php endif; ?>
     </section>

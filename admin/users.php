@@ -4,7 +4,8 @@ declare(strict_types=1);
 /** Users (admins only): add users with an access level, change level, reset passwords, remove. */
 require __DIR__ . '/_inc/bootstrap.php';
 $me    = require_admin();
-$roles = roles_enabled();
+$roles    = roles_enabled();
+$editorOk = editor_role_enabled();   // Content editor level available (database/editor-role.sql)
 
 $errors = [];
 $new    = ['name' => '', 'username' => '', 'email' => '', 'role' => $roles ? 'viewer' : 'admin'];
@@ -43,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!preg_match('/^[A-Za-z0-9._-]{3,60}$/', $new['username'])) $errors[] = 'Username must be 3–60 characters: letters, numbers, dot, dash or underscore.';
         if ($new['email'] !== '' && !filter_var($new['email'], FILTER_VALIDATE_EMAIL)) $errors[] = 'Enter a valid email address (or leave it empty).';
         if ($p = password_problem($password, (string) ($_POST['password_confirm'] ?? ''))) $errors[] = $p;
-        if (!$roles && $new['role'] === 'viewer') $errors[] = 'Viewer accounts need the database update first (database/roles.sql) — see the note above.';
+        if (!$roles && $new['role'] !== 'admin') $errors[] = 'Content editor and Viewer accounts need the database update first — see the note above.';
+        elseif (!$editorOk && $new['role'] === 'editor') $errors[] = 'Content editor accounts need the database update first — see the note above.';
         if (!$errors) {
             try {
                 if ($roles) {
@@ -64,7 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($do === 'role' && $roles) {
         $role = (string) ($_POST['role'] ?? '');
         $user = find_user($id);
-        if (!$user || !isset(ADMIN_ROLES[$role])) {
+        if ($role === 'editor' && !$editorOk) {
+            flash('Content editor needs the database update first — see the note on this page.', 'error');
+        } elseif (!$user || !isset(ADMIN_ROLES[$role])) {
             flash('User not found.', 'error');
         } elseif ($id === (int) $me['id']) {
             flash('You can’t change your own access level.', 'error');
@@ -113,15 +117,19 @@ admin_header('Users', 'users');
 <div class="page-head">
     <div>
         <h1>Users</h1>
-        <p class="muted"><strong>Admins</strong> can edit everything. <strong>Viewers</strong> only see the dashboard, their account and the website — ideal for sharing a preview with a client.</p>
+        <p class="muted"><strong>Admins</strong> can do everything. <strong>Content editors</strong> can edit all pages, packages and listings and upload images, but not Settings (Maintenance mode, Users). <strong>Viewers</strong> only see the dashboard, their account and the website — ideal for sharing a preview with a client.</p>
     </div>
 </div>
 
-<?php if (!$roles): ?>
+<?php if (!$roles || !$editorOk): ?>
 <div class="notice notice--info">
-    <strong>One-time database update needed for Viewer accounts.</strong> In phpMyAdmin, select the database, open the SQL tab and run:<br>
-    <code>ALTER TABLE admin_users ADD COLUMN role ENUM('admin','viewer') NOT NULL DEFAULT 'admin' AFTER email;</code><br>
+    <strong>One-time database update needed for <?= $roles ? 'Content editor' : 'Content editor and Viewer' ?> accounts.</strong> In phpMyAdmin, select the database, open the SQL tab and run:<br>
+    <?php if (!$roles): ?>
+    <code>ALTER TABLE admin_users ADD COLUMN role ENUM('admin','editor','viewer') NOT NULL DEFAULT 'admin' AFTER email;</code><br>
     Until then, every account has full Admin access.
+    <?php else: ?>
+    <code>ALTER TABLE admin_users MODIFY role ENUM('admin','editor','viewer') NOT NULL DEFAULT 'admin';</code>
+    <?php endif; ?>
 </div>
 <?php endif; ?>
 
@@ -145,6 +153,7 @@ admin_header('Users', 'users');
                         <label class="sr-only" for="role_<?= (int) $u['id'] ?>">Access level for <?= e($u['name']) ?></label>
                         <select id="role_<?= (int) $u['id'] ?>" name="role" data-autosubmit>
                             <option value="admin"<?= $u['role'] === 'admin' ? ' selected' : '' ?>>Admin</option>
+                            <option value="editor"<?= $u['role'] === 'editor' ? ' selected' : '' ?><?= $editorOk ? '' : ' disabled' ?>>Content editor</option>
                             <option value="viewer"<?= $u['role'] === 'viewer' ? ' selected' : '' ?>>Viewer</option>
                         </select>
                         <noscript><button class="btn btn--small" type="submit">Save</button></noscript>
@@ -193,10 +202,10 @@ admin_header('Users', 'users');
             <label for="n_role">Access level</label>
             <select id="n_role" name="role">
                 <?php foreach (ADMIN_ROLES as $key => $label): ?>
-                <option value="<?= e($key) ?>"<?= $new['role'] === $key ? ' selected' : '' ?><?= !$roles && $key === 'viewer' ? ' disabled' : '' ?>><?= e($label) ?></option>
+                <option value="<?= e($key) ?>"<?= $new['role'] === $key ? ' selected' : '' ?><?= (!$roles && $key !== 'admin') || (!$editorOk && $key === 'editor') ? ' disabled' : '' ?>><?= e($label) ?></option>
                 <?php endforeach; ?>
             </select>
-            <small class="help">Choose <strong>Viewer</strong> for a client who should only see the website and dashboard.</small>
+            <small class="help">Choose <strong>Content editor</strong> for someone who updates the website content, or <strong>Viewer</strong> for a client who should only see the website and dashboard.</small>
         </div>
         <div class="field"><label for="n_name">Name</label><input id="n_name" name="name" value="<?= e($new['name']) ?>" maxlength="120" required></div>
         <div class="field"><label for="n_user">Username</label><input id="n_user" name="username" value="<?= e($new['username']) ?>" maxlength="60" autocomplete="off" required></div>

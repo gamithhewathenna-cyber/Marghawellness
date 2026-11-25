@@ -237,6 +237,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
 /* ---------- User levels ---------- */
 .badge--admin { background: #f3e4dc; color: var(--rust); }
 .badge--viewer { background: var(--info-bg); color: var(--info); }
+.badge--editor { background: var(--ok-bg); color: var(--ok); }
 .topbar__user { text-decoration: none; }
 .topbar__user:hover { color: var(--rust); }
 .inline-form { margin: 0; }
